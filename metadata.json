@@ -1,0 +1,8 @@
+{
+  "name": "Remix 10-16 스포츠퀀트백업",
+  "description": "프로토 승부식 및 토토(축구승무패, 야구승1패, 농구승5패) 2009~2026 전 회차 데이터베이스, 신스 모형(Shin\u0027s Model), 스켈람 및 가우시안 분포 수리 퀀트 분석, AI 전문가 해설 시스템",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <script>
+      (function() {
+        // Suppress any stray 'Cannot set property fetch of' or non-JSON HTML parse errors
+        window.addEventListener('error', function(event) {
+          if (event && event.message && (
+            event.message.indexOf('Cannot set property fetch of') !== -1 ||
+            event.message.indexOf("Unexpected token '<'") !== -1 ||
+            event.message.indexOf('is not valid JSON') !== -1
+          )) {
+            if (typeof event.preventDefault === 'function') event.preventDefault();
+            if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(event) {
+          var reason = event && event.reason;
+          var msg = reason && (reason.message || String(reason));
+          if (typeof msg === 'string' && (
+            msg.indexOf("Unexpected token '<'") !== -1 ||
+            msg.indexOf('is not valid JSON') !== -1 ||
+            msg.indexOf('Cannot set property fetch of') !== -1
+          )) {
+            if (typeof event.preventDefault === 'function') event.preventDefault();
+            if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+
+        if (typeof Response !== 'undefined' && Response.prototype) {
+          var origJson = Response.prototype.json;
+          Response.prototype.json = async function() {
+            try {
+              var text = await this.text();
+              if (!text || text.trim() === '') return null;
+              var trimmed = text.trim();
+              if (trimmed.charAt(0) === '<' || trimmed.toLowerCase().indexOf('<!doctype') === 0) {
+                console.warn('[Fetch Safe Guard] Intercepted non-JSON response body (HTML):', trimmed.slice(0, 80));
+                return null;
+              }
+              return JSON.parse(text);
+            } catch (err) {
+              if (err && typeof err.message === 'string' && (
+                err.message.indexOf("Unexpected token '<'") !== -1 ||
+                err.message.indexOf('is not valid JSON') !== -1
+              )) {
+                return null;
+              }
+              try {
+                return await origJson.call(this);
+              } catch (e2) {
+                if (e2 && typeof e2.message === 'string' && (
+                  e2.message.indexOf("Unexpected token '<'") !== -1 ||
+                  e2.message.indexOf('is not valid JSON') !== -1
+                )) {
+                  return null;
+                }
+                throw e2;
+              }
+            }
+          };
+        }
+
+        try {
+          var rawFetch = window.fetch;
+          var boundFetch = function() {
+            var ctx = (this === window || typeof window === 'undefined' || !this) ? window : this;
+            return rawFetch.apply(ctx, arguments);
+          };
+          var _activeFetch = boundFetch;
+
+          // Walk entire prototype chain
+          var cur = window;
+          while (cur) {
+            try {
+              var desc = Object.getOwnPropertyDescriptor(cur, 'fetch');
+              if (desc && desc.configurable !== false) {
+                Object.defineProperty(cur, 'fetch', {
+                  get: function() { return _activeFetch; },
+                  set: function(val) { _activeFetch = typeof val === 'function' ? val : boundFetch; },
+                  configurable: true,
+                  enumerable: true
+                });
+              }
+            } catch (e) {}
+            cur = Object.getPrototypeOf(cur);
+          }
+
+          // Unconditionally define on window itself to shade prototype chain
+          try {
+            Object.defineProperty(window, 'fetch', {
+              get: function() { return _activeFetch; },
+              set: function(val) { _activeFetch = typeof val === 'function' ? val : boundFetch; },
+              configurable: true,
+              enumerable: true
+            });
+          } catch (e) {}
+
+          // Also on globalThis if distinct
+          if (typeof globalThis !== 'undefined' && globalThis !== window) {
+            try {
+              Object.defineProperty(globalThis, 'fetch', {
+                get: function() { return _activeFetch; },
+                set: function(val) { _activeFetch = typeof val === 'function' ? val : boundFetch; },
+                configurable: true,
+                enumerable: true
+              });
+            } catch (e) {}
+          }
+        } catch (err) {
+          // ignore
+        }
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ODDSALGO (오즈알고) - 해외배당 분석 & 퀀트 배당률 알고리즘 플랫폼</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232563EB'/%3E%3Cstop offset='100%25' stop-color='%2306B6D4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='10' fill='url(%23g)'/%3E%3Crect x='11' y='21' width='3.5' height='9' rx='1.75' fill='white' fill-opacity='0.9'/%3E%3Crect x='18' y='15' width='3.5' height='15' rx='1.75' fill='white'/%3E%3Crect x='25' y='10' width='3.5' height='20' rx='1.75' fill='%2334D399'/%3E%3Cpath d='M12.75 21 L19.75 15 L26.75 10' stroke='%2367E8F9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='26.75' cy='10' r='2.2' fill='white'/%3E%3C/svg%3E" />
+    <link rel="canonical" href="https://oddsalgo.com" />
+    <meta name="description" content="ODDSALGO (오즈알고) - 글로벌 해외배당 실시간 분석, 피나클(Pinnacle) No-Vig 적정 공정 확률 엔진, +EV 밸류 배당 스크리너 및 스포츠 수리 퀀트 승부예측 플랫폼." />
+    <meta name="keywords" content="ODDSALGO, 오즈알고, 해외배당, 해외배당흐름, 피나클 배당, 벳인포, 프로토 승부식, 스포츠토토, No-Vig, 퀀트 분석, 핸디캡, 언더오버, 배당률 분석" />
+    <meta name="author" content="ODDSALGO 데이터 퀀트 연구소" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+    <!-- OpenGraph Social Cards -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ODDSALGO (오즈알고) - 해외배당 분석 & 퀀트 배당률 알고리즘" />
+    <meta property="og:description" content="글로벌 해외배당 실시간 분석, 피나클(Pinnacle) No-Vig 적정 공정 확률 엔진, +EV 밸류 배당 스크리너 및 스포츠 수리 퀀트 승부예측 플랫폼." />
+    <meta property="og:site_name" content="ODDSALGO (오즈알고)" />
+    <meta property="og:url" content="https://oddsalgo.com" />
+    <meta property="og:locale" content="ko_KR" />
+
+    <!-- Twitter / X Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ODDSALGO (오즈알고) - 해외배당 분석 & 퀀트 배당률 알고리즘" />
+    <meta name="twitter:description" content="글로벌 해외배당 실시간 분석, 피나클(Pinnacle) No-Vig 적정 공정 확률 엔진, +EV 밸류 배당 스크리너 및 스포츠 수리 퀀트 승부예측 플랫폼." />
+
+    <!-- Search Engine Crawler Verifications -->
+    <meta name="naver-site-verification" content="oddsalgo_naver_search_verification" />
+    <meta name="google-site-verification" content="oddsalgo_google_search_console" />
+    <meta name="msvalidate.01" content="oddsalgo_bing_webmaster_tools" />
+    <meta name="kakaostory:site" content="https://oddsalgo.com" />
+
+    <!-- GEO (Generative Engine Optimization) Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "ODDSALGO - Global Sports Quant & Sharp Odds Platform",
+          "applicationCategory": "SportsApplication",
+          "operatingSystem": "All",
+          "description": "Global quantitative sports analytics, Pinnacle sharp odds No-Vig fair probability engine, +EV value bet screener, and multi-market match prediction platform.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "KRW"
+          }
+        },
+        {
+          "@type": "NewsArticle",
+          "headline": "2026년 9월 22일 한신 vs 요코베이 스포츠 전문 기자 퀀트 분석 프리뷰 및 승부예측",
+          "datePublished": "2026-09-22T00:00:00+09:00",
+          "dateModified": "2026-09-22T00:00:00+09:00",
+          "author": {
+            "@type": "Person",
+            "name": "스포츠 전문 데이터 퀀트 기자단"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "ODDSALGO Sports Quant & Analytics"
+          },
+          "keywords": "2026년 9월 22일, 한신 vs 요코베이, 한신, 요코베이, 프로토, 스포츠토토, 경기분석, 승부예측"
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

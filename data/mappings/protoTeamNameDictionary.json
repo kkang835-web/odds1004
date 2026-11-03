@@ -1,0 +1,5383 @@
+{
+  "version": "1.0.0",
+  "dictionaryName": "SportsQuant Pro Proto Team Name Recovery Dictionary",
+  "createdAt": "2026-10-06T08:58:08.166Z",
+  "protectedSourceHashes": {
+    "realProtoHistoricalDataset": "893ff9140e1703c3d337d9fa48507d45e461d2124eccf7cc5f4f561db5e66f78",
+    "protoRealWalkForwardV1": "353a22601a6f0e6fe104c439cd0def3fd8c7471ac540cf67b50aed2b771ca372",
+    "protoForwardShadowStore": "3ed1ec2a18367b51ffa80f938d9d60adf2fa72c9a25a110a8cd7b28f4acec972"
+  },
+  "summary": {
+    "totalUniqueCorruptedStrings": 596,
+    "verifiedCount": 214,
+    "unverifiedCount": 382,
+    "conflictCount": 0
+  },
+  "mappings": {
+    "留μ븘꽌FC": {
+      "cleanName": "맥아서FC",
+      "sport": "sc",
+      "league": "A리그",
+      "status": "VERIFIED",
+      "officialEvidence": "A리그 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_1",
+      "count": 2
+    },
+    "브리로어": {
+      "cleanName": "브리즈번로어",
+      "sport": "sc",
+      "league": "A리그",
+      "status": "VERIFIED",
+      "officialEvidence": "A리그 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_1",
+      "count": 1
+    },
+    "썾뒪썝뜑": {
+      "cleanName": "웨스턴원더",
+      "sport": "sc",
+      "league": "A리그",
+      "status": "VERIFIED",
+      "officialEvidence": "A리그 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_5",
+      "count": 2
+    },
+    "삤겢FC": {
+      "cleanName": "오클랜드FC",
+      "sport": "sc",
+      "league": "A리그",
+      "status": "VERIFIED",
+      "officialEvidence": "A리그 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_5",
+      "count": 2
+    },
+    "KT냼땳遺": {
+      "cleanName": "수원KT",
+      "sport": "bk",
+      "league": "KBL",
+      "status": "VERIFIED",
+      "officialEvidence": "KBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_9",
+      "count": 5
+    },
+    "썝二퍭B": {
+      "cleanName": "원주DB",
+      "sport": "bk",
+      "league": "KBL",
+      "status": "VERIFIED",
+      "officialEvidence": "KBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_9",
+      "count": 5
+    },
+    "BNK뜽": {
+      "cleanName": "BNK썸",
+      "sport": "bk",
+      "league": "WKBL",
+      "status": "VERIFIED",
+      "officialEvidence": "WKBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_14",
+      "count": 5
+    },
+    "슦由ъ뻾": {
+      "cleanName": "우리은행",
+      "sport": "bk",
+      "league": "WKBL",
+      "status": "VERIFIED",
+      "officialEvidence": "WKBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_14",
+      "count": 4
+    },
+    "븳빆怨": {
+      "cleanName": "대한항공",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_19",
+      "count": 1
+    },
+    "븳援쟾젰": {
+      "cleanName": "한국전력",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_19",
+      "count": 2
+    },
+    "쟾젙愿": {
+      "cleanName": "정관장",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_23",
+      "count": 2
+    },
+    "GS移쇳뀓뒪": {
+      "cleanName": "GS칼텍스",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_23",
+      "count": 4
+    },
+    "蹂쇰줈깘": {
+      "cleanName": "볼로냐",
+      "sport": "sc",
+      "league": "세리에A",
+      "status": "VERIFIED",
+      "officialEvidence": "세리에A Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_27",
+      "count": 4
+    },
+    "씤뀒瑜": {
+      "cleanName": "인테르",
+      "sport": "sc",
+      "league": "세리에A",
+      "status": "VERIFIED",
+      "officialEvidence": "세리에A Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_27",
+      "count": 4
+    },
+    "룄瑜댄듃臾": {
+      "cleanName": "도르트문트",
+      "sport": "sc",
+      "league": "분데스리가",
+      "status": "VERIFIED",
+      "officialEvidence": "분데스리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_31",
+      "count": 2
+    },
+    "臾뿨湲씪": {
+      "cleanName": "묀헨글라트",
+      "sport": "sc",
+      "league": "분데스리가",
+      "status": "VERIFIED",
+      "officialEvidence": "분데스리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_31",
+      "count": 4
+    },
+    "뒪셿吏C": {
+      "cleanName": "뒪셿吏C",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_36",
+      "count": 3
+    },
+    "젆꽟": {
+      "cleanName": "젆꽟",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_36",
+      "count": 3
+    },
+    "諛쒕젋떆븘": {
+      "cleanName": "발렌시아",
+      "sport": "sc",
+      "league": "라리가",
+      "status": "VERIFIED",
+      "officialEvidence": "라리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_40",
+      "count": 3
+    },
+    "마요르카": {
+      "cleanName": "마요르카",
+      "sport": "sc",
+      "league": "라리가",
+      "status": "VERIFIED",
+      "officialEvidence": "라리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_40",
+      "count": 1
+    },
+    "蹂댁뒪떛": {
+      "cleanName": "보스턴",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_44",
+      "count": 3
+    },
+    "留덉씠엳듃": {
+      "cleanName": "마이히트",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_44",
+      "count": 3
+    },
+    "돱슃땳뒪": {
+      "cleanName": "뉴욕닉스",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_48",
+      "count": 3
+    },
+    "븘씪76s": {
+      "cleanName": "필라76s",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_48",
+      "count": 3
+    },
+    "븷샇겕": {
+      "cleanName": "애틀호크",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_52",
+      "count": 4
+    },
+    "깒븞뒪띁": {
+      "cleanName": "샌안스퍼",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_52",
+      "count": 6
+    },
+    "겢由ъ틦踰": {
+      "cleanName": "클리캐벌",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_56",
+      "count": 3
+    },
+    "떆移대텋뒪": {
+      "cleanName": "시카불스",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_56",
+      "count": 3
+    },
+    "誘몃꽕슱釉": {
+      "cleanName": "미네울브",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_60",
+      "count": 4
+    },
+    "삤겢뜫뜑": {
+      "cleanName": "오클썬더",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_60",
+      "count": 5
+    },
+    "꽌슱SK": {
+      "cleanName": "서울SK",
+      "sport": "bk",
+      "league": "KBL",
+      "status": "VERIFIED",
+      "officialEvidence": "KBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_64",
+      "count": 4
+    },
+    "꽌슱궪꽦": {
+      "cleanName": "서울삼성",
+      "sport": "bk",
+      "league": "KBL",
+      "status": "VERIFIED",
+      "officialEvidence": "KBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_64",
+      "count": 4
+    },
+    "븳援媛뒪": {
+      "cleanName": "대구한국가스",
+      "sport": "bk",
+      "league": "KBL",
+      "status": "VERIFIED",
+      "officialEvidence": "KBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_69",
+      "count": 5
+    },
+    "븞뼇젙愿": {
+      "cleanName": "안양정관장",
+      "sport": "bk",
+      "league": "KBL",
+      "status": "VERIFIED",
+      "officialEvidence": "KBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_69",
+      "count": 5
+    },
+    "븯굹뻾": {
+      "cleanName": "하나은행",
+      "sport": "bk",
+      "league": "WKBL",
+      "status": "VERIFIED",
+      "officialEvidence": "WKBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_74",
+      "count": 5
+    },
+    "KB뒪利": {
+      "cleanName": "KB스타즈",
+      "sport": "bk",
+      "league": "WKBL",
+      "status": "VERIFIED",
+      "officialEvidence": "WKBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_74",
+      "count": 6
+    },
+    "쁽罹먰뵾": {
+      "cleanName": "현대캐피탈",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_79",
+      "count": 1
+    },
+    "OK異": {
+      "cleanName": "OK금융그룹",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_79",
+      "count": 1
+    },
+    "씎援깮紐": {
+      "cleanName": "흥국생명",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_83",
+      "count": 1
+    },
+    "럹띁異": {
+      "cleanName": "페퍼저축",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_83",
+      "count": 1
+    },
+    "돱罹먯젣痢": {
+      "cleanName": "뉴캐슬제츠",
+      "sport": "sc",
+      "league": "A리그",
+      "status": "VERIFIED",
+      "officialEvidence": "A리그 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_87",
+      "count": 2
+    },
+    "떆뱶땲FC": {
+      "cleanName": "떆뱶땲FC",
+      "sport": "sc",
+      "league": "A리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_87",
+      "count": 2
+    },
+    "궪꽦깮紐": {
+      "cleanName": "삼성생명",
+      "sport": "bk",
+      "league": "WKBL",
+      "status": "VERIFIED",
+      "officialEvidence": "WKBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_91",
+      "count": 2
+    },
+    "떊븳뻾": {
+      "cleanName": "신한은행",
+      "sport": "bk",
+      "league": "WKBL",
+      "status": "VERIFIED",
+      "officialEvidence": "WKBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_91",
+      "count": 2
+    },
+    "遺궛KCC": {
+      "cleanName": "부산KCC",
+      "sport": "bk",
+      "league": "KBL",
+      "status": "VERIFIED",
+      "officialEvidence": "KBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_96",
+      "count": 4
+    },
+    "怨좎뼇냼끂": {
+      "cleanName": "고양소노",
+      "sport": "bk",
+      "league": "KBL",
+      "status": "VERIFIED",
+      "officialEvidence": "KBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_96",
+      "count": 2
+    },
+    "硫쒕쾭떆떚": {
+      "cleanName": "硫쒕쾭떆떚",
+      "sport": "sc",
+      "league": "A리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_101",
+      "count": 2
+    },
+    "멜버빅토": {
+      "cleanName": "멜버빅토",
+      "sport": "sc",
+      "league": "A리그,ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_101",
+      "count": 3
+    },
+    "띁뒪湲濡": {
+      "cleanName": "띁뒪湲濡",
+      "sport": "sc",
+      "league": "A리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_105",
+      "count": 2
+    },
+    "븷뱾쑀굹": {
+      "cleanName": "븷뱾쑀굹",
+      "sport": "sc",
+      "league": "A리그,ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_105",
+      "count": 3
+    },
+    "블랙번R": {
+      "cleanName": "블랙번R",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_109",
+      "count": 2
+    },
+    "諛썡": {
+      "cleanName": "諛썡",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_109",
+      "count": 3
+    },
+    "봽젅뒪꽩": {
+      "cleanName": "봽젅뒪꽩",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_113",
+      "count": 2
+    },
+    "끂由ъ튂C": {
+      "cleanName": "끂由ъ튂C",
+      "sport": "sc",
+      "league": "EFL梨,엵由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_113",
+      "count": 3
+    },
+    "궗슦깦봽": {
+      "cleanName": "궗슦깦봽",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_117",
+      "count": 3
+    },
+    "肄붾쾲듃由": {
+      "cleanName": "肄붾쾲듃由",
+      "sport": "sc",
+      "league": "EFL梨,엵由ш렇而,EPL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_117",
+      "count": 4
+    },
+    "돱罹먯뒳U": {
+      "cleanName": "뉴캐슬U",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "VERIFIED",
+      "officialEvidence": "EPL Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_121",
+      "count": 4
+    },
+    "첼시": {
+      "cleanName": "첼시",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "VERIFIED",
+      "officialEvidence": "EPL Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_121",
+      "count": 6
+    },
+    "삤鍮꾩뿉룄": {
+      "cleanName": "오비에도",
+      "sport": "sc",
+      "league": "라리가",
+      "status": "VERIFIED",
+      "officialEvidence": "라리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_126",
+      "count": 2
+    },
+    "鍮꾧퀬": {
+      "cleanName": "셀타비고",
+      "sport": "sc",
+      "league": "라리가",
+      "status": "VERIFIED",
+      "officialEvidence": "라리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_126",
+      "count": 6
+    },
+    "뒋닾듃媛": {
+      "cleanName": "슈투트가르트",
+      "sport": "sc",
+      "league": "분데스리가",
+      "status": "VERIFIED",
+      "officialEvidence": "분데스리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_130",
+      "count": 2
+    },
+    "샇렂븯엫": {
+      "cleanName": "호펜하임",
+      "sport": "sc",
+      "league": "분데스리가",
+      "status": "VERIFIED",
+      "officialEvidence": "분데스리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_130",
+      "count": 8
+    },
+    "蹂쇳봽뒪遺": {
+      "cleanName": "볼프스부르크",
+      "sport": "sc",
+      "league": "분데스리가",
+      "status": "VERIFIED",
+      "officialEvidence": "분데스리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_135",
+      "count": 1
+    },
+    "봽씪씠遺": {
+      "cleanName": "봽씪씠遺",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_135",
+      "count": 2
+    },
+    "븘슦겕뒪": {
+      "cleanName": "븘슦겕뒪",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_140",
+      "count": 2
+    },
+    "釉뚮젅硫": {
+      "cleanName": "釉뚮젅硫",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_140",
+      "count": 2
+    },
+    "쾰른": {
+      "cleanName": "쾰른",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_145",
+      "count": 4
+    },
+    "U踰좊쇰┛": {
+      "cleanName": "U踰좊쇰┛",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_145",
+      "count": 2
+    },
+    "븿遺瑜댄겕": {
+      "cleanName": "함부르크",
+      "sport": "sc",
+      "league": "분데스리가",
+      "status": "VERIFIED",
+      "officialEvidence": "분데스리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_150",
+      "count": 6
+    },
+    "봽옉겕뫖": {
+      "cleanName": "봽옉겕뫖",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_150",
+      "count": 4
+    },
+    "釉뚮━뒪C": {
+      "cleanName": "釉뚮━뒪C",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_155",
+      "count": 3
+    },
+    "미들즈브": {
+      "cleanName": "미들즈브",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_155",
+      "count": 4
+    },
+    "찰턴A": {
+      "cleanName": "찰턴A",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_159",
+      "count": 2
+    },
+    "삦뒪띁뱶": {
+      "cleanName": "삦뒪띁뱶",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_159",
+      "count": 1
+    },
+    "뜑鍮꾩뭅슫": {
+      "cleanName": "뜑鍮꾩뭅슫",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_163",
+      "count": 2
+    },
+    "룷痢좊㉧뒪": {
+      "cleanName": "룷痢좊㉧뒪",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_163",
+      "count": 2
+    },
+    "뿉떆떚": {
+      "cleanName": "뿉떆떚",
+      "sport": "sc",
+      "league": "EFL梨,EPL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_167",
+      "count": 3
+    },
+    "썾뒪釉뚮줈": {
+      "cleanName": "썾뒪釉뚮줈",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_167",
+      "count": 3
+    },
+    "엯뒪쐞移": {
+      "cleanName": "엯뒪쐞移",
+      "sport": "sc",
+      "league": "EFL梨,EPL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_171",
+      "count": 2
+    },
+    "뀺븘뱶쎂": {
+      "cleanName": "뀺븘뱶쎂",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_171",
+      "count": 1
+    },
+    "몄쫰뙆겕": {
+      "cleanName": "몄쫰뙆겕",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_177",
+      "count": 2
+    },
+    "젅뒪꽣C": {
+      "cleanName": "젅뒪꽣C",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_177",
+      "count": 1
+    },
+    "뀺븘뱶U": {
+      "cleanName": "뀺븘뱶U",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_181",
+      "count": 2
+    },
+    "踰꾨컢뾼C": {
+      "cleanName": "踰꾨컢뾼C",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_181",
+      "count": 3
+    },
+    "솓룷뱶": {
+      "cleanName": "솓룷뱶",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_185",
+      "count": 2
+    },
+    "뒪넗겕C": {
+      "cleanName": "뒪넗겕C",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_185",
+      "count": 2
+    },
+    "蹂몃㉧뒪": {
+      "cleanName": "본머스",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "VERIFIED",
+      "officialEvidence": "EPL Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_189",
+      "count": 7
+    },
+    "번리": {
+      "cleanName": "번리",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "VERIFIED",
+      "officialEvidence": "EPL Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_189",
+      "count": 2
+    },
+    "釉뚮씪씠꽩": {
+      "cleanName": "브라이턴",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "VERIFIED",
+      "officialEvidence": "EPL Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_194",
+      "count": 5
+    },
+    "꽑뜙옖뱶": {
+      "cleanName": "꽑뜙옖뱶",
+      "sport": "sc",
+      "league": "EPL,UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_194",
+      "count": 3
+    },
+    "留⑥껜뒪C": {
+      "cleanName": "留⑥껜뒪C",
+      "sport": "sc",
+      "league": "EPL,엵由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_199",
+      "count": 3
+    },
+    "썾뒪듃뻹": {
+      "cleanName": "썾뒪듃뻹",
+      "sport": "sc",
+      "league": "EPL,EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_199",
+      "count": 3
+    },
+    "슱踰꾪뻹듉": {
+      "cleanName": "울버햄프턴",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "VERIFIED",
+      "officialEvidence": "EPL Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_205",
+      "count": 5
+    },
+    "釉뚮젋듃띁": {
+      "cleanName": "브렌트퍼드",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "VERIFIED",
+      "officialEvidence": "EPL Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_205",
+      "count": 6
+    },
+    "젅諛섑뀒": {
+      "cleanName": "레반테",
+      "sport": "sc",
+      "league": "라리가",
+      "status": "VERIFIED",
+      "officialEvidence": "라리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_210",
+      "count": 3
+    },
+    "냼떆뿉떎": {
+      "cleanName": "레알소시에다드",
+      "sport": "sc",
+      "league": "라리가",
+      "status": "VERIFIED",
+      "officialEvidence": "라리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_210",
+      "count": 7
+    },
+    "뿤씪겢젅": {
+      "cleanName": "뿤씪겢젅",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_214",
+      "count": 2
+    },
+    "뿤씠젋踰": {
+      "cleanName": "뿤씠젋踰",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_214",
+      "count": 3
+    },
+    "씪移섏삤": {
+      "cleanName": "라치오",
+      "sport": "sc",
+      "league": "세리에A",
+      "status": "VERIFIED",
+      "officialEvidence": "세리에A Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_218",
+      "count": 3
+    },
+    "겕젅紐⑤꽕": {
+      "cleanName": "겕젅紐⑤꽕",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_218",
+      "count": 1
+    },
+    "넗듃꽆": {
+      "cleanName": "넗듃꽆",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_222",
+      "count": 4
+    },
+    "由щ쾭": {
+      "cleanName": "由щ쾭",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_222",
+      "count": 6
+    },
+    "삤궗닔굹": {
+      "cleanName": "삤궗닔굹",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_227",
+      "count": 3
+    },
+    "븣씪踰좎뒪": {
+      "cleanName": "븣씪踰좎뒪",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_227",
+      "count": 2
+    },
+    "씪씠봽移": {
+      "cleanName": "씪씠봽移",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_231",
+      "count": 2
+    },
+    "젅踰꾩퓼젨": {
+      "cleanName": "젅踰꾩퓼젨",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由,UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_231",
+      "count": 3
+    },
+    "뿊떆삤": {
+      "cleanName": "뿊떆삤",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_236",
+      "count": 2
+    },
+    "利덈낵윭": {
+      "cleanName": "利덈낵윭",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_236",
+      "count": 2
+    },
+    "꽕씠硫뷀뿄": {
+      "cleanName": "꽕씠硫뷀뿄",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮,UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_240",
+      "count": 3
+    },
+    "븘빟뒪": {
+      "cleanName": "븘빟뒪",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_240",
+      "count": 2
+    },
+    "쑀踰ㅽ닾뒪": {
+      "cleanName": "유벤투스",
+      "sport": "sc",
+      "league": "세리에A",
+      "status": "VERIFIED",
+      "officialEvidence": "세리에A Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_244",
+      "count": 3
+    },
+    "AS로마": {
+      "cleanName": "AS로마",
+      "sport": "sc",
+      "league": "세리에A",
+      "status": "VERIFIED",
+      "officialEvidence": "세리에A Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_244",
+      "count": 3
+    },
+    "뿉踰꾪꽩": {
+      "cleanName": "에버턴",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "VERIFIED",
+      "officialEvidence": "EPL Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_248",
+      "count": 5
+    },
+    "븘뒪꼸": {
+      "cleanName": "아스널",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "VERIFIED",
+      "officialEvidence": "EPL Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_248",
+      "count": 7
+    },
+    "리즈U": {
+      "cleanName": "리즈U",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_253",
+      "count": 2
+    },
+    "겕由ъ뒪꽭": {
+      "cleanName": "겕由ъ뒪꽭",
+      "sport": "sc",
+      "league": "EPL,엵由ш렇而,UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_253",
+      "count": 4
+    },
+    "젅븣留덈뱶": {
+      "cleanName": "젅븣留덈뱶",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_258",
+      "count": 3
+    },
+    "꽭鍮꾩빞": {
+      "cleanName": "꽭鍮꾩빞",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_258",
+      "count": 6
+    },
+    "釉뚮젅떎": {
+      "cleanName": "釉뚮젅떎",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_264",
+      "count": 1
+    },
+    "뀛뒪": {
+      "cleanName": "뀛뒪",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_264",
+      "count": 2
+    },
+    "뜶踰꾨꼫寃": {
+      "cleanName": "덴버너겟",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_268",
+      "count": 4
+    },
+    "쑕뒪濡쒖": {
+      "cleanName": "휴스로켓",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_268",
+      "count": 5
+    },
+    "뙂윭留ㅻ쾭": {
+      "cleanName": "댈러매버",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_272",
+      "count": 4
+    },
+    "넗濡좊옪꽣": {
+      "cleanName": "토론랩터",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_276",
+      "count": 4
+    },
+    "돱삱렆由": {
+      "cleanName": "뉴올펠리",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_280",
+      "count": 3
+    },
+    "씤뵒럹씠": {
+      "cleanName": "인디페이",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_280",
+      "count": 4
+    },
+    "뵒듃뵾뒪": {
+      "cleanName": "디트피스",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_284",
+      "count": 5
+    },
+    "꺃읉샇꽕": {
+      "cleanName": "샬럿호넷",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_284",
+      "count": 3
+    },
+    "멤피그리": {
+      "cleanName": "멤피그리",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_288",
+      "count": 4
+    },
+    "썙떛쐞": {
+      "cleanName": "워싱위저",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_288",
+      "count": 4
+    },
+    "怨⑤뱺썙由": {
+      "cleanName": "골든워리",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_292",
+      "count": 2
+    },
+    "뵾땳꽑利": {
+      "cleanName": "피닉선즈",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_292",
+      "count": 2
+    },
+    "쎇留곹뵾땳": {
+      "cleanName": "쎇留곹뵾땳",
+      "sport": "sc",
+      "league": "A리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_296",
+      "count": 1
+    },
+    "꽱듃留ㅻ━": {
+      "cleanName": "꽱듃留ㅻ━",
+      "sport": "sc",
+      "league": "A리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_296",
+      "count": 1
+    },
+    "쑀옱利": {
+      "cleanName": "유타재즈",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_300",
+      "count": 5
+    },
+    "삱옖留ㅼ쭅": {
+      "cleanName": "올랜매직",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_300",
+      "count": 5
+    },
+    "깉겕궧뒪": {
+      "cleanName": "새크킹스",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_304",
+      "count": 6
+    },
+    "룷듃젅": {
+      "cleanName": "포틀블레",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_304",
+      "count": 6
+    },
+    "LA겢由ы띁": {
+      "cleanName": "LA클리퍼",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_308",
+      "count": 4
+    },
+    "LA젅씠而": {
+      "cleanName": "LA레이커",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_308",
+      "count": 3
+    },
+    "창원LG": {
+      "cleanName": "창원LG",
+      "sport": "bk",
+      "league": "KBL",
+      "status": "VERIFIED",
+      "officialEvidence": "KBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_312",
+      "count": 4
+    },
+    "슱궛紐⑤퉬": {
+      "cleanName": "울산현대모비스",
+      "sport": "bk",
+      "league": "KBL",
+      "status": "VERIFIED",
+      "officialEvidence": "KBL 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_317",
+      "count": 2
+    },
+    "슦由ъ뭅뱶": {
+      "cleanName": "우리카드",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_322",
+      "count": 2
+    },
+    "KB넀蹂": {
+      "cleanName": "KB손해보험",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_322",
+      "count": 2
+    },
+    "IBK기업": {
+      "cleanName": "IBK기업은행",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_331",
+      "count": 2
+    },
+    "쁽嫄댁꽕": {
+      "cleanName": "현대건설",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_331",
+      "count": 2
+    },
+    "쐞듃젅쓲": {
+      "cleanName": "쐞듃젅쓲",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_340",
+      "count": 3
+    },
+    "PSV": {
+      "cleanName": "PSV",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_340",
+      "count": 4
+    },
+    "移쇰━븘由": {
+      "cleanName": "칼리아리",
+      "sport": "sc",
+      "league": "세리에A",
+      "status": "VERIFIED",
+      "officialEvidence": "세리에A Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_344",
+      "count": 2
+    },
+    "뵾궗SC": {
+      "cleanName": "뵾궗SC",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_344",
+      "count": 1
+    },
+    "吏濡쒕굹": {
+      "cleanName": "吏濡쒕굹",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_348",
+      "count": 2
+    },
+    "AT마드": {
+      "cleanName": "AT마드",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_348",
+      "count": 5
+    },
+    "럹삁끂瑜": {
+      "cleanName": "럹삁끂瑜",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_352",
+      "count": 2
+    },
+    "듃踰ㅽ뀒": {
+      "cleanName": "듃踰ㅽ뀒",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_352",
+      "count": 3
+    },
+    "怨좎뼱뿤뱶": {
+      "cleanName": "怨좎뼱뿤뱶",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_356",
+      "count": 3
+    },
+    "쓲濡쒕떇뼵": {
+      "cleanName": "쓲濡쒕떇뼵",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_356",
+      "count": 3
+    },
+    "AJ삤꽭瑜": {
+      "cleanName": "AJ삤꽭瑜",
+      "sport": "sc",
+      "league": "봽옉FA而,봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_360",
+      "count": 4
+    },
+    "AS紐⑤굹肄": {
+      "cleanName": "AS모나코",
+      "sport": "sc",
+      "league": "프랑스리그1",
+      "status": "VERIFIED",
+      "officialEvidence": "리그1 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_360",
+      "count": 3
+    },
+    "궗닔삱濡": {
+      "cleanName": "궗닔삱濡",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_364",
+      "count": 3
+    },
+    "넗由щ끂": {
+      "cleanName": "넗由щ끂",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_364",
+      "count": 2
+    },
+    "留덉씤痢05": {
+      "cleanName": "留덉씤痢05",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_368",
+      "count": 4
+    },
+    "옣겕듃뙆": {
+      "cleanName": "옣겕듃뙆",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_368",
+      "count": 1
+    },
+    "鍮꾩빞젅븣": {
+      "cleanName": "鍮꾩빞젅븣",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_373",
+      "count": 6
+    },
+    "諛붾Ⅴ濡": {
+      "cleanName": "바르셀로나",
+      "sport": "sc",
+      "league": "라리가",
+      "status": "VERIFIED",
+      "officialEvidence": "라리가 Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_373",
+      "count": 7
+    },
+    "F떆瑜": {
+      "cleanName": "F떆瑜",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_377",
+      "count": 3
+    },
+    "븣겕留덈Ⅴ": {
+      "cleanName": "븣겕留덈Ⅴ",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮,UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_377",
+      "count": 4
+    },
+    "뤃젋떞": {
+      "cleanName": "뤃젋떞",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_381",
+      "count": 2
+    },
+    "뒪뙆濡쒗뀒": {
+      "cleanName": "뒪뙆濡쒗뀒",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_381",
+      "count": 3
+    },
+    "A빌라": {
+      "cleanName": "A빌라",
+      "sport": "sc",
+      "league": "EPL,엵由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_385",
+      "count": 4
+    },
+    "留⑥껜뒪U": {
+      "cleanName": "留⑥껜뒪U",
+      "sport": "sc",
+      "league": "EPL,엵由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_385",
+      "count": 5
+    },
+    "븯씠뜶븯": {
+      "cleanName": "븯씠뜶븯",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_390",
+      "count": 4
+    },
+    "바이뮌헨": {
+      "cleanName": "바이뮌헨",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_390",
+      "count": 5
+    },
+    "뵾삤젋떚": {
+      "cleanName": "뵾삤젋떚",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_396",
+      "count": 3
+    },
+    "슦뵒꽕꽭": {
+      "cleanName": "슦뵒꽕꽭",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_396",
+      "count": 2
+    },
+    "뿕泥": {
+      "cleanName": "뿕泥",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_400",
+      "count": 2
+    },
+    "씪슂諛붿삁": {
+      "cleanName": "씪슂諛붿삁",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_400",
+      "count": 2
+    },
+    "紐⑤줈肄": {
+      "cleanName": "紐⑤줈肄",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_404",
+      "count": 1
+    },
+    "肄붾え濡": {
+      "cleanName": "肄붾え濡",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_404",
+      "count": 1
+    },
+    "젣끂븘": {
+      "cleanName": "젣끂븘",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_410",
+      "count": 4
+    },
+    "븘깉": {
+      "cleanName": "븘깉",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_410",
+      "count": 3
+    },
+    "踰좏떚뒪": {
+      "cleanName": "踰좏떚뒪",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_414",
+      "count": 4
+    },
+    "뿤럹": {
+      "cleanName": "뿤럹",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_150_414",
+      "count": 3
+    },
+    "釉뚮（꽕痢": {
+      "cleanName": "브루네츠",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_422",
+      "count": 3
+    },
+    "諛썙踰낆뒪": {
+      "cleanName": "밀워벅스",
+      "sport": "bk",
+      "league": "NBA",
+      "status": "VERIFIED",
+      "officialEvidence": "NBA Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_150_434",
+      "count": 3
+    },
+    "말리": {
+      "cleanName": "말리",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_11",
+      "count": 1
+    },
+    "옞鍮꾩븘": {
+      "cleanName": "옞鍮꾩븘",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_11",
+      "count": 1
+    },
+    "깶瑜댁옄": {
+      "cleanName": "깶瑜댁옄",
+      "sport": "sc",
+      "league": "ACLE",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_19",
+      "count": 2
+    },
+    "븣옄엫": {
+      "cleanName": "븣옄엫",
+      "sport": "sc",
+      "league": "ACLE",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_19",
+      "count": 2
+    },
+    "듃씫넗瑜": {
+      "cleanName": "듃씫넗瑜",
+      "sport": "sc",
+      "league": "ACLE",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_23",
+      "count": 1
+    },
+    "븣몢븯씪": {
+      "cleanName": "븣몢븯씪",
+      "sport": "sc",
+      "league": "ACLE",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_23",
+      "count": 1
+    },
+    "궓븘怨": {
+      "cleanName": "궓븘怨",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_27",
+      "count": 1
+    },
+    "븰怨⑤씪": {
+      "cleanName": "븰怨⑤씪",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_27",
+      "count": 1
+    },
+    "븣媛씪뙆": {
+      "cleanName": "븣媛씪뙆",
+      "sport": "sc",
+      "league": "ACLE",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_31",
+      "count": 2
+    },
+    "U븣쓲": {
+      "cleanName": "U븣쓲",
+      "sport": "sc",
+      "league": "ACLE,ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_31",
+      "count": 3
+    },
+    "븣눥瑜댄": {
+      "cleanName": "븣눥瑜댄",
+      "sport": "sc",
+      "league": "ACLE,ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_35",
+      "count": 3
+    },
+    "븣븘쓽궗": {
+      "cleanName": "븣븘쓽궗",
+      "sport": "sc",
+      "league": "ACLE,씤꽣而⑥뻐",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_35",
+      "count": 4
+    },
+    "굹뤃由": {
+      "cleanName": "나폴리",
+      "sport": "sc",
+      "league": "세리에A",
+      "status": "VERIFIED",
+      "officialEvidence": "세리에A Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_151_15",
+      "count": 3
+    },
+    "읆": {
+      "cleanName": "읆",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_39",
+      "count": 4
+    },
+    "끂똿뾼F": {
+      "cleanName": "끂똿뾼F",
+      "sport": "sc",
+      "league": "EPL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_39",
+      "count": 2
+    },
+    "A鍮뚮컮삤": {
+      "cleanName": "A鍮뚮컮삤",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_44",
+      "count": 2
+    },
+    "뿉뒪뙆눖": {
+      "cleanName": "뿉뒪뙆눖",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_44",
+      "count": 2
+    },
+    "씠吏묓듃": {
+      "cleanName": "씠吏묓듃",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_49",
+      "count": 1
+    },
+    "짐바브웨": {
+      "cleanName": "짐바브웨",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_49",
+      "count": 1
+    },
+    "궪꽦솕옱": {
+      "cleanName": "삼성화재",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_151_92",
+      "count": 1
+    },
+    "룄濡쒓났궗": {
+      "cleanName": "한국도로공사",
+      "sport": "vl",
+      "league": "KOVO",
+      "status": "VERIFIED",
+      "officialEvidence": "KOVO Official / WiseToto Proto 공시명",
+      "sampleKey": "2025_151_96",
+      "count": 2
+    },
+    "콩고DR": {
+      "cleanName": "콩고DR",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_100",
+      "count": 1
+    },
+    "베냉": {
+      "cleanName": "베냉",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_100",
+      "count": 1
+    },
+    "꽭꽕媛": {
+      "cleanName": "꽭꽕媛",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_104",
+      "count": 1
+    },
+    "蹂댁툩굹": {
+      "cleanName": "蹂댁툩굹",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_104",
+      "count": 1
+    },
+    "븣궗뱶SC": {
+      "cleanName": "븣궗뱶SC",
+      "sport": "sc",
+      "league": "ACLE",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_110",
+      "count": 1
+    },
+    "깶諛붾툕몢": {
+      "cleanName": "깶諛붾툕몢",
+      "sport": "sc",
+      "league": "ACLE",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_110",
+      "count": 1
+    },
+    "굹씠吏由": {
+      "cleanName": "굹씠吏由",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_114",
+      "count": 1
+    },
+    "깂옄땲븘": {
+      "cleanName": "깂옄땲븘",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_114",
+      "count": 1
+    },
+    "S븣씠떚": {
+      "cleanName": "S븣씠떚",
+      "sport": "sc",
+      "league": "ACLE",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_120",
+      "count": 1
+    },
+    "굹궗봽": {
+      "cleanName": "굹궗봽",
+      "sport": "sc",
+      "league": "ACLE,ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_120",
+      "count": 2
+    },
+    "땲吏": {
+      "cleanName": "땲吏",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_124",
+      "count": 1
+    },
+    "슦媛꾨떎": {
+      "cleanName": "슦媛꾨떎",
+      "sport": "sc",
+      "league": "븘꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2025_151_124",
+      "count": 1
+    },
+    "넗濡좊툝猷": {
+      "cleanName": "토론토블루",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2016",
+      "count": 23
+    },
+    "뵒듃씠": {
+      "cleanName": "디트로이트",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2016",
+      "count": 28
+    },
+    "돱슃硫붿툩": {
+      "cleanName": "뉴욕메츠",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2021",
+      "count": 32
+    },
+    "蹂쇳떚삤由": {
+      "cleanName": "볼티오리",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2021",
+      "count": 29
+    },
+    "誘몃꽕듃쐢": {
+      "cleanName": "미네트윈",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2026",
+      "count": 54
+    },
+    "돱슃뼇궎": {
+      "cleanName": "뉴욕양키",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2026",
+      "count": 27
+    },
+    "떆移댁뻐뒪": {
+      "cleanName": "시카컵스",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2031",
+      "count": 31
+    },
+    "븷釉뚮젅": {
+      "cleanName": "애틀브레",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2031",
+      "count": 32
+    },
+    "꽭씤移대뵒": {
+      "cleanName": "세인트카디",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2036",
+      "count": 22
+    },
+    "깒봽옄씠": {
+      "cleanName": "샌프자이",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2036",
+      "count": 43
+    },
+    "뀓궗젅씤": {
+      "cleanName": "텍사레인",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2041",
+      "count": 35
+    },
+    "蹂댁뒪젅뱶": {
+      "cleanName": "보스레드",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2041",
+      "count": 29
+    },
+    "쑕뒪븷뒪": {
+      "cleanName": "휴스애스",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2046",
+      "count": 41
+    },
+    "캔자로얄": {
+      "cleanName": "캔자로얄",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2046",
+      "count": 36
+    },
+    "콜로로키": {
+      "cleanName": "콜로로키",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2051",
+      "count": 36
+    },
+    "깒뵒뙆뱶": {
+      "cleanName": "샌디파드",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2051",
+      "count": 52
+    },
+    "슂瑜대떒M": {
+      "cleanName": "요르단(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2056",
+      "count": 2
+    },
+    "븳援쵲": {
+      "cleanName": "한국(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2056",
+      "count": 27
+    },
+    "LA뿉씤젅": {
+      "cleanName": "LA에인절",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2060",
+      "count": 47
+    },
+    "떆븷留ㅻ━": {
+      "cleanName": "시애매리",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2060",
+      "count": 31
+    },
+    "븷由щ떎씠": {
+      "cleanName": "애리디백",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2065",
+      "count": 38
+    },
+    "마이말린": {
+      "cleanName": "마이말린",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2065",
+      "count": 33
+    },
+    "씠M": {
+      "cleanName": "이란(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2073",
+      "count": 9
+    },
+    "諛붾젅씤M": {
+      "cleanName": "바레인(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2073",
+      "count": 1
+    },
+    "븘엻뿉M": {
+      "cleanName": "븘엻뿉M",
+      "sport": "sc",
+      "league": "AG궓異",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2085",
+      "count": 5
+    },
+    "깭援쵲": {
+      "cleanName": "태국(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2089",
+      "count": 13
+    },
+    "궎瑜닿린M": {
+      "cleanName": "키르기스(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2089",
+      "count": 8
+    },
+    "吏諛붾’뜲": {
+      "cleanName": "지바롯데",
+      "sport": "bs",
+      "league": "NPB",
+      "status": "VERIFIED",
+      "officialEvidence": "NPB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2105",
+      "count": 25
+    },
+    "씪荑좏뀗": {
+      "cleanName": "라쿠텐",
+      "sport": "bs",
+      "league": "NPB",
+      "status": "VERIFIED",
+      "officialEvidence": "NPB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2105",
+      "count": 27
+    },
+    "삤由뒪": {
+      "cleanName": "오릭스",
+      "sport": "bs",
+      "league": "NPB",
+      "status": "VERIFIED",
+      "officialEvidence": "NPB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2110",
+      "count": 26
+    },
+    "냼봽듃諭": {
+      "cleanName": "소프트뱅",
+      "sport": "bs",
+      "league": "NPB",
+      "status": "VERIFIED",
+      "officialEvidence": "NPB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2110",
+      "count": 23
+    },
+    "몢궛": {
+      "cleanName": "두산",
+      "sport": "bs",
+      "league": "KBO",
+      "status": "VERIFIED",
+      "officialEvidence": "KBO 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2115",
+      "count": 43
+    },
+    "궪꽦": {
+      "cleanName": "삼성",
+      "sport": "bs",
+      "league": "KBO",
+      "status": "VERIFIED",
+      "officialEvidence": "KBO 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2115",
+      "count": 40
+    },
+    "濡뜲": {
+      "cleanName": "롯데",
+      "sport": "bs",
+      "league": "KBO",
+      "status": "VERIFIED",
+      "officialEvidence": "KBO 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2123",
+      "count": 49
+    },
+    "SSG": {
+      "cleanName": "SSG",
+      "sport": "bs",
+      "league": "KBO",
+      "status": "VERIFIED",
+      "officialEvidence": "KBO 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2123",
+      "count": 33
+    },
+    "NC": {
+      "cleanName": "NC",
+      "sport": "bs",
+      "league": "KBO",
+      "status": "VERIFIED",
+      "officialEvidence": "KBO 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2131",
+      "count": 64
+    },
+    "LG": {
+      "cleanName": "LG",
+      "sport": "bs",
+      "league": "KBO",
+      "status": "VERIFIED",
+      "officialEvidence": "KBO 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2131",
+      "count": 37
+    },
+    "븳솕": {
+      "cleanName": "한화",
+      "sport": "bs",
+      "league": "KBO",
+      "status": "VERIFIED",
+      "officialEvidence": "KBO 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2140",
+      "count": 51
+    },
+    "KT": {
+      "cleanName": "KT",
+      "sport": "bs",
+      "league": "KBO",
+      "status": "VERIFIED",
+      "officialEvidence": "KBO 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2140",
+      "count": 51
+    },
+    "FC꽌슱": {
+      "cleanName": "FC서울",
+      "sport": "sc",
+      "league": "K리그1",
+      "status": "VERIFIED",
+      "officialEvidence": "K리그1 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2147",
+      "count": 7
+    },
+    "럹瑜대컲뫁": {
+      "cleanName": "럹瑜대컲뫁",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2147",
+      "count": 1
+    },
+    "쟾遺곹쁽": {
+      "cleanName": "쟾遺곹쁽",
+      "sport": "sc",
+      "league": "ACLE,K리그1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2151",
+      "count": 6
+    },
+    "媛떆R": {
+      "cleanName": "媛떆R",
+      "sport": "sc",
+      "league": "ACLE,J1리그,씪蹂퇕A而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2151",
+      "count": 4
+    },
+    "중국M": {
+      "cleanName": "중국(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2155",
+      "count": 18
+    },
+    "북한M": {
+      "cleanName": "북한(남)",
+      "sport": "sc",
+      "league": "AG남축",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2155",
+      "count": 8
+    },
+    "留똌": {
+      "cleanName": "대만(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2163",
+      "count": 6
+    },
+    "씪蹂퇝": {
+      "cleanName": "일본(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2163",
+      "count": 25
+    },
+    "뀒苑곷퉬뿣": {
+      "cleanName": "뀒苑곷퉬뿣",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2177",
+      "count": 2
+    },
+    "룷듃FC": {
+      "cleanName": "룷듃FC",
+      "sport": "sc",
+      "league": "ACLE",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2181",
+      "count": 2
+    },
+    "鍮꾩怨좊쿋": {
+      "cleanName": "鍮꾩怨좊쿋",
+      "sport": "sc",
+      "league": "ACLE,J1리그,씪蹂퇕A而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2181",
+      "count": 5
+    },
+    "븣移쇰뵒빞": {
+      "cleanName": "븣移쇰뵒빞",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2185",
+      "count": 1
+    },
+    "荑좎썾씠SC": {
+      "cleanName": "荑좎썾씠SC",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2189",
+      "count": 1
+    },
+    "O븣굹쓲": {
+      "cleanName": "O븣굹쓲",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2193",
+      "count": 2
+    },
+    "븣븘썝": {
+      "cleanName": "븣븘썝",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2193",
+      "count": 2
+    },
+    "J븣썑꽭": {
+      "cleanName": "J븣썑꽭",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2197",
+      "count": 1
+    },
+    "E벵골": {
+      "cleanName": "E벵골",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2197",
+      "count": 1
+    },
+    "삤紐⑤땲븘": {
+      "cleanName": "삤紐⑤땲븘",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2201",
+      "count": 3
+    },
+    "븘씪씪듃": {
+      "cleanName": "븘씪씪듃",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2206",
+      "count": 3
+    },
+    "뒪뙆봽씪": {
+      "cleanName": "뒪뙆봽씪",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2206",
+      "count": 3
+    },
+    "뜲룷븘肄": {
+      "cleanName": "뜲룷븘肄",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2216",
+      "count": 3
+    },
+    "겢由ш뵒": {
+      "cleanName": "클리디에",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2221",
+      "count": 23
+    },
+    "떆移댄솕씠": {
+      "cleanName": "시카화이",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2221",
+      "count": 32
+    },
+    "븣씪씠": {
+      "cleanName": "븣씪씠",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2236",
+      "count": 1
+    },
+    "J븣뙆씠": {
+      "cleanName": "J븣뙆씠",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2236",
+      "count": 1
+    },
+    "븣떆釉": {
+      "cleanName": "븣떆釉",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2240",
+      "count": 1
+    },
+    "NK첼레": {
+      "cleanName": "NK첼레",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2248",
+      "count": 1
+    },
+    "AC諛": {
+      "cleanName": "AC諛",
+      "sport": "sc",
+      "league": "UEL,꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2254",
+      "count": 2
+    },
+    "SL踰ㅽ뵾移": {
+      "cleanName": "SL踰ㅽ뵾移",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2254",
+      "count": 1
+    },
+    "삱由쇳뵾븘": {
+      "cleanName": "삱由쇳뵾븘",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2259",
+      "count": 1
+    },
+    "빞湲곗뿕濡": {
+      "cleanName": "빞湲곗뿕濡",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2259",
+      "count": 1
+    },
+    "븞뜑젅쓲": {
+      "cleanName": "븞뜑젅쓲",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2265",
+      "count": 3
+    },
+    "리옹": {
+      "cleanName": "리옹",
+      "sport": "sc",
+      "league": "UEL,봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2265",
+      "count": 4
+    },
+    "S洹몃씪痢": {
+      "cleanName": "S洹몃씪痢",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2270",
+      "count": 3
+    },
+    "뒪뱶젋": {
+      "cleanName": "뒪뱶젋",
+      "sport": "sc",
+      "league": "UEL,봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2270",
+      "count": 4
+    },
+    "H踰좊Ⅴ뀺": {
+      "cleanName": "H踰좊Ⅴ뀺",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2280",
+      "count": 3
+    },
+    "D옄洹몃젅": {
+      "cleanName": "D옄洹몃젅",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2280",
+      "count": 3
+    },
+    "씪떛궛깂": {
+      "cleanName": "씪떛궛깂",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2298",
+      "count": 2
+    },
+    "LDU궎넗": {
+      "cleanName": "LDU궎넗",
+      "sport": "sc",
+      "league": "코파리베",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2309",
+      "count": 1
+    },
+    "SE뙆슦硫": {
+      "cleanName": "SE뙆슦硫",
+      "sport": "sc",
+      "league": "코파리베",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2309",
+      "count": 1
+    },
+    "꺃뙆젅씠": {
+      "cleanName": "탬파레이",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2313",
+      "count": 25
+    },
+    "븷뒳젅떛": {
+      "cleanName": "애슬레틱",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2313",
+      "count": 35
+    },
+    "뵾痢좏뙆씠": {
+      "cleanName": "피츠파이",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2318",
+      "count": 27
+    },
+    "諛썙釉뚮（": {
+      "cleanName": "밀워브루",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2318",
+      "count": 37
+    },
+    "떊떆젅利": {
+      "cleanName": "신시레즈",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2323",
+      "count": 31
+    },
+    "LA떎뒪": {
+      "cleanName": "LA다저스",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2323",
+      "count": 55
+    },
+    "썙떛궡뀛": {
+      "cleanName": "워싱내셔",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2328",
+      "count": 24
+    },
+    "븘씪븘由": {
+      "cleanName": "필라필리",
+      "sport": "bs",
+      "league": "MLB",
+      "status": "VERIFIED",
+      "officialEvidence": "MLB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2328",
+      "count": 30
+    },
+    "肄쒕읆겕猷": {
+      "cleanName": "肄쒕읆겕猷",
+      "sport": "sc",
+      "league": "誘멸뎅FA而,MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2333",
+      "count": 4
+    },
+    "삱옖떆떚": {
+      "cleanName": "삱옖떆떚",
+      "sport": "sc",
+      "league": "誘멸뎅FA而,MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2333",
+      "count": 3
+    },
+    "씤꽣留덉씠": {
+      "cleanName": "씤꽣留덉씠",
+      "sport": "sc",
+      "league": "罹꾪럹삤而,MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2347",
+      "count": 4
+    },
+    "겕猷⑥뒪븘": {
+      "cleanName": "겕猷⑥뒪븘",
+      "sport": "sc",
+      "league": "罹꾪럹삤而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2347",
+      "count": 1
+    },
+    "肄붾┛떚븞": {
+      "cleanName": "肄붾┛떚븞",
+      "sport": "sc",
+      "league": "코파리베",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2361",
+      "count": 1
+    },
+    "뿉뒪씪뵆": {
+      "cleanName": "뿉뒪씪뵆",
+      "sport": "sc",
+      "league": "코파리베",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2361",
+      "count": 1
+    },
+    "肄쒕줈옒뵾": {
+      "cleanName": "肄쒕줈옒뵾",
+      "sport": "sc",
+      "league": "誘멸뎅FA而,MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2370",
+      "count": 3
+    },
+    "꽭씤떆떚": {
+      "cleanName": "꽭씤떆떚",
+      "sport": "sc",
+      "league": "誘멸뎅FA而,MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2370",
+      "count": 2
+    },
+    "씤룄꽕W": {
+      "cleanName": "인도네시아(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2387",
+      "count": 6
+    },
+    "깭援쵽": {
+      "cleanName": "태국(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2387",
+      "count": 12
+    },
+    "移댁옄쓲W": {
+      "cleanName": "카자흐(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2391",
+      "count": 10
+    },
+    "븘由ыW": {
+      "cleanName": "필리핀(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2391",
+      "count": 10
+    },
+    "슦利덈깹W": {
+      "cleanName": "슦利덈깹W",
+      "sport": "sc",
+      "league": "AG뿬異",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2399",
+      "count": 6
+    },
+    "중국W": {
+      "cleanName": "중국(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2399",
+      "count": 17
+    },
+    "留똚": {
+      "cleanName": "대만(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2405",
+      "count": 10
+    },
+    "諛⑷씪W": {
+      "cleanName": "방글라데시(여)",
+      "sport": "sc",
+      "league": "AG여축",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2410",
+      "count": 7
+    },
+    "븳援쵽": {
+      "cleanName": "한국(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2410",
+      "count": 17
+    },
+    "솉肄쯜": {
+      "cleanName": "홍콩(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2424",
+      "count": 13
+    },
+    "踰좏듃궓W": {
+      "cleanName": "베트남(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2424",
+      "count": 13
+    },
+    "빞荑좊Ⅴ듃": {
+      "cleanName": "야쿠르트",
+      "sport": "bs",
+      "league": "NPB",
+      "status": "VERIFIED",
+      "officialEvidence": "NPB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2427",
+      "count": 23
+    },
+    "슂肄붾쿋씠": {
+      "cleanName": "요코베이",
+      "sport": "bs",
+      "league": "NPB",
+      "status": "VERIFIED",
+      "officialEvidence": "NPB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2427",
+      "count": 27
+    },
+    "븳떊": {
+      "cleanName": "한신",
+      "sport": "bs",
+      "league": "NPB",
+      "status": "VERIFIED",
+      "officialEvidence": "NPB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2432",
+      "count": 23
+    },
+    "엳濡쒖뭅봽": {
+      "cleanName": "히로카프",
+      "sport": "bs",
+      "league": "NPB",
+      "status": "VERIFIED",
+      "officialEvidence": "NPB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2432",
+      "count": 29
+    },
+    "떅룿뻹": {
+      "cleanName": "니혼햄",
+      "sport": "bs",
+      "league": "NPB",
+      "status": "VERIFIED",
+      "officialEvidence": "NPB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2437",
+      "count": 23
+    },
+    "꽭씠遺": {
+      "cleanName": "세이부",
+      "sport": "bs",
+      "league": "NPB",
+      "status": "VERIFIED",
+      "officialEvidence": "NPB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2437",
+      "count": 20
+    },
+    "KIA": {
+      "cleanName": "KIA",
+      "sport": "bs",
+      "league": "KBO",
+      "status": "VERIFIED",
+      "officialEvidence": "KBO 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2452",
+      "count": 33
+    },
+    "궎": {
+      "cleanName": "키움",
+      "sport": "bs",
+      "league": "KBO",
+      "status": "VERIFIED",
+      "officialEvidence": "KBO 2026 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2452",
+      "count": 35
+    },
+    "씠룷FC": {
+      "cleanName": "씠룷FC",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2468",
+      "count": 1
+    },
+    "씪씠뼵떆": {
+      "cleanName": "씪씠뼵떆",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2472",
+      "count": 1
+    },
+    "BG鍮좏댘쑀": {
+      "cleanName": "BG鍮좏댘쑀",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2472",
+      "count": 1
+    },
+    "궎瑜닿린W": {
+      "cleanName": "키르기스(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2485",
+      "count": 1
+    },
+    "씪蹂퇧": {
+      "cleanName": "일본(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2493",
+      "count": 9
+    },
+    "誘몄留늋": {
+      "cleanName": "미얀마(여)",
+      "sport": "sc",
+      "league": "AG여축",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2499",
+      "count": 7
+    },
+    "북한W": {
+      "cleanName": "북한(여)",
+      "sport": "sc",
+      "league": "AG여축",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_110_2499",
+      "count": 8
+    },
+    "긽븯꽑솕": {
+      "cleanName": "긽븯꽑솕",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2504",
+      "count": 1
+    },
+    "꺃뵾濡쒕쾭": {
+      "cleanName": "꺃뵾濡쒕쾭",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2504",
+      "count": 1
+    },
+    "궥移쁓C": {
+      "cleanName": "궥移쁓C",
+      "sport": "sc",
+      "league": "ACL2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2508",
+      "count": 1
+    },
+    "강원FC": {
+      "cleanName": "강원FC",
+      "sport": "sc",
+      "league": "K리그1",
+      "status": "VERIFIED",
+      "officialEvidence": "K리그1 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_110_2508",
+      "count": 9
+    },
+    "OFI겕젅": {
+      "cleanName": "OFI겕젅",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2522",
+      "count": 4
+    },
+    "L냼뵾븘": {
+      "cleanName": "L냼뵾븘",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2528",
+      "count": 3
+    },
+    "옒痢좊瑜": {
+      "cleanName": "옒痢좊瑜",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2528",
+      "count": 3
+    },
+    "뵆젨": {
+      "cleanName": "뵆젨",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2560",
+      "count": 3
+    },
+    "쐞땲샊SG": {
+      "cleanName": "쐞땲샊SG",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2560",
+      "count": 3
+    },
+    "떛": {
+      "cleanName": "떛",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2565",
+      "count": 1
+    },
+    "럹젋痢좊컮": {
+      "cleanName": "럹젋痢좊컮",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2565",
+      "count": 1
+    },
+    "L룷利덈궃": {
+      "cleanName": "L룷利덈궃",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2570",
+      "count": 1
+    },
+    "踰좎떇떆": {
+      "cleanName": "踰좎떇떆",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2576",
+      "count": 1
+    },
+    "留덈Ⅴ꽭쑀": {
+      "cleanName": "留덈Ⅴ꽭쑀",
+      "sport": "sc",
+      "league": "UEL,봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2576",
+      "count": 3
+    },
+    "由대젅뒪듃": {
+      "cleanName": "由대젅뒪듃",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2581",
+      "count": 1
+    },
+    "넗젋꽭": {
+      "cleanName": "넗젋꽭",
+      "sport": "sc",
+      "league": "UEL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2581",
+      "count": 1
+    },
+    "留먮씪媛": {
+      "cleanName": "留먮씪媛",
+      "sport": "sc",
+      "league": "씪由ш",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2591",
+      "count": 4
+    },
+    "뵆씪硫⑷뎄": {
+      "cleanName": "뵆씪硫⑷뎄",
+      "sport": "sc",
+      "league": "코파리베",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2616",
+      "count": 2
+    },
+    "뜽諛붿삁": {
+      "cleanName": "뜽諛붿삁",
+      "sport": "sc",
+      "league": "코파리베",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_110_2616",
+      "count": 2
+    },
+    "븘由ыM": {
+      "cleanName": "필리핀(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2650",
+      "count": 9
+    },
+    "踰좏듃궓M": {
+      "cleanName": "베트남(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2650",
+      "count": 19
+    },
+    "荑좎썾씠M": {
+      "cleanName": "쿠웨이트(남)",
+      "sport": "sc",
+      "league": "AG남축",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2713",
+      "count": 10
+    },
+    "슦利덈깹M": {
+      "cleanName": "우즈벡(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2713",
+      "count": 28
+    },
+    "궗슦뵒M": {
+      "cleanName": "사우디(남)",
+      "sport": "sc",
+      "league": "AG남축",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2731",
+      "count": 14
+    },
+    "移댄瑜퀾": {
+      "cleanName": "카타르(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_110_2731",
+      "count": 6
+    },
+    "븯移섎끂뿤": {
+      "cleanName": "븯移섎끂뿤",
+      "sport": "sc",
+      "league": "J2리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2634",
+      "count": 3
+    },
+    "誘몄빞옄궎": {
+      "cleanName": "誘몄빞옄궎",
+      "sport": "sc",
+      "league": "J2리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2634",
+      "count": 3
+    },
+    "몽골W": {
+      "cleanName": "몽골(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_111_2638",
+      "count": 6
+    },
+    "移댄瑜큌": {
+      "cleanName": "카타르(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_111_2647",
+      "count": 1
+    },
+    "슂誘몄슦由": {
+      "cleanName": "요미우리",
+      "sport": "bs",
+      "league": "NPB",
+      "status": "VERIFIED",
+      "officialEvidence": "NPB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_2666",
+      "count": 22
+    },
+    "二쇰땲移": {
+      "cleanName": "주니치",
+      "sport": "bs",
+      "league": "NPB",
+      "status": "VERIFIED",
+      "officialEvidence": "NPB Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_2666",
+      "count": 18
+    },
+    "AC몬차": {
+      "cleanName": "AC몬차",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2745",
+      "count": 2
+    },
+    "RC옉뒪": {
+      "cleanName": "RC랑스",
+      "sport": "sc",
+      "league": "프랑스리그1",
+      "status": "VERIFIED",
+      "officialEvidence": "리그1 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_2749",
+      "count": 1
+    },
+    "돱슃떆떚": {
+      "cleanName": "돱슃떆떚",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2796",
+      "count": 2
+    },
+    "돱슃젅뱶": {
+      "cleanName": "돱슃젅뱶",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2796",
+      "count": 1
+    },
+    "C궭룷濡": {
+      "cleanName": "C궭룷濡",
+      "sport": "sc",
+      "league": "J2리그,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2852",
+      "count": 4
+    },
+    "삤씠T": {
+      "cleanName": "삤씠T",
+      "sport": "sc",
+      "league": "J2리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2852",
+      "count": 3
+    },
+    "遺泥쏤C": {
+      "cleanName": "부천FC",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "VERIFIED",
+      "officialEvidence": "K리그2 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_2871",
+      "count": 6
+    },
+    "源泥쒖긽臾": {
+      "cleanName": "김천상무",
+      "sport": "sc",
+      "league": "K리그1",
+      "status": "VERIFIED",
+      "officialEvidence": "K리그1 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_2871",
+      "count": 6
+    },
+    "쟾궓뱶옒": {
+      "cleanName": "전남드래곤즈",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "VERIFIED",
+      "officialEvidence": "K리그2 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_2879",
+      "count": 2
+    },
+    "닔썝FC": {
+      "cleanName": "수원FC",
+      "sport": "sc",
+      "league": "K리그1",
+      "status": "VERIFIED",
+      "officialEvidence": "K리그1 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_2879",
+      "count": 2
+    },
+    "異⑸궓븘궛": {
+      "cleanName": "충남아산",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "VERIFIED",
+      "officialEvidence": "K리그2 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_2883",
+      "count": 1
+    },
+    "泥쒖븞떆떚": {
+      "cleanName": "천안시티",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "VERIFIED",
+      "officialEvidence": "K리그2 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_2883",
+      "count": 1
+    },
+    "媛궗궎": {
+      "cleanName": "媛궗궎",
+      "sport": "sc",
+      "league": "J1리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2919",
+      "count": 2
+    },
+    "媛떆留뉯": {
+      "cleanName": "媛떆留뉯",
+      "sport": "sc",
+      "league": "J1리그,씪蹂퇕A而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2919",
+      "count": 3
+    },
+    "썑荑좎삤移": {
+      "cleanName": "썑荑좎삤移",
+      "sport": "sc",
+      "league": "J1리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2923",
+      "count": 2
+    },
+    "궛봽엳濡": {
+      "cleanName": "궛봽엳濡",
+      "sport": "sc",
+      "league": "J1리그,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2923",
+      "count": 4
+    },
+    "슦씪R": {
+      "cleanName": "슦씪R",
+      "sport": "sc",
+      "league": "J1리그,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2942",
+      "count": 3
+    },
+    "룄荑꾨쿋瑜": {
+      "cleanName": "룄荑꾨쿋瑜",
+      "sport": "sc",
+      "league": "J1리그,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2942",
+      "count": 3
+    },
+    "떆誘몄쫰S": {
+      "cleanName": "떆誘몄쫰S",
+      "sport": "sc",
+      "league": "J1리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2946",
+      "count": 1
+    },
+    "젣봽쑀굹": {
+      "cleanName": "젣봽쑀굹",
+      "sport": "sc",
+      "league": "J1리그,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2946",
+      "count": 3
+    },
+    "V諛붾젋굹": {
+      "cleanName": "V諛붾젋굹",
+      "sport": "sc",
+      "league": "J1리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2950",
+      "count": 2
+    },
+    "C삤궗移": {
+      "cleanName": "C삤궗移",
+      "sport": "sc",
+      "league": "J1리그,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2950",
+      "count": 4
+    },
+    "썑吏뿉떎": {
+      "cleanName": "썑吏뿉떎",
+      "sport": "sc",
+      "league": "J2리그,씪蹂퇕A而,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2954",
+      "count": 7
+    },
+    "RB삤誘몄빞": {
+      "cleanName": "RB삤誘몄빞",
+      "sport": "sc",
+      "league": "J2리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2954",
+      "count": 3
+    },
+    "FC룄荑": {
+      "cleanName": "FC룄荑",
+      "sport": "sc",
+      "league": "J1리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2958",
+      "count": 1
+    },
+    "굹怨좎빞G": {
+      "cleanName": "굹怨좎빞G",
+      "sport": "sc",
+      "league": "J1리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2958",
+      "count": 1
+    },
+    "삤移댁빞留": {
+      "cleanName": "삤移댁빞留",
+      "sport": "sc",
+      "league": "J1리그,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2962",
+      "count": 3
+    },
+    "援먰넗긽媛": {
+      "cleanName": "援먰넗긽媛",
+      "sport": "sc",
+      "league": "J1리그,씪蹂퇕A而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2962",
+      "count": 2
+    },
+    "빞留덇": {
+      "cleanName": "빞留덇",
+      "sport": "sc",
+      "league": "J2리그,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2966",
+      "count": 6
+    },
+    "K룄빞留": {
+      "cleanName": "K룄빞留",
+      "sport": "sc",
+      "league": "J2리그,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2966",
+      "count": 6
+    },
+    "슂肄봃C": {
+      "cleanName": "슂肄봃C",
+      "sport": "sc",
+      "league": "J2리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2970",
+      "count": 3
+    },
+    "씠留덈컮由": {
+      "cleanName": "씠留덈컮由",
+      "sport": "sc",
+      "league": "J2리그,씪蹂퇕A而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2970",
+      "count": 4
+    },
+    "눥궃踰⑤쭏": {
+      "cleanName": "눥궃踰⑤쭏",
+      "sport": "sc",
+      "league": "J2리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2974",
+      "count": 3
+    },
+    "B븘궎": {
+      "cleanName": "B븘궎",
+      "sport": "sc",
+      "league": "J2리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2974",
+      "count": 2
+    },
+    "V고후": {
+      "cleanName": "V고후",
+      "sport": "sc",
+      "league": "J2리그,씪蹂퇕A而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2978",
+      "count": 4
+    },
+    "룄荑좎떆留": {
+      "cleanName": "룄荑좎떆留",
+      "sport": "sc",
+      "league": "J2리그,씪蹂퇕A而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2978",
+      "count": 4
+    },
+    "A땲媛": {
+      "cleanName": "A땲媛",
+      "sport": "sc",
+      "league": "J2리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2982",
+      "count": 3
+    },
+    "J씠": {
+      "cleanName": "J씠",
+      "sport": "sc",
+      "league": "J2리그,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2982",
+      "count": 5
+    },
+    "궗媛꾨룄뒪": {
+      "cleanName": "궗媛꾨룄뒪",
+      "sport": "sc",
+      "league": "J2리그,씪蹂퇕A而,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2986",
+      "count": 6
+    },
+    "씠궎": {
+      "cleanName": "씠궎",
+      "sport": "sc",
+      "league": "J2리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2986",
+      "count": 3
+    },
+    "FC븞뼇": {
+      "cleanName": "FC안양",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "VERIFIED",
+      "officialEvidence": "K리그2 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_2990",
+      "count": 6
+    },
+    "슱궛HDFC": {
+      "cleanName": "울산HDFC",
+      "sport": "sc",
+      "league": "K리그1",
+      "status": "VERIFIED",
+      "officialEvidence": "K리그1 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_2990",
+      "count": 6
+    },
+    "꽌슱씠옖": {
+      "cleanName": "서울이랜드",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "VERIFIED",
+      "officialEvidence": "K리그2 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_2998",
+      "count": 1
+    },
+    "援촄C": {
+      "cleanName": "援촄C",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_2998",
+      "count": 1
+    },
+    "源룷FC": {
+      "cleanName": "源룷FC",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3002",
+      "count": 1
+    },
+    "遺궛븘씠": {
+      "cleanName": "遺궛븘씠",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3002",
+      "count": 1
+    },
+    "슂肄붾쭏由": {
+      "cleanName": "슂肄붾쭏由",
+      "sport": "sc",
+      "league": "J1리그,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3006",
+      "count": 3
+    },
+    "誘명넗由": {
+      "cleanName": "誘명넗由",
+      "sport": "sc",
+      "league": "J1리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3006",
+      "count": 1
+    },
+    "移대뵒봽C": {
+      "cleanName": "移대뵒봽C",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3010",
+      "count": 1
+    },
+    "마멜로디": {
+      "cleanName": "마멜로디",
+      "sport": "sc",
+      "league": "씤꽣而⑥뻐",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3039",
+      "count": 2
+    },
+    "留곸빻떆떚": {
+      "cleanName": "留곸빻떆떚",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3071",
+      "count": 2
+    },
+    "뜶븯쓲": {
+      "cleanName": "뜶븯쓲",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3107",
+      "count": 1
+    },
+    "罹꾨퇃瑜": {
+      "cleanName": "罹꾨퇃瑜",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3107",
+      "count": 1
+    },
+    "뙆由촄C": {
+      "cleanName": "파리FC",
+      "sport": "sc",
+      "league": "프랑스리그1",
+      "status": "VERIFIED",
+      "officialEvidence": "리그1 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_3111",
+      "count": 1
+    },
+    "RC뒪듃씪": {
+      "cleanName": "RC스트라스부르",
+      "sport": "sc",
+      "league": "프랑스리그1",
+      "status": "VERIFIED",
+      "officialEvidence": "리그1 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_3111",
+      "count": 1
+    },
+    "베네치아": {
+      "cleanName": "베네치아",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3143",
+      "count": 2
+    },
+    "븰젣SCO": {
+      "cleanName": "앙제SCO",
+      "sport": "sc",
+      "league": "프랑스리그1",
+      "status": "VERIFIED",
+      "officialEvidence": "리그1 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_3147",
+      "count": 1
+    },
+    "듃猷⑥븘AC": {
+      "cleanName": "듃猷⑥븘AC",
+      "sport": "sc",
+      "league": "봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3147",
+      "count": 1
+    },
+    "르망FC": {
+      "cleanName": "르망FC",
+      "sport": "sc",
+      "league": "봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3151",
+      "count": 2
+    },
+    "濡쒕━븰": {
+      "cleanName": "濡쒕━븰",
+      "sport": "sc",
+      "league": "봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3151",
+      "count": 2
+    },
+    "댋猷⑥쫰": {
+      "cleanName": "댋猷⑥쫰",
+      "sport": "sc",
+      "league": "봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3159",
+      "count": 1
+    },
+    "르아브르": {
+      "cleanName": "르아브르",
+      "sport": "sc",
+      "league": "봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3159",
+      "count": 1
+    },
+    "빌럼II": {
+      "cleanName": "빌럼II",
+      "sport": "sc",
+      "league": "뿉젅뵒鍮",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3169",
+      "count": 1
+    },
+    "DC쑀굹씠": {
+      "cleanName": "DC쑀굹씠",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3223",
+      "count": 3
+    },
+    "꺃읉FC": {
+      "cleanName": "꺃읉FC",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3223",
+      "count": 3
+    },
+    "CF紐쎈젅븣": {
+      "cleanName": "CF紐쎈젅븣",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3227",
+      "count": 3
+    },
+    "돱엵젅踰": {
+      "cleanName": "돱엵젅踰",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3231",
+      "count": 2
+    },
+    "깉꼫뼱뒪": {
+      "cleanName": "깉꼫뼱뒪",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3235",
+      "count": 4
+    },
+    "LAFC": {
+      "cleanName": "LAFC",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3235",
+      "count": 4
+    },
+    "FC뙂윭뒪": {
+      "cleanName": "FC뙂윭뒪",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3250",
+      "count": 2
+    },
+    "삤뒪떞FC": {
+      "cleanName": "삤뒪떞FC",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3250",
+      "count": 2
+    },
+    "쑕뒪떎씠": {
+      "cleanName": "쑕뒪떎씠",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3254",
+      "count": 2
+    },
+    "FC떊떆궡": {
+      "cleanName": "FC떊떆궡",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3254",
+      "count": 3
+    },
+    "뒪룷罹붿옄": {
+      "cleanName": "뒪룷罹붿옄",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3258",
+      "count": 3
+    },
+    "븘씪쑀땲": {
+      "cleanName": "븘씪쑀땲",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3258",
+      "count": 3
+    },
+    "誘몃꽕쑀굹": {
+      "cleanName": "誘몃꽕쑀굹",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3262",
+      "count": 2
+    },
+    "LA媛ㅻ윮떆": {
+      "cleanName": "LA媛ㅻ윮떆",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3262",
+      "count": 2
+    },
+    "넗濡좏넗FC": {
+      "cleanName": "넗濡좏넗FC",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3266",
+      "count": 2
+    },
+    "떆븷궗슫": {
+      "cleanName": "떆븷궗슫",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3288",
+      "count": 3
+    },
+    "궡뒋鍮똕C": {
+      "cleanName": "궡뒋鍮똕C",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3292",
+      "count": 2
+    },
+    "떆移댄뙆씠": {
+      "cleanName": "떆移댄뙆씠",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3292",
+      "count": 2
+    },
+    "젅븣넄듃": {
+      "cleanName": "젅븣넄듃",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3296",
+      "count": 4
+    },
+    "諛댁퓼솕씠": {
+      "cleanName": "諛댁퓼솕씠",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3296",
+      "count": 3
+    },
+    "룷踰": {
+      "cleanName": "룷踰",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3308",
+      "count": 2
+    },
+    "븷쑀굹": {
+      "cleanName": "븷쑀굹",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3308",
+      "count": 2
+    },
+    "솉肄쯑": {
+      "cleanName": "홍콩(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_111_3379",
+      "count": 7
+    },
+    "젣二퍾KFC": {
+      "cleanName": "젣二퍾KFC",
+      "sport": "sc",
+      "league": "K리그1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3391",
+      "count": 4
+    },
+    "광주FC": {
+      "cleanName": "광주FC",
+      "sport": "sc",
+      "league": "K리그1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3399",
+      "count": 4
+    },
+    "븞궛洹몃━": {
+      "cleanName": "븞궛洹몃━",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3407",
+      "count": 2
+    },
+    "異⑸턿泥二": {
+      "cleanName": "異⑸턿泥二",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3407",
+      "count": 2
+    },
+    "슜씤FC": {
+      "cleanName": "슜씤FC",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3411",
+      "count": 1
+    },
+    "경남FC": {
+      "cleanName": "경남FC",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3411",
+      "count": 1
+    },
+    "留덉튂떎Z": {
+      "cleanName": "留덉튂떎Z",
+      "sport": "sc",
+      "league": "J1리그,씪蹂퇕A而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3419",
+      "count": 2
+    },
+    "G삤궗移": {
+      "cleanName": "G삤궗移",
+      "sport": "sc",
+      "league": "J1리그,씪蹂퇕A而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3423",
+      "count": 3
+    },
+    "룄移섍린떆": {
+      "cleanName": "룄移섍린떆",
+      "sport": "sc",
+      "league": "J2리그,씪蹂퇕A而,씪由ш렇而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3427",
+      "count": 6
+    },
+    "V꽱떎씠": {
+      "cleanName": "V꽱떎씠",
+      "sport": "sc",
+      "league": "J2리그",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3427",
+      "count": 4
+    },
+    "씤泥쒖쑀굹": {
+      "cleanName": "인천유나이티드",
+      "sport": "sc",
+      "league": "K리그1",
+      "status": "VERIFIED",
+      "officialEvidence": "K리그1 Official / WiseToto Proto 공시명",
+      "sampleKey": "2026_111_3450",
+      "count": 10
+    },
+    "쟾븯굹": {
+      "cleanName": "쟾븯굹",
+      "sport": "sc",
+      "league": "K리그1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3450",
+      "count": 6
+    },
+    "룷빆뒪떥": {
+      "cleanName": "룷빆뒪떥",
+      "sport": "sc",
+      "league": "K리그1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3458",
+      "count": 6
+    },
+    "源빐FC": {
+      "cleanName": "源빐FC",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3466",
+      "count": 1
+    },
+    "뙆二쇳봽윴": {
+      "cleanName": "뙆二쇳봽윴",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3466",
+      "count": 1
+    },
+    "꽦궓FC": {
+      "cleanName": "꽦궓FC",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3470",
+      "count": 2
+    },
+    "솕꽦FC": {
+      "cleanName": "솕꽦FC",
+      "sport": "sc",
+      "league": "K리그2",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3470",
+      "count": 2
+    },
+    "볼턴W": {
+      "cleanName": "볼턴W",
+      "sport": "sc",
+      "league": "EFL梨",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3510",
+      "count": 1
+    },
+    "봽濡쒖떆끂": {
+      "cleanName": "봽濡쒖떆끂",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3540",
+      "count": 2
+    },
+    "코모1907": {
+      "cleanName": "코모1907",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3540",
+      "count": 2
+    },
+    "뙆瑜대쭏": {
+      "cleanName": "뙆瑜대쭏",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3544",
+      "count": 2
+    },
+    "釉뚮젅뒪닾": {
+      "cleanName": "釉뚮젅뒪닾",
+      "sport": "sc",
+      "league": "봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3548",
+      "count": 2
+    },
+    "OGC땲뒪": {
+      "cleanName": "OGC땲뒪",
+      "sport": "sc",
+      "league": "봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3565",
+      "count": 2
+    },
+    "릴OSC": {
+      "cleanName": "릴OSC",
+      "sport": "sc",
+      "league": "봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3565",
+      "count": 2
+    },
+    "꺃耳04": {
+      "cleanName": "꺃耳04",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3574",
+      "count": 1
+    },
+    "뿕踰꾩뒪踰": {
+      "cleanName": "뿕踰꾩뒪踰",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3574",
+      "count": 1
+    },
+    "뙆뜑蹂대Ⅸ": {
+      "cleanName": "뙆뜑蹂대Ⅸ",
+      "sport": "sc",
+      "league": "遺꾨뜲뒪由",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3596",
+      "count": 3
+    },
+    "US젅泥": {
+      "cleanName": "US젅泥",
+      "sport": "sc",
+      "league": "꽭由ъ뿉A",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3641",
+      "count": 1
+    },
+    "PSG": {
+      "cleanName": "PSG",
+      "sport": "sc",
+      "league": "봽由ш렇1",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3647",
+      "count": 2
+    },
+    "깒뵒뿉FC": {
+      "cleanName": "깒뵒뿉FC",
+      "sport": "sc",
+      "league": "MLS",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_111_3680",
+      "count": 2
+    },
+    "留먮젅씠W": {
+      "cleanName": "말레이(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_112_3743",
+      "count": 1
+    },
+    "꽕뙏W": {
+      "cleanName": "네팔(여)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (여)",
+      "sampleKey": "2026_112_3746",
+      "count": 4
+    },
+    "중국": {
+      "cleanName": "중국",
+      "sport": "bs",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀",
+      "sampleKey": "2026_112_3759",
+      "count": 7
+    },
+    "씪蹂": {
+      "cleanName": "일본",
+      "sport": "bs",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀",
+      "sampleKey": "2026_112_3759",
+      "count": 13
+    },
+    "븳援": {
+      "cleanName": "한국",
+      "sport": "bs",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀",
+      "sampleKey": "2026_112_3763",
+      "count": 21
+    },
+    "留": {
+      "cleanName": "대만",
+      "sport": "bs",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀",
+      "sampleKey": "2026_112_3763",
+      "count": 4
+    },
+    "씠씪겕": {
+      "cleanName": "씠씪겕",
+      "sport": "sc",
+      "league": "嫄명봽而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4101",
+      "count": 4
+    },
+    "삤留": {
+      "cleanName": "삤留",
+      "sport": "sc",
+      "league": "嫄명봽而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4101",
+      "count": 4
+    },
+    "븘젣瑜대컮": {
+      "cleanName": "븘젣瑜대컮",
+      "sport": "sc",
+      "league": "궓異뷞NTL,U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4105",
+      "count": 2
+    },
+    "吏궎뒪": {
+      "cleanName": "吏궎뒪",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4105",
+      "count": 1
+    },
+    "궗슦뵒": {
+      "cleanName": "궗슦뵒",
+      "sport": "sc",
+      "league": "嫄명봽而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4114",
+      "count": 4
+    },
+    "荑좎썾씠듃": {
+      "cleanName": "荑좎썾씠듃",
+      "sport": "sc",
+      "league": "嫄명봽而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4114",
+      "count": 4
+    },
+    "슦猷④낵씠": {
+      "cleanName": "우루과이",
+      "sport": "sc",
+      "league": "A매치",
+      "status": "VERIFIED",
+      "officialEvidence": "FIFA/CONMEBOL Official A매치",
+      "sampleKey": "2026_113_4243",
+      "count": 9
+    },
+    "뿉肄곕룄瑜": {
+      "cleanName": "뿉肄곕룄瑜",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4251",
+      "count": 4
+    },
+    "슦利덈쿋궎": {
+      "cleanName": "슦利덈쿋궎",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4263",
+      "count": 2
+    },
+    "씠": {
+      "cleanName": "씠",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4263",
+      "count": 2
+    },
+    "븘엻뿉誘": {
+      "cleanName": "븘엻뿉誘",
+      "sport": "sc",
+      "league": "嫄명봽而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4267",
+      "count": 3
+    },
+    "삁硫": {
+      "cleanName": "삁硫",
+      "sport": "sc",
+      "league": "嫄명봽而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4267",
+      "count": 5
+    },
+    "븞룄씪": {
+      "cleanName": "븞룄씪",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4273",
+      "count": 4
+    },
+    "紐고": {
+      "cleanName": "紐고",
+      "sport": "sc",
+      "league": "U꽕씠뀡,궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4273",
+      "count": 3
+    },
+    "移댄瑜": {
+      "cleanName": "移댄瑜",
+      "sport": "sc",
+      "league": "嫄명봽而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4282",
+      "count": 5
+    },
+    "諛붾젅씤": {
+      "cleanName": "諛붾젅씤",
+      "sport": "sc",
+      "league": "嫄명봽而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4282",
+      "count": 3
+    },
+    "룷瑜댄닾媛": {
+      "cleanName": "룷瑜댄닾媛",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4301",
+      "count": 2
+    },
+    "썾씪뒪": {
+      "cleanName": "썾씪뒪",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4301",
+      "count": 2
+    },
+    "꽕뜙뱶": {
+      "cleanName": "꽕뜙뱶",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4307",
+      "count": 3
+    },
+    "룆씪": {
+      "cleanName": "룆씪",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4307",
+      "count": 2
+    },
+    "꽭瑜대퉬븘": {
+      "cleanName": "꽭瑜대퉬븘",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4311",
+      "count": 3
+    },
+    "洹몃━뒪": {
+      "cleanName": "洹몃━뒪",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4311",
+      "count": 2
+    },
+    "끂瑜댁썾씠": {
+      "cleanName": "끂瑜댁썾씠",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4315",
+      "count": 2
+    },
+    "뜶留덊겕": {
+      "cleanName": "뜶留덊겕",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4315",
+      "count": 2
+    },
+    "삤뒪듃由": {
+      "cleanName": "삤뒪듃由",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4319",
+      "count": 2
+    },
+    "씠뒪씪뿕": {
+      "cleanName": "씠뒪씪뿕",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4319",
+      "count": 3
+    },
+    "肄붿냼蹂": {
+      "cleanName": "肄붿냼蹂",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4325",
+      "count": 2
+    },
+    "븘씪옖뱶": {
+      "cleanName": "븘씪옖뱶",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4325",
+      "count": 3
+    },
+    "由ы엳뀗뒋": {
+      "cleanName": "由ы엳뀗뒋",
+      "sport": "sc",
+      "league": "U꽕씠뀡,궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4329",
+      "count": 5
+    },
+    "由ы닾븘땲": {
+      "cleanName": "由ы닾븘땲",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4329",
+      "count": 5
+    },
+    "룄誘몃땲怨": {
+      "cleanName": "룄誘몃땲怨",
+      "sport": "sc",
+      "league": "C꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4360",
+      "count": 4
+    },
+    "땲移대씪怨": {
+      "cleanName": "땲移대씪怨",
+      "sport": "sc",
+      "league": "C꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4360",
+      "count": 4
+    },
+    "븘씠떚": {
+      "cleanName": "븘씠떚",
+      "sport": "sc",
+      "league": "C꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4364",
+      "count": 3
+    },
+    "듃由щ땲떎": {
+      "cleanName": "듃由щ땲떎",
+      "sport": "sc",
+      "league": "C꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4364",
+      "count": 4
+    },
+    "肄붿뒪由": {
+      "cleanName": "肄붿뒪由",
+      "sport": "sc",
+      "league": "C꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4378",
+      "count": 3
+    },
+    "대씪냼": {
+      "cleanName": "대씪냼",
+      "sport": "sc",
+      "league": "C꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4378",
+      "count": 4
+    },
+    "諛⑷씪뜲": {
+      "cleanName": "방글라데시",
+      "sport": "sc",
+      "league": "아세안컵",
+      "status": "VERIFIED",
+      "officialEvidence": "AFF Championship Official",
+      "sampleKey": "2026_113_4442",
+      "count": 10
+    },
+    "留먮젅씠떆": {
+      "cleanName": "말레이시아",
+      "sport": "sc",
+      "league": "아세안컵",
+      "status": "VERIFIED",
+      "officialEvidence": "AFF Championship Official",
+      "sampleKey": "2026_113_4442",
+      "count": 12
+    },
+    "샇二": {
+      "cleanName": "호주",
+      "sport": "sc",
+      "league": "A매치",
+      "status": "VERIFIED",
+      "officialEvidence": "FIFA/AFC Official A매치",
+      "sampleKey": "2026_113_4481",
+      "count": 12
+    },
+    "釉뚮씪吏": {
+      "cleanName": "브라질",
+      "sport": "sc",
+      "league": "A매치",
+      "status": "VERIFIED",
+      "officialEvidence": "FIFA/CONMEBOL Official A매치",
+      "sampleKey": "2026_113_4481",
+      "count": 12
+    },
+    "씤룄꽕떆": {
+      "cleanName": "씤룄꽕떆",
+      "sport": "sc",
+      "league": "븘꽭븞而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4507",
+      "count": 6
+    },
+    "떛媛룷瑜": {
+      "cleanName": "떛媛룷瑜",
+      "sport": "sc",
+      "league": "븘꽭븞而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_113_4507",
+      "count": 4
+    },
+    "씤룄": {
+      "cleanName": "인도",
+      "sport": "sc",
+      "league": "A매치",
+      "status": "VERIFIED",
+      "officialEvidence": "FIFA/AFC Official A매치",
+      "sampleKey": "2026_113_4513",
+      "count": 8
+    },
+    "뙆굹留": {
+      "cleanName": "파나마",
+      "sport": "sc",
+      "league": "A매치",
+      "status": "VERIFIED",
+      "officialEvidence": "FIFA/CONCACAF Official A매치",
+      "sampleKey": "2026_113_4513",
+      "count": 8
+    },
+    "議곗븘": {
+      "cleanName": "議곗븘",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4523",
+      "count": 2
+    },
+    "遺곸븘씪옖": {
+      "cleanName": "遺곸븘씪옖",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4523",
+      "count": 2
+    },
+    "븘瑜대찓땲": {
+      "cleanName": "븘瑜대찓땲",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4527",
+      "count": 3
+    },
+    "씪듃鍮꾩븘": {
+      "cleanName": "씪듃鍮꾩븘",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4527",
+      "count": 2
+    },
+    "씠깉由ъ븘": {
+      "cleanName": "씠깉由ъ븘",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4531",
+      "count": 2
+    },
+    "踰④린뿉": {
+      "cleanName": "踰④린뿉",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4531",
+      "count": 3
+    },
+    "瑜댄궎삁": {
+      "cleanName": "瑜댄궎삁",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4535",
+      "count": 3
+    },
+    "봽옉뒪": {
+      "cleanName": "봽옉뒪",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4535",
+      "count": 4
+    },
+    "뿚媛由": {
+      "cleanName": "뿚媛由",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4539",
+      "count": 2
+    },
+    "슦겕씪씠": {
+      "cleanName": "슦겕씪씠",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4539",
+      "count": 2
+    },
+    "뤃뱶": {
+      "cleanName": "뤃뱶",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4543",
+      "count": 2
+    },
+    "蹂댁뒪땲븘": {
+      "cleanName": "蹂댁뒪땲븘",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4543",
+      "count": 2
+    },
+    "뒪썾뜶": {
+      "cleanName": "뒪썾뜶",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4547",
+      "count": 2
+    },
+    "猷⑤쭏땲븘": {
+      "cleanName": "猷⑤쭏땲븘",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4547",
+      "count": 2
+    },
+    "紐ы뀒꽕洹": {
+      "cleanName": "紐ы뀒꽕洹",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4551",
+      "count": 3
+    },
+    "궎봽濡쒖뒪": {
+      "cleanName": "궎봽濡쒖뒪",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4551",
+      "count": 2
+    },
+    "옄硫붿씠移": {
+      "cleanName": "옄硫붿씠移",
+      "sport": "sc",
+      "league": "C꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4605",
+      "count": 2
+    },
+    "과테말라": {
+      "cleanName": "과테말라",
+      "sport": "sc",
+      "league": "C꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4605",
+      "count": 2
+    },
+    "삩몢씪뒪": {
+      "cleanName": "삩몢씪뒪",
+      "sport": "sc",
+      "league": "C꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4614",
+      "count": 2
+    },
+    "닔由щ궓": {
+      "cleanName": "닔由щ궓",
+      "sport": "sc",
+      "league": "C꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4614",
+      "count": 2
+    },
+    "뿕궡諛붾룄": {
+      "cleanName": "뿕궡諛붾룄",
+      "sport": "sc",
+      "league": "C꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4641",
+      "count": 2
+    },
+    "留덈Ⅴ떚땲": {
+      "cleanName": "留덈Ⅴ떚땲",
+      "sport": "sc",
+      "league": "C꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4641",
+      "count": 2
+    },
+    "뙆궎뒪깂": {
+      "cleanName": "뙆궎뒪깂",
+      "sport": "sc",
+      "league": "븘꽭븞而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4744",
+      "count": 5
+    },
+    "깭援": {
+      "cleanName": "깭援",
+      "sport": "sc",
+      "league": "븘꽭븞而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4744",
+      "count": 5
+    },
+    "踰좏듃궓": {
+      "cleanName": "踰좏듃궓",
+      "sport": "sc",
+      "league": "븘꽭븞而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4780",
+      "count": 2
+    },
+    "븘由ы": {
+      "cleanName": "븘由ы",
+      "sport": "sc",
+      "league": "븘꽭븞而",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4780",
+      "count": 2
+    },
+    "뒳濡쒕쿋땲": {
+      "cleanName": "뒳濡쒕쿋땲",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4786",
+      "count": 2
+    },
+    "뒪肄뷀옖": {
+      "cleanName": "뒪肄뷀옖",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4786",
+      "count": 3
+    },
+    "븘씠뒳": {
+      "cleanName": "븘씠뒳",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4794",
+      "count": 3
+    },
+    "뿉뒪넗땲": {
+      "cleanName": "뿉뒪넗땲",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4794",
+      "count": 2
+    },
+    "럹濡쒖젣룄": {
+      "cleanName": "럹濡쒖젣룄",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4800",
+      "count": 3
+    },
+    "移댁옄쓲뒪": {
+      "cleanName": "移댁옄쓲뒪",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4800",
+      "count": 2
+    },
+    "궛留덈━끂": {
+      "cleanName": "산마리노",
+      "sport": "sc",
+      "league": "U네이션",
+      "status": "VERIFIED",
+      "officialEvidence": "UEFA Nations League Official",
+      "sampleKey": "2026_114_4804",
+      "count": 8
+    },
+    "뱶": {
+      "cleanName": "뱶",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4804",
+      "count": 5
+    },
+    "遺덇由ъ븘": {
+      "cleanName": "遺덇由ъ븘",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4810",
+      "count": 2
+    },
+    "猷⑹뀍遺瑜": {
+      "cleanName": "猷⑹뀍遺瑜",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4810",
+      "count": 3
+    },
+    "엵湲옖뱶": {
+      "cleanName": "엵湲옖뱶",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4823",
+      "count": 6
+    },
+    "뒪럹씤": {
+      "cleanName": "뒪럹씤",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4823",
+      "count": 3
+    },
+    "븣諛붾땲븘": {
+      "cleanName": "븣諛붾땲븘",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4827",
+      "count": 5
+    },
+    "벨라루스": {
+      "cleanName": "벨라루스",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4827",
+      "count": 2
+    },
+    "뒳濡쒕컮궎": {
+      "cleanName": "뒳濡쒕컮궎",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4831",
+      "count": 2
+    },
+    "紐곕룄諛": {
+      "cleanName": "紐곕룄諛",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4831",
+      "count": 3
+    },
+    "遺곷쭏耳룄": {
+      "cleanName": "遺곷쭏耳룄",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4835",
+      "count": 3
+    },
+    "뒪쐞뒪": {
+      "cleanName": "뒪쐞뒪",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4835",
+      "count": 4
+    },
+    "체코": {
+      "cleanName": "체코",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4839",
+      "count": 6
+    },
+    "겕濡쒖븘떚": {
+      "cleanName": "겕濡쒖븘떚",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4839",
+      "count": 3
+    },
+    "미국": {
+      "cleanName": "미국",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4868",
+      "count": 2
+    },
+    "럹猷": {
+      "cleanName": "럹猷",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4868",
+      "count": 2
+    },
+    "罹먮굹떎": {
+      "cleanName": "罹먮굹떎",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4872",
+      "count": 1
+    },
+    "칠레": {
+      "cleanName": "칠레",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4872",
+      "count": 2
+    },
+    "硫뺤떆肄": {
+      "cleanName": "硫뺤떆肄",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4519",
+      "count": 2
+    },
+    "콜롬비아": {
+      "cleanName": "콜롬비아",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_4519",
+      "count": 1
+    },
+    "뙆궎뒪M": {
+      "cleanName": "파키스탄(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_114_4993",
+      "count": 1
+    },
+    "移댁옄쓲M": {
+      "cleanName": "카자흐(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_114_4993",
+      "count": 4
+    },
+    "씤룄꽕M": {
+      "cleanName": "인도네시아(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_114_5011",
+      "count": 2
+    },
+    "씤룄M": {
+      "cleanName": "인도(남)",
+      "sport": "multi",
+      "league": "AG",
+      "status": "VERIFIED",
+      "officialEvidence": "AG 2026 Official 국가대표팀 (남)",
+      "sampleKey": "2026_114_5015",
+      "count": 4
+    },
+    "돱吏덈옖뱶": {
+      "cleanName": "돱吏덈옖뱶",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_5094",
+      "count": 2
+    },
+    "吏釉뚮·꽣": {
+      "cleanName": "吏釉뚮·꽣",
+      "sport": "sc",
+      "league": "U꽕씠뀡",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_5116",
+      "count": 2
+    },
+    "볼리비아": {
+      "cleanName": "볼리비아",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_5226",
+      "count": 2
+    },
+    "뙆씪怨쇱씠": {
+      "cleanName": "뙆씪怨쇱씠",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_5226",
+      "count": 2
+    },
+    "踰좊꽕닔뿕": {
+      "cleanName": "踰좊꽕닔뿕",
+      "sport": "sc",
+      "league": "궓異뷞NTL",
+      "status": "UNVERIFIED",
+      "officialEvidence": "Evidence insufficient: unconfirmed minor league/cup fixture",
+      "sampleKey": "2026_114_5297",
+      "count": 2
+    }
+  },
+  "matchOverrides": {}
+}

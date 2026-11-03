@@ -1,0 +1,20 @@
+{
+  "version": "1.0.0-proto-forward-shadow",
+  "environment": "LIVE_SHADOW",
+  "createdAt": "2026-10-10T20:45:00.484Z",
+  "updatedAt": "2026-10-10T20:45:00.485Z",
+  "dataSource": "wisetoto_official_real",
+  "isSimulated": false,
+  "autoPromotion": "PERMANENTLY_DISABLED",
+  "productionModel": "PROTO_V1_PRODUCTION",
+  "shadowCandidates": [
+    "PROTO_V2_EXP01_SHADOW",
+    "PROTO_V2_EXP02_SHADOW"
+  ],
+  "benchmark": "NO_VIG_SHIN_BENCHMARK",
+  "rounds": {},
+  "auditTotals": {},
+  "auditEventLog": [],
+  "operationLogs": [],
+  "singleShotSchedule": null
+}

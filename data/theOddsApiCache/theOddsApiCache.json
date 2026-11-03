@@ -1,0 +1,2033 @@
+{
+  "baseball_mlb": {
+    "sportKey": "baseball_mlb",
+    "games": [
+      {
+        "id": "38049724abb5fcb2b69405bbe4bb3d72",
+        "sportKey": "baseball_mlb",
+        "sportTitle": "MLB",
+        "commenceTime": "2026-10-14T00:00:00Z",
+        "homeTeam": "Tampa Bay Rays",
+        "awayTeam": "Cleveland Guardians",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:44:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.72,
+          "draw": null,
+          "away": 2.25,
+          "refundRate": "97.48%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "622fd31d2c8178b025455656e0d2fb89",
+        "sportKey": "baseball_mlb",
+        "sportTitle": "MLB",
+        "commenceTime": "2026-10-15T00:00:00Z",
+        "homeTeam": "Los Angeles Dodgers",
+        "awayTeam": "Milwaukee Brewers",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:44:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.58,
+          "draw": null,
+          "away": 2.53,
+          "refundRate": "97.26%"
+        },
+        "rawBookmakersCount": 22
+      }
+    ],
+    "cachedAt": 1791881050295
+  },
+  "soccer_italy_serie_a": {
+    "sportKey": "soccer_italy_serie_a",
+    "games": [
+      {
+        "id": "7d3160040958fe21778fd5ee485666c3",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-16T18:45:00Z",
+        "homeTeam": "Frosinone",
+        "awayTeam": "Sassuolo",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.57,
+          "draw": 3.62,
+          "away": 2.72,
+          "refundRate": "96.81%"
+        },
+        "rawBookmakersCount": 24
+      },
+      {
+        "id": "907639dade64cca45d1ab639195d201e",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-17T13:00:00Z",
+        "homeTeam": "Venezia",
+        "awayTeam": "Napoli",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 4.81,
+          "draw": 4.3,
+          "away": 1.68,
+          "refundRate": "96.55%"
+        },
+        "rawBookmakersCount": 24
+      },
+      {
+        "id": "bfefc309177723410230fee52f650315",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-17T16:00:00Z",
+        "homeTeam": "Bologna",
+        "awayTeam": "Inter Milan",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 5.99,
+          "draw": 4.1,
+          "away": 1.6,
+          "refundRate": "96.54%"
+        },
+        "rawBookmakersCount": 24
+      },
+      {
+        "id": "18d478f469da3bcc654dd4555b85c7e3",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-17T18:45:00Z",
+        "homeTeam": "AS Roma",
+        "awayTeam": "Genoa",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.39,
+          "draw": 5.18,
+          "away": 7.91,
+          "refundRate": "96.26%"
+        },
+        "rawBookmakersCount": 24
+      },
+      {
+        "id": "367da93aa21a1e13eeafb94fd2263c75",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-18T10:30:00Z",
+        "homeTeam": "Udinese",
+        "awayTeam": "Lecce",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.9,
+          "draw": 3.61,
+          "away": 4.29,
+          "refundRate": "96.49%"
+        },
+        "rawBookmakersCount": 23
+      },
+      {
+        "id": "3ea32a0aa44a5f0ef7fd088155430087",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-18T13:00:00Z",
+        "homeTeam": "Fiorentina",
+        "awayTeam": "Como",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.44,
+          "draw": 3.75,
+          "away": 2.1,
+          "refundRate": "96.75%"
+        },
+        "rawBookmakersCount": 24
+      },
+      {
+        "id": "f9403dd597edbfaa73abdc974e55344c",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-18T16:00:00Z",
+        "homeTeam": "AC Milan",
+        "awayTeam": "Atalanta BC",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.88,
+          "draw": 3.76,
+          "away": 4.17,
+          "refundRate": "96.37%"
+        },
+        "rawBookmakersCount": 24
+      },
+      {
+        "id": "4c4026e2782f09d6f0ff2bde2a390513",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-18T18:45:00Z",
+        "homeTeam": "Juventus",
+        "awayTeam": "Lazio",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.66,
+          "draw": 3.98,
+          "away": 5.49,
+          "refundRate": "96.54%"
+        },
+        "rawBookmakersCount": 24
+      },
+      {
+        "id": "ce94aca384a20f6af459366da6e1dd21",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-19T16:30:00Z",
+        "homeTeam": "Monza",
+        "awayTeam": "Cagliari",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.4,
+          "draw": 3.22,
+          "away": 3.21,
+          "refundRate": "96.27%"
+        },
+        "rawBookmakersCount": 21
+      },
+      {
+        "id": "07014d9adc65ca39710bd9f0c7c0d3f0",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-19T18:45:00Z",
+        "homeTeam": "Parma",
+        "awayTeam": "Torino",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.21,
+          "draw": 3.03,
+          "away": 2.52,
+          "refundRate": "96.30%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "124c70f8f3248a845bdb983a54e74720",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-23T18:45:00Z",
+        "homeTeam": "Torino",
+        "awayTeam": "Monza",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.17,
+          "draw": 3.43,
+          "away": 3.36,
+          "refundRate": "95.24%"
+        },
+        "rawBookmakersCount": 14
+      },
+      {
+        "id": "b7f0880e3da978f9481f7cb5697e2aa5",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-24T13:00:00Z",
+        "homeTeam": "Cagliari",
+        "awayTeam": "Bologna",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.27,
+          "draw": 2.94,
+          "away": 2.48,
+          "refundRate": "95.31%"
+        },
+        "rawBookmakersCount": 14
+      },
+      {
+        "id": "08ffd99b2249c81d8a7410598f32b9b0",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-24T13:00:00Z",
+        "homeTeam": "Como",
+        "awayTeam": "Sassuolo",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.43,
+          "draw": 4.55,
+          "away": 7.26,
+          "refundRate": "94.62%"
+        },
+        "rawBookmakersCount": 14
+      },
+      {
+        "id": "0b4894e9fb123ef3045269f97e339eba",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-24T16:00:00Z",
+        "homeTeam": "Napoli",
+        "awayTeam": "AS Roma",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.93,
+          "draw": 3.52,
+          "away": 2.35,
+          "refundRate": "95.15%"
+        },
+        "rawBookmakersCount": 14
+      },
+      {
+        "id": "b27cb3ea731fa3f18d05e6a627bdf984",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-24T18:45:00Z",
+        "homeTeam": "Lazio",
+        "awayTeam": "Parma",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.54,
+          "draw": 4.07,
+          "away": 6.26,
+          "refundRate": "94.81%"
+        },
+        "rawBookmakersCount": 14
+      },
+      {
+        "id": "c9b6c7048d8dc33dae618f67f462f67a",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-25T11:30:00Z",
+        "homeTeam": "Inter Milan",
+        "awayTeam": "Fiorentina",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.36,
+          "draw": 5.37,
+          "away": 7.25,
+          "refundRate": "94.39%"
+        },
+        "rawBookmakersCount": 14
+      },
+      {
+        "id": "63aa6e3f679ee4c68de5b4bd8d3361bb",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-25T14:00:00Z",
+        "homeTeam": "Atalanta BC",
+        "awayTeam": "Frosinone",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.62,
+          "draw": 4.18,
+          "away": 4.98,
+          "refundRate": "94.58%"
+        },
+        "rawBookmakersCount": 14
+      },
+      {
+        "id": "95cfaecfe96bb7ced1fb6af974a4110b",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-25T14:00:00Z",
+        "homeTeam": "Genoa",
+        "awayTeam": "Venezia",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.14,
+          "draw": 3.19,
+          "away": 3.71,
+          "refundRate": "95.21%"
+        },
+        "rawBookmakersCount": 14
+      },
+      {
+        "id": "63af660d4d0d52f8ac7685172ef939c4",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-25T17:00:00Z",
+        "homeTeam": "Lecce",
+        "awayTeam": "Juventus",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 7.79,
+          "draw": 4.19,
+          "away": 1.45,
+          "refundRate": "94.64%"
+        },
+        "rawBookmakersCount": 14
+      },
+      {
+        "id": "3564688383b255192409c9deb8e526ed",
+        "sportKey": "soccer_italy_serie_a",
+        "sportTitle": "Serie A - Italy",
+        "commenceTime": "2026-10-25T19:45:00Z",
+        "homeTeam": "Udinese",
+        "awayTeam": "AC Milan",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 4.36,
+          "draw": 3.68,
+          "away": 1.81,
+          "refundRate": "94.91%"
+        },
+        "rawBookmakersCount": 14
+      }
+    ],
+    "cachedAt": 1791881050492
+  },
+  "soccer_epl": {
+    "sportKey": "soccer_epl",
+    "games": [
+      {
+        "id": "764e6513cb3f348881503df70ccb90e0",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-17T11:30:00Z",
+        "homeTeam": "Everton",
+        "awayTeam": "Chelsea",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.27,
+          "draw": 3.75,
+          "away": 2.17,
+          "refundRate": "96.78%"
+        },
+        "rawBookmakersCount": 25
+      },
+      {
+        "id": "8f1945e7272bc7e89016439f5ab321c7",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-17T14:00:00Z",
+        "homeTeam": "Brentford",
+        "awayTeam": "Liverpool",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.48,
+          "draw": 3.65,
+          "away": 2.81,
+          "refundRate": "96.80%"
+        },
+        "rawBookmakersCount": 25
+      },
+      {
+        "id": "7895f97f2f9577f3b13287a3d086859d",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-17T14:00:00Z",
+        "homeTeam": "Fulham",
+        "awayTeam": "Hull City",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.71,
+          "draw": 4.07,
+          "away": 4.82,
+          "refundRate": "96.34%"
+        },
+        "rawBookmakersCount": 25
+      },
+      {
+        "id": "bf2142d1ca76ba2fc9e61afce80f86c0",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-17T14:00:00Z",
+        "homeTeam": "Manchester City",
+        "awayTeam": "Ipswich Town",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.22,
+          "draw": 7.4,
+          "away": 11.27,
+          "refundRate": "95.83%"
+        },
+        "rawBookmakersCount": 25
+      },
+      {
+        "id": "d1bbbdcd3d430e70091b518369b559cf",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-17T16:30:00Z",
+        "homeTeam": "Newcastle United",
+        "awayTeam": "Aston Villa",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.26,
+          "draw": 3.78,
+          "away": 3.07,
+          "refundRate": "96.83%"
+        },
+        "rawBookmakersCount": 24
+      },
+      {
+        "id": "dfd5d6648be46426e418801584d46a68",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-18T13:00:00Z",
+        "homeTeam": "Bournemouth",
+        "awayTeam": "Sunderland",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.07,
+          "draw": 3.64,
+          "away": 3.61,
+          "refundRate": "96.63%"
+        },
+        "rawBookmakersCount": 25
+      },
+      {
+        "id": "9fc08b390a49c4434f7cf631a0bb88fb",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-18T13:00:00Z",
+        "homeTeam": "Brighton and Hove Albion",
+        "awayTeam": "Crystal Palace",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.58,
+          "draw": 4.58,
+          "away": 5.37,
+          "refundRate": "96.39%"
+        },
+        "rawBookmakersCount": 25
+      },
+      {
+        "id": "676b3b0b609e9cf565da450786618d26",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-18T13:00:00Z",
+        "homeTeam": "Leeds United",
+        "awayTeam": "Manchester United",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.48,
+          "draw": 3.65,
+          "away": 2.82,
+          "refundRate": "96.92%"
+        },
+        "rawBookmakersCount": 25
+      },
+      {
+        "id": "f696a248965373d9071dc0662e5c58a8",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-18T15:30:00Z",
+        "homeTeam": "Nottingham Forest",
+        "awayTeam": "Arsenal",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 6.55,
+          "draw": 3.89,
+          "away": 1.59,
+          "refundRate": "96.28%"
+        },
+        "rawBookmakersCount": 25
+      },
+      {
+        "id": "9baaf4e48b041cfef04e70e42532502e",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-19T19:00:00Z",
+        "homeTeam": "Tottenham Hotspur",
+        "awayTeam": "Coventry City",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.51,
+          "draw": 4.65,
+          "away": 6.05,
+          "refundRate": "95.91%"
+        },
+        "rawBookmakersCount": 23
+      },
+      {
+        "id": "d0202960708a442401d7fc7bd74a0183",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-23T19:00:00Z",
+        "homeTeam": "Ipswich Town",
+        "awayTeam": "Nottingham Forest",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.87,
+          "draw": 3.55,
+          "away": 2.38,
+          "refundRate": "95.21%"
+        },
+        "rawBookmakersCount": 16
+      },
+      {
+        "id": "aca5dd297dbee71f576f7641569fe578",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-24T11:30:00Z",
+        "homeTeam": "Aston Villa",
+        "awayTeam": "Manchester City",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 4.79,
+          "draw": 4.27,
+          "away": 1.63,
+          "refundRate": "94.66%"
+        },
+        "rawBookmakersCount": 16
+      },
+      {
+        "id": "f66e4f29c1b7bcfc5ab58c0b88c8850b",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-24T14:00:00Z",
+        "homeTeam": "Arsenal",
+        "awayTeam": "Everton",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.38,
+          "draw": 4.51,
+          "away": 8.88,
+          "refundRate": "94.43%"
+        },
+        "rawBookmakersCount": 16
+      },
+      {
+        "id": "0fbb2626ed9534b9dcf21d16925f9bd7",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-24T14:00:00Z",
+        "homeTeam": "Coventry City",
+        "awayTeam": "Fulham",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.94,
+          "draw": 3.55,
+          "away": 2.34,
+          "refundRate": "95.31%"
+        },
+        "rawBookmakersCount": 16
+      },
+      {
+        "id": "0382a9faef0bb8df1bcc436536cffb05",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-24T16:30:00Z",
+        "homeTeam": "Chelsea",
+        "awayTeam": "Tottenham Hotspur",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.85,
+          "draw": 3.99,
+          "away": 3.81,
+          "refundRate": "94.91%"
+        },
+        "rawBookmakersCount": 16
+      },
+      {
+        "id": "33fb7467b23c91d57dc976d9ab05ea97",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-25T14:00:00Z",
+        "homeTeam": "Manchester United",
+        "awayTeam": "Bournemouth",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.82,
+          "draw": 4.03,
+          "away": 3.92,
+          "refundRate": "94.99%"
+        },
+        "rawBookmakersCount": 16
+      },
+      {
+        "id": "69493b5ebb84f24ab1d6023a30ee89f0",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-25T14:00:00Z",
+        "homeTeam": "Hull City",
+        "awayTeam": "Brentford",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 4.64,
+          "draw": 3.96,
+          "away": 1.7,
+          "refundRate": "94.67%"
+        },
+        "rawBookmakersCount": 16
+      },
+      {
+        "id": "290ba8cd3f3a2e9252effca673bf5549",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-25T14:00:00Z",
+        "homeTeam": "Liverpool",
+        "awayTeam": "Brighton and Hove Albion",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.02,
+          "draw": 3.98,
+          "away": 3.27,
+          "refundRate": "95.05%"
+        },
+        "rawBookmakersCount": 16
+      },
+      {
+        "id": "fe235b26408c477368c40672a4488694",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-25T14:00:00Z",
+        "homeTeam": "Crystal Palace",
+        "awayTeam": "Newcastle United",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.64,
+          "draw": 3.57,
+          "away": 2.56,
+          "refundRate": "95.28%"
+        },
+        "rawBookmakersCount": 16
+      },
+      {
+        "id": "e82f6b60fa41b82c8510f5b67ce61849",
+        "sportKey": "soccer_epl",
+        "sportTitle": "EPL",
+        "commenceTime": "2026-10-25T16:30:00Z",
+        "homeTeam": "Sunderland",
+        "awayTeam": "Leeds United",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:44Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.69,
+          "draw": 3.38,
+          "away": 2.62,
+          "refundRate": "95.30%"
+        },
+        "rawBookmakersCount": 16
+      }
+    ],
+    "cachedAt": 1791880991445
+  },
+  "soccer_spain_la_liga": {
+    "sportKey": "soccer_spain_la_liga",
+    "games": [
+      {
+        "id": "19ee731602634e5c9e3106630e087464",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-16T19:00:00Z",
+        "homeTeam": "Deportivo La Coruña",
+        "awayTeam": "Levante",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.09,
+          "draw": 3.59,
+          "away": 3.6,
+          "refundRate": "96.64%"
+        },
+        "rawBookmakersCount": 21
+      },
+      {
+        "id": "6436925dd15916d7041ba32b60000d48",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-17T12:00:00Z",
+        "homeTeam": "Espanyol",
+        "awayTeam": "Atlético Madrid",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 4.47,
+          "draw": 3.85,
+          "away": 1.81,
+          "refundRate": "96.53%"
+        },
+        "rawBookmakersCount": 19
+      },
+      {
+        "id": "aef660734585649651415961a9d177c6",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-17T14:15:00Z",
+        "homeTeam": "Villarreal",
+        "awayTeam": "Elche CF",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.47,
+          "draw": 5.02,
+          "away": 6.4,
+          "refundRate": "96.55%"
+        },
+        "rawBookmakersCount": 21
+      },
+      {
+        "id": "846e496fc232b2fc20214754836727d0",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-17T16:30:00Z",
+        "homeTeam": "Real Betis",
+        "awayTeam": "Barcelona",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 6.09,
+          "draw": 5.72,
+          "away": 1.43,
+          "refundRate": "96.31%"
+        },
+        "rawBookmakersCount": 21
+      },
+      {
+        "id": "f00cd1ea41fa39149729d14ebc07aa6c",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-17T19:00:00Z",
+        "homeTeam": "Valencia",
+        "awayTeam": "Athletic Bilbao",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.51,
+          "draw": 3.43,
+          "away": 2.19,
+          "refundRate": "96.80%"
+        },
+        "rawBookmakersCount": 21
+      },
+      {
+        "id": "1f566f17c50fe5162724ec2863d2207b",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-18T12:00:00Z",
+        "homeTeam": "CA Osasuna",
+        "awayTeam": "Real Racing Club de Santander",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.99,
+          "draw": 3.59,
+          "away": 3.94,
+          "refundRate": "96.63%"
+        },
+        "rawBookmakersCount": 21
+      },
+      {
+        "id": "aabe899ecc4c19a1fafe5440151b62e4",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-18T14:15:00Z",
+        "homeTeam": "Celta Vigo",
+        "awayTeam": "Alavés",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.06,
+          "draw": 3.42,
+          "away": 3.91,
+          "refundRate": "96.75%"
+        },
+        "rawBookmakersCount": 21
+      },
+      {
+        "id": "1051298b4aca6f07113309bff598a5c1",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-18T16:30:00Z",
+        "homeTeam": "Málaga",
+        "awayTeam": "Real Sociedad",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.31,
+          "draw": 3.55,
+          "away": 2.22,
+          "refundRate": "96.69%"
+        },
+        "rawBookmakersCount": 21
+      },
+      {
+        "id": "eccd63bf768e2f2a358b871d3f33a63d",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-18T19:00:00Z",
+        "homeTeam": "Real Madrid",
+        "awayTeam": "Sevilla",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.25,
+          "draw": 6.65,
+          "away": 10.53,
+          "refundRate": "95.66%"
+        },
+        "rawBookmakersCount": 21
+      },
+      {
+        "id": "4a88bc4de574d43ef34677fd8d78722f",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-19T19:00:00Z",
+        "homeTeam": "Getafe",
+        "awayTeam": "Rayo Vallecano",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.99,
+          "draw": 2.95,
+          "away": 2.74,
+          "refundRate": "96.30%"
+        },
+        "rawBookmakersCount": 20
+      },
+      {
+        "id": "a362cccad837f1ffae61ff43a3536688",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-21T18:00:00Z",
+        "homeTeam": "Levante",
+        "awayTeam": "Athletic Bilbao",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.9,
+          "draw": 3.05,
+          "away": 2.14,
+          "refundRate": "95.10%"
+        },
+        "rawBookmakersCount": 14
+      },
+      {
+        "id": "903eb4941471ffe20d525b02dd3b77aa",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-23T19:00:00Z",
+        "homeTeam": "Alavés",
+        "awayTeam": "Málaga",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.84,
+          "draw": 3.57,
+          "away": 4.36,
+          "refundRate": "94.97%"
+        },
+        "rawBookmakersCount": 13
+      },
+      {
+        "id": "734ad601156f5f4e6bc42317e5141516",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-24T12:00:00Z",
+        "homeTeam": "Rayo Vallecano",
+        "awayTeam": "Elche CF",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.76,
+          "draw": 3.81,
+          "away": 4.46,
+          "refundRate": "94.80%"
+        },
+        "rawBookmakersCount": 13
+      },
+      {
+        "id": "5960b1b6c20acfd78e78764fed47d505",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-24T14:15:00Z",
+        "homeTeam": "Real Racing Club de Santander",
+        "awayTeam": "Espanyol",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.38,
+          "draw": 3.62,
+          "away": 2.82,
+          "refundRate": "95.15%"
+        },
+        "rawBookmakersCount": 13
+      },
+      {
+        "id": "0dae715cc56fe201f9e667917c126691",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-24T16:30:00Z",
+        "homeTeam": "Valencia",
+        "awayTeam": "Villarreal",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.35,
+          "draw": 3.73,
+          "away": 2.06,
+          "refundRate": "95.05%"
+        },
+        "rawBookmakersCount": 13
+      },
+      {
+        "id": "70df1835c3b5ddff1c99e0189532136b",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-24T19:00:00Z",
+        "homeTeam": "Atlético Madrid",
+        "awayTeam": "Deportivo La Coruña",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.24,
+          "draw": 6.18,
+          "away": 10.85,
+          "refundRate": "94.30%"
+        },
+        "rawBookmakersCount": 12
+      },
+      {
+        "id": "9c4254cba9944a839b421db27260504d",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-25T13:00:00Z",
+        "homeTeam": "Athletic Bilbao",
+        "awayTeam": "Getafe",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.61,
+          "draw": 4.05,
+          "away": 5.31,
+          "refundRate": "94.67%"
+        },
+        "rawBookmakersCount": 13
+      },
+      {
+        "id": "2013e3955186ebe5258e85eb741a7553",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-25T15:15:00Z",
+        "homeTeam": "Celta Vigo",
+        "awayTeam": "Real Betis",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.69,
+          "draw": 3.53,
+          "away": 2.53,
+          "refundRate": "95.21%"
+        },
+        "rawBookmakersCount": 13
+      },
+      {
+        "id": "3cb8660cd2375b60e81144a7572cfb89",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-25T17:30:00Z",
+        "homeTeam": "Real Sociedad",
+        "awayTeam": "Levante",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.75,
+          "draw": 4.02,
+          "away": 4.28,
+          "refundRate": "94.89%"
+        },
+        "rawBookmakersCount": 13
+      },
+      {
+        "id": "72089d103a5fe6a922c35e17efba6ffc",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-25T20:00:00Z",
+        "homeTeam": "Barcelona",
+        "awayTeam": "Real Madrid",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.56,
+          "draw": 4.74,
+          "away": 4.92,
+          "refundRate": "94.76%"
+        },
+        "rawBookmakersCount": 13
+      },
+      {
+        "id": "85e464708d03287f24590e1478aeca31",
+        "sportKey": "soccer_spain_la_liga",
+        "sportTitle": "La Liga - Spain",
+        "commenceTime": "2026-10-26T20:00:00Z",
+        "homeTeam": "Sevilla",
+        "awayTeam": "CA Osasuna",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:43:02Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.95,
+          "draw": 3.4,
+          "away": 4.07,
+          "refundRate": "95.00%"
+        },
+        "rawBookmakersCount": 13
+      }
+    ],
+    "cachedAt": 1791880991950
+  },
+  "soccer_uefa_champs_league": {
+    "sportKey": "soccer_uefa_champs_league",
+    "games": [
+      {
+        "id": "2b0a946cac613732fcbf57ce931490a1",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-13T16:45:00Z",
+        "homeTeam": "RC Lens",
+        "awayTeam": "Sporting Lisbon",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:47Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.52,
+          "draw": 3.74,
+          "away": 2.71,
+          "refundRate": "96.79%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "46f726554e6876fb828c767bfbfdfdad",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-13T16:45:00Z",
+        "homeTeam": "Sabah FK",
+        "awayTeam": "Slavia Praha",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.87,
+          "draw": 3.89,
+          "away": 1.93,
+          "refundRate": "96.75%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "93177465a42a0fb7802f1c8b06d6ee3a",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-13T19:00:00Z",
+        "homeTeam": "Arsenal",
+        "awayTeam": "Lille",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.21,
+          "draw": 6.82,
+          "away": 14.86,
+          "refundRate": "96.12%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "a9c22e08b395ee5753c8a65bc0eb97cf",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-13T19:00:00Z",
+        "homeTeam": "Atlético Madrid",
+        "awayTeam": "Manchester United",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.97,
+          "draw": 3.72,
+          "away": 3.89,
+          "refundRate": "96.76%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "dd431688ed5c8f383b6434fd4f01e883",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-13T19:00:00Z",
+        "homeTeam": "Galatasaray",
+        "awayTeam": "Barcelona",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:47Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 8.5,
+          "draw": 6.37,
+          "away": 1.3,
+          "refundRate": "95.80%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "8a9d20b23417357011c10585a99335e9",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-13T19:00:00Z",
+        "homeTeam": "Viking FK",
+        "awayTeam": "Bayern Munich",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:47Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 20.96,
+          "draw": 12,
+          "away": 1.1,
+          "refundRate": "96.14%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "ca3f4b075d835413f9cb7bd3c439fdd0",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-13T19:00:00Z",
+        "homeTeam": "Inter Milan",
+        "awayTeam": "Club Brugge",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.25,
+          "draw": 6.31,
+          "away": 11.69,
+          "refundRate": "95.78%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "09e41b63d1d59bd4d971c54ffce154d3",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-13T19:00:00Z",
+        "homeTeam": "Villarreal",
+        "awayTeam": "Napoli",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.17,
+          "draw": 3.77,
+          "away": 3.26,
+          "refundRate": "96.82%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "da9e9e9eb9a238ed97827c4a8fbe6044",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-13T19:00:00Z",
+        "homeTeam": "RB Leipzig",
+        "awayTeam": "PSV Eindhoven",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.61,
+          "draw": 4.9,
+          "away": 4.74,
+          "refundRate": "96.51%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "5d6f9accd6f79ae4216dfd29ccc342b2",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-14T16:45:00Z",
+        "homeTeam": "Feyenoord",
+        "awayTeam": "Como",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:47Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.45,
+          "draw": 4.24,
+          "away": 1.96,
+          "refundRate": "96.53%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "2903ee092f7e08c549b130a3d394ac3c",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-14T16:45:00Z",
+        "homeTeam": "LASK",
+        "awayTeam": "Liverpool",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 9.47,
+          "draw": 6.48,
+          "away": 1.27,
+          "refundRate": "95.48%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "0f961390e790ad2c80ecb3f302cad4a6",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-14T19:00:00Z",
+        "homeTeam": "Shakhtar Donetsk",
+        "awayTeam": "AEK Athens",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.75,
+          "draw": 3.38,
+          "away": 2.68,
+          "refundRate": "96.84%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "d4ef112438afa4c2cdbbfc9376a009c9",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-14T19:00:00Z",
+        "homeTeam": "AS Roma",
+        "awayTeam": "Real Madrid",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.69,
+          "draw": 4.05,
+          "away": 1.93,
+          "refundRate": "96.52%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "3f3cb74e560dfcc3e795b667ed9ebdef",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-14T19:00:00Z",
+        "homeTeam": "Aston Villa",
+        "awayTeam": "Fenerbahce",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.65,
+          "draw": 4.25,
+          "away": 5.08,
+          "refundRate": "96.32%"
+        },
+        "rawBookmakersCount": 21
+      },
+      {
+        "id": "ca87a3874b0eae31b4173ae4a9324957",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-14T19:00:00Z",
+        "homeTeam": "Bodø/Glimt",
+        "awayTeam": "Borussia Dortmund",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:47Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.18,
+          "draw": 4.18,
+          "away": 2.08,
+          "refundRate": "96.67%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "5a1a6a04c5561897741105e30d5d7ec4",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-14T19:00:00Z",
+        "homeTeam": "Manchester City",
+        "awayTeam": "Paris Saint Germain",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.19,
+          "draw": 4.13,
+          "away": 2.99,
+          "refundRate": "96.79%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "4c7f87780ae5ab8bec9e83d6d6ec9909",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-14T19:00:00Z",
+        "homeTeam": "Real Betis",
+        "awayTeam": "Porto",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.04,
+          "draw": 3.85,
+          "away": 3.5,
+          "refundRate": "96.56%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "d7576351b8cb2396e32cc3de0446f3de",
+        "sportKey": "soccer_uefa_champs_league",
+        "sportTitle": "UEFA Champions League",
+        "commenceTime": "2026-10-14T19:00:00Z",
+        "homeTeam": "ŠK Slovan Bratislava",
+        "awayTeam": "VfB Stuttgart",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 9.39,
+          "draw": 6.14,
+          "away": 1.29,
+          "refundRate": "95.73%"
+        },
+        "rawBookmakersCount": 22
+      }
+    ],
+    "cachedAt": 1791880992452
+  },
+  "soccer_efl_champ": {
+    "sportKey": "soccer_efl_champ",
+    "games": [
+      {
+        "id": "59aa75d21f765e6ec2c671f4d8e76a27",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-13T18:45:00Z",
+        "homeTeam": "Bristol City",
+        "awayTeam": "Blackburn Rovers",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.13,
+          "draw": 3.43,
+          "away": 3.67,
+          "refundRate": "96.76%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "bd2a85de0af046a3b15fdfac6e78d0c5",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-13T18:45:00Z",
+        "homeTeam": "Wolverhampton Wanderers",
+        "awayTeam": "Bolton Wanderers",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:45Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.41,
+          "draw": 5.1,
+          "away": 7.58,
+          "refundRate": "96.41%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "6742eb24c0e60f9d3fec73a2aa324227",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-13T18:45:00Z",
+        "homeTeam": "Burnley",
+        "awayTeam": "Charlton Athletic",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.66,
+          "draw": 4.01,
+          "away": 5.41,
+          "refundRate": "96.47%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "3cd5667183559b0598e304d98a23cc20",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-13T18:45:00Z",
+        "homeTeam": "Cardiff City",
+        "awayTeam": "Watford",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.67,
+          "draw": 4.53,
+          "away": 4.62,
+          "refundRate": "96.52%"
+        },
+        "rawBookmakersCount": 21
+      },
+      {
+        "id": "a1b3fc4030f9f511934c8165151346a3",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-13T18:45:00Z",
+        "homeTeam": "Millwall",
+        "awayTeam": "Swansea City",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.46,
+          "draw": 3.48,
+          "away": 2.95,
+          "refundRate": "96.82%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "c46cfc0e1bcc460e455e006428cd4e83",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-13T18:45:00Z",
+        "homeTeam": "Wrexham AFC",
+        "awayTeam": "West Bromwich Albion",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.35,
+          "draw": 3.39,
+          "away": 3.2,
+          "refundRate": "96.80%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "c12dc476d773ac521742384d8d8d1481",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-13T19:00:00Z",
+        "homeTeam": "Birmingham City",
+        "awayTeam": "Preston North End",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.56,
+          "draw": 4.49,
+          "away": 5.72,
+          "refundRate": "96.29%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "b7eaf1b7d03aaf459509c65197a1fa26",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-13T19:00:00Z",
+        "homeTeam": "Stoke City",
+        "awayTeam": "Middlesbrough",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:45Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 3.49,
+          "draw": 3.74,
+          "away": 2.08,
+          "refundRate": "96.65%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "35d7cc4a96b152b4a31b0b151cb70feb",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-14T18:45:00Z",
+        "homeTeam": "Queens Park Rangers",
+        "awayTeam": "Derby County",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 1.7,
+          "draw": 3.92,
+          "away": 4.7,
+          "refundRate": "94.69%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "a6a5201c913ad65608fee5eb63532c62",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-14T18:45:00Z",
+        "homeTeam": "Norwich City",
+        "awayTeam": "Southampton",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.4,
+          "draw": 3.79,
+          "away": 2.71,
+          "refundRate": "95.28%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "6e99ceb52a57b3410b81067110589458",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-14T18:45:00Z",
+        "homeTeam": "Portsmouth",
+        "awayTeam": "Sheffield United",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:45Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 2.25,
+          "draw": 3.52,
+          "away": 3.12,
+          "refundRate": "95.32%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "b6f4ecaf15915781326083408fba0e52",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-14T19:00:00Z",
+        "homeTeam": "Lincoln City",
+        "awayTeam": "West Ham United",
+        "bookmakerKey": "pinnacle",
+        "bookmakerTitle": "Pinnacle",
+        "lastUpdate": "2026-10-13T08:42:46Z",
+        "isPinnacle": true,
+        "odds": {
+          "home": 4.41,
+          "draw": 4.12,
+          "away": 1.71,
+          "refundRate": "94.85%"
+        },
+        "rawBookmakersCount": 22
+      },
+      {
+        "id": "33ca3a3f8d14ad19340c32dff45c749e",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-16T19:00:00Z",
+        "homeTeam": "Burnley",
+        "awayTeam": "Wolverhampton Wanderers",
+        "bookmakerKey": "pmu_fr",
+        "bookmakerTitle": "PMU (FR)",
+        "lastUpdate": "2026-10-13T08:43:01Z",
+        "isPinnacle": false,
+        "odds": {
+          "home": 3,
+          "draw": 3.35,
+          "away": 2.07,
+          "refundRate": "89.69%"
+        },
+        "rawBookmakersCount": 14
+      },
+      {
+        "id": "fbbd46f088071f0f022dce6850bcfa80",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-17T11:30:00Z",
+        "homeTeam": "Middlesbrough",
+        "awayTeam": "Cardiff City",
+        "bookmakerKey": "unibet_se",
+        "bookmakerTitle": "Unibet (SE)",
+        "lastUpdate": "2026-10-13T08:42:32Z",
+        "isPinnacle": false,
+        "odds": {
+          "home": 1.44,
+          "draw": 4.8,
+          "away": 5.8,
+          "refundRate": "93.01%"
+        },
+        "rawBookmakersCount": 10
+      },
+      {
+        "id": "4419c1c886cc6f3ad0c00f0d6cfe2b62",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-17T11:30:00Z",
+        "homeTeam": "Watford",
+        "awayTeam": "Charlton Athletic",
+        "bookmakerKey": "unibet_se",
+        "bookmakerTitle": "Unibet (SE)",
+        "lastUpdate": "2026-10-13T08:42:32Z",
+        "isPinnacle": false,
+        "odds": {
+          "home": 2.04,
+          "draw": 3.35,
+          "away": 3.5,
+          "refundRate": "93.07%"
+        },
+        "rawBookmakersCount": 9
+      },
+      {
+        "id": "1d647c4a829133678cfb3a0425b1cd16",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-17T11:30:00Z",
+        "homeTeam": "Millwall",
+        "awayTeam": "Lincoln City",
+        "bookmakerKey": "unibet_se",
+        "bookmakerTitle": "Unibet (SE)",
+        "lastUpdate": "2026-10-13T08:42:32Z",
+        "isPinnacle": false,
+        "odds": {
+          "home": 1.94,
+          "draw": 3.5,
+          "away": 3.65,
+          "refundRate": "93.01%"
+        },
+        "rawBookmakersCount": 10
+      },
+      {
+        "id": "35d7df16a960d08a7d38e7f4f706677d",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-17T14:00:00Z",
+        "homeTeam": "Birmingham City",
+        "awayTeam": "Queens Park Rangers",
+        "bookmakerKey": "pmu_fr",
+        "bookmakerTitle": "PMU (FR)",
+        "lastUpdate": "2026-10-13T08:43:01Z",
+        "isPinnacle": false,
+        "odds": {
+          "home": 1.92,
+          "draw": 3.35,
+          "away": 3.35,
+          "refundRate": "89.46%"
+        },
+        "rawBookmakersCount": 10
+      },
+      {
+        "id": "37d564daa14e4724b53830d610cf5868",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-17T14:00:00Z",
+        "homeTeam": "West Bromwich Albion",
+        "awayTeam": "Blackburn Rovers",
+        "bookmakerKey": "pmu_fr",
+        "bookmakerTitle": "PMU (FR)",
+        "lastUpdate": "2026-10-13T08:43:01Z",
+        "isPinnacle": false,
+        "odds": {
+          "home": 1.68,
+          "draw": 3.5,
+          "away": 4.2,
+          "refundRate": "89.36%"
+        },
+        "rawBookmakersCount": 10
+      },
+      {
+        "id": "899f15da06998732d951a91ed8f5e32f",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-17T14:00:00Z",
+        "homeTeam": "Southampton",
+        "awayTeam": "Bolton Wanderers",
+        "bookmakerKey": "pmu_fr",
+        "bookmakerTitle": "PMU (FR)",
+        "lastUpdate": "2026-10-13T08:43:01Z",
+        "isPinnacle": false,
+        "odds": {
+          "home": 1.41,
+          "draw": 4.35,
+          "away": 5.75,
+          "refundRate": "89.85%"
+        },
+        "rawBookmakersCount": 10
+      },
+      {
+        "id": "530a906583ad9f1e013f382e2fe19c5e",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-17T14:00:00Z",
+        "homeTeam": "Bristol City",
+        "awayTeam": "Sheffield United",
+        "bookmakerKey": "pmu_fr",
+        "bookmakerTitle": "PMU (FR)",
+        "lastUpdate": "2026-10-13T08:43:01Z",
+        "isPinnacle": false,
+        "odds": {
+          "home": 2.17,
+          "draw": 3.25,
+          "away": 2.88,
+          "refundRate": "89.63%"
+        },
+        "rawBookmakersCount": 8
+      },
+      {
+        "id": "24970eb98cc5999cf3187abfc3a74a27",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-17T14:00:00Z",
+        "homeTeam": "Derby County",
+        "awayTeam": "Stoke City",
+        "bookmakerKey": "pmu_fr",
+        "bookmakerTitle": "PMU (FR)",
+        "lastUpdate": "2026-10-13T08:43:01Z",
+        "isPinnacle": false,
+        "odds": {
+          "home": 2.43,
+          "draw": 3.1,
+          "away": 2.63,
+          "refundRate": "89.74%"
+        },
+        "rawBookmakersCount": 10
+      },
+      {
+        "id": "7a8f8a079740c8d4b39c995cdd304e0c",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-17T14:00:00Z",
+        "homeTeam": "Norwich City",
+        "awayTeam": "Portsmouth",
+        "bookmakerKey": "pmu_fr",
+        "bookmakerTitle": "PMU (FR)",
+        "lastUpdate": "2026-10-13T08:43:01Z",
+        "isPinnacle": false,
+        "odds": {
+          "home": 1.62,
+          "draw": 3.65,
+          "away": 4.4,
+          "refundRate": "89.40%"
+        },
+        "rawBookmakersCount": 10
+      },
+      {
+        "id": "33ad80e4f2bfa519396049639fd4d31a",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-17T14:00:00Z",
+        "homeTeam": "Wrexham AFC",
+        "awayTeam": "Preston North End",
+        "bookmakerKey": "pmu_fr",
+        "bookmakerTitle": "PMU (FR)",
+        "lastUpdate": "2026-10-13T08:43:01Z",
+        "isPinnacle": false,
+        "odds": {
+          "home": 1.7,
+          "draw": 3.5,
+          "away": 4.2,
+          "refundRate": "89.92%"
+        },
+        "rawBookmakersCount": 10
+      },
+      {
+        "id": "b6bf48e65d78b5615da5f3ab904fa5d4",
+        "sportKey": "soccer_efl_champ",
+        "sportTitle": "Championship",
+        "commenceTime": "2026-10-17T14:00:00Z",
+        "homeTeam": "Swansea City",
+        "awayTeam": "West Ham United",
+        "bookmakerKey": "pmu_fr",
+        "bookmakerTitle": "PMU (FR)",
+        "lastUpdate": "2026-10-13T08:43:01Z",
+        "isPinnacle": false,
+        "odds": {
+          "home": 3.4,
+          "draw": 3.5,
+          "away": 1.87,
+          "refundRate": "89.72%"
+        },
+        "rawBookmakersCount": 10
+      }
+    ],
+    "cachedAt": 1791880992652
+  }
+}

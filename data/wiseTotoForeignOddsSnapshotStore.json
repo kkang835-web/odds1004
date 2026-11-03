@@ -1,0 +1,1152 @@
+{
+  "version": "1.0.0-foreign-odds-snapshots",
+  "updatedAt": "2026-10-20T04:11:48.506Z",
+  "source": "WiseToto",
+  "provenance": "REAL_EXTERNAL",
+  "snapshotsByMatch": {
+    "match_2026_80_1": [
+      {
+        "snapshotId": "match_2026_80_1__2026-10-03T15:15:00.000Z",
+        "matchId": "match_2026_80_1",
+        "gameId": "match_2026_80_1",
+        "gameNo": 1,
+        "year": 2026,
+        "round": 80,
+        "sport": "soccer",
+        "capturedAt": "2026-10-03T15:18:22.000Z",
+        "normalized15MinuteBucket": "2026-10-03T15:15:00.000Z",
+        "source": "WiseToto",
+        "sourceUrl": "https://www.wisetoto.com/util/gameinfo/get_detail_rate_info.htm?game_no=1",
+        "provenance": "REAL_EXTERNAL",
+        "bookmakers": [
+          {
+            "bookmaker": "bet365",
+            "normalizedName": "bet365",
+            "market": "1X2",
+            "homeOdds": 2.1,
+            "drawOdds": 3.25,
+            "awayOdds": 3.4,
+            "home": 2.1,
+            "draw": 3.25,
+            "away": 3.4,
+            "homeMovement": "up",
+            "drawMovement": "flat",
+            "awayMovement": "down",
+            "movement": {
+              "home": "up",
+              "draw": "flat",
+              "away": "down"
+            },
+            "source": "WiseToto",
+            "provenance": "REAL_EXTERNAL",
+            "capturedAt": "2026-10-03T15:18:22.000Z"
+          },
+          {
+            "bookmaker": "UNIBET",
+            "normalizedName": "UNIBET",
+            "market": "1X2",
+            "homeOdds": 2.08,
+            "drawOdds": 3.3,
+            "awayOdds": 3.45,
+            "home": 2.08,
+            "draw": 3.3,
+            "away": 3.45,
+            "homeMovement": "flat",
+            "drawMovement": "flat",
+            "awayMovement": "down",
+            "movement": {
+              "home": "flat",
+              "draw": "flat",
+              "away": "down"
+            },
+            "source": "WiseToto",
+            "provenance": "REAL_EXTERNAL",
+            "capturedAt": "2026-10-03T15:18:22.000Z"
+          }
+        ]
+      },
+      {
+        "snapshotId": "match_2026_80_1__2026-10-03T15:30:00.000Z",
+        "matchId": "match_2026_80_1",
+        "gameId": "match_2026_80_1",
+        "gameNo": 1,
+        "year": 2026,
+        "round": 80,
+        "sport": "soccer",
+        "capturedAt": "2026-10-03T15:32:00.000Z",
+        "normalized15MinuteBucket": "2026-10-03T15:30:00.000Z",
+        "source": "WiseToto",
+        "sourceUrl": "https://www.wisetoto.com/util/gameinfo/get_detail_rate_info.htm?game_no=1",
+        "provenance": "REAL_EXTERNAL",
+        "bookmakers": [
+          {
+            "bookmaker": "bet365",
+            "normalizedName": "bet365",
+            "market": "1X2",
+            "homeOdds": 2.1,
+            "drawOdds": 3.25,
+            "awayOdds": 3.4,
+            "home": 2.1,
+            "draw": 3.25,
+            "away": 3.4,
+            "homeMovement": "up",
+            "drawMovement": "flat",
+            "awayMovement": "down",
+            "movement": {
+              "home": "up",
+              "draw": "flat",
+              "away": "down"
+            },
+            "source": "WiseToto",
+            "provenance": "REAL_EXTERNAL",
+            "capturedAt": "2026-10-03T15:18:22.000Z"
+          },
+          {
+            "bookmaker": "UNIBET",
+            "normalizedName": "UNIBET",
+            "market": "1X2",
+            "homeOdds": 2.08,
+            "drawOdds": 3.3,
+            "awayOdds": 3.45,
+            "home": 2.08,
+            "draw": 3.3,
+            "away": 3.45,
+            "homeMovement": "flat",
+            "drawMovement": "flat",
+            "awayMovement": "down",
+            "movement": {
+              "home": "flat",
+              "draw": "flat",
+              "away": "down"
+            },
+            "source": "WiseToto",
+            "provenance": "REAL_EXTERNAL",
+            "capturedAt": "2026-10-03T15:18:22.000Z"
+          }
+        ]
+      }
+    ],
+    "match_gap_test": [
+      {
+        "snapshotId": "match_gap_test__2026-10-03T10:00:00.000Z",
+        "matchId": "match_gap_test",
+        "gameId": "match_gap_test",
+        "gameNo": 99,
+        "capturedAt": "2026-10-03T10:02:00.000Z",
+        "normalized15MinuteBucket": "2026-10-03T10:00:00.000Z",
+        "source": "WiseToto",
+        "sourceUrl": "https://www.wisetoto.com",
+        "provenance": "REAL_EXTERNAL",
+        "bookmakers": [
+          {
+            "bookmaker": "bet365",
+            "normalizedName": "bet365",
+            "market": "1X2",
+            "homeOdds": 2.1,
+            "drawOdds": 3.25,
+            "awayOdds": 3.4,
+            "home": 2.1,
+            "draw": 3.25,
+            "away": 3.4,
+            "homeMovement": "up",
+            "drawMovement": "flat",
+            "awayMovement": "down",
+            "movement": {
+              "home": "up",
+              "draw": "flat",
+              "away": "down"
+            },
+            "source": "WiseToto",
+            "provenance": "REAL_EXTERNAL",
+            "capturedAt": "2026-10-03T15:18:22.000Z"
+          },
+          {
+            "bookmaker": "UNIBET",
+            "normalizedName": "UNIBET",
+            "market": "1X2",
+            "homeOdds": 2.08,
+            "drawOdds": 3.3,
+            "awayOdds": 3.45,
+            "home": 2.08,
+            "draw": 3.3,
+            "away": 3.45,
+            "homeMovement": "flat",
+            "drawMovement": "flat",
+            "awayMovement": "down",
+            "movement": {
+              "home": "flat",
+              "draw": "flat",
+              "away": "down"
+            },
+            "source": "WiseToto",
+            "provenance": "REAL_EXTERNAL",
+            "capturedAt": "2026-10-03T15:18:22.000Z"
+          }
+        ]
+      },
+      {
+        "snapshotId": "match_gap_test__2026-10-03T10:15:00.000Z",
+        "matchId": "match_gap_test",
+        "gameId": "match_gap_test",
+        "gameNo": 99,
+        "capturedAt": "2026-10-03T10:17:00.000Z",
+        "normalized15MinuteBucket": "2026-10-03T10:15:00.000Z",
+        "source": "WiseToto",
+        "sourceUrl": "https://www.wisetoto.com",
+        "provenance": "REAL_EXTERNAL",
+        "bookmakers": [
+          {
+            "bookmaker": "bet365",
+            "normalizedName": "bet365",
+            "market": "1X2",
+            "homeOdds": 2.1,
+            "drawOdds": 3.25,
+            "awayOdds": 3.4,
+            "home": 2.1,
+            "draw": 3.25,
+            "away": 3.4,
+            "homeMovement": "up",
+            "drawMovement": "flat",
+            "awayMovement": "down",
+            "movement": {
+              "home": "up",
+              "draw": "flat",
+              "away": "down"
+            },
+            "source": "WiseToto",
+            "provenance": "REAL_EXTERNAL",
+            "capturedAt": "2026-10-03T15:18:22.000Z"
+          },
+          {
+            "bookmaker": "UNIBET",
+            "normalizedName": "UNIBET",
+            "market": "1X2",
+            "homeOdds": 2.08,
+            "drawOdds": 3.3,
+            "awayOdds": 3.45,
+            "home": 2.08,
+            "draw": 3.3,
+            "away": 3.45,
+            "homeMovement": "flat",
+            "drawMovement": "flat",
+            "awayMovement": "down",
+            "movement": {
+              "home": "flat",
+              "draw": "flat",
+              "away": "down"
+            },
+            "source": "WiseToto",
+            "provenance": "REAL_EXTERNAL",
+            "capturedAt": "2026-10-03T15:18:22.000Z"
+          }
+        ]
+      },
+      {
+        "snapshotId": "match_gap_test__2026-10-03T10:45:00.000Z",
+        "matchId": "match_gap_test",
+        "gameId": "match_gap_test",
+        "gameNo": 99,
+        "capturedAt": "2026-10-03T10:47:00.000Z",
+        "normalized15MinuteBucket": "2026-10-03T10:45:00.000Z",
+        "source": "WiseToto",
+        "sourceUrl": "https://www.wisetoto.com",
+        "provenance": "REAL_EXTERNAL",
+        "bookmakers": [
+          {
+            "bookmaker": "bet365",
+            "normalizedName": "bet365",
+            "market": "1X2",
+            "homeOdds": 2.1,
+            "drawOdds": 3.25,
+            "awayOdds": 3.4,
+            "home": 2.1,
+            "draw": 3.25,
+            "away": 3.4,
+            "homeMovement": "up",
+            "drawMovement": "flat",
+            "awayMovement": "down",
+            "movement": {
+              "home": "up",
+              "draw": "flat",
+              "away": "down"
+            },
+            "source": "WiseToto",
+            "provenance": "REAL_EXTERNAL",
+            "capturedAt": "2026-10-03T15:18:22.000Z"
+          },
+          {
+            "bookmaker": "UNIBET",
+            "normalizedName": "UNIBET",
+            "market": "1X2",
+            "homeOdds": 2.08,
+            "drawOdds": 3.3,
+            "awayOdds": 3.45,
+            "home": 2.08,
+            "draw": 3.3,
+            "away": 3.45,
+            "homeMovement": "flat",
+            "drawMovement": "flat",
+            "awayMovement": "down",
+            "movement": {
+              "home": "flat",
+              "draw": "flat",
+              "away": "down"
+            },
+            "source": "WiseToto",
+            "provenance": "REAL_EXTERNAL",
+            "capturedAt": "2026-10-03T15:18:22.000Z"
+          }
+        ]
+      }
+    ]
+  },
+  "operationLogs": [
+    {
+      "logId": "log_1791066682831_az4cx",
+      "timestamp": "2026-10-03T22:31:22.831Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_COLLECTED",
+      "gameId": "match_2026_80_1",
+      "gameNo": 1,
+      "message": "Collected 2 bookmakers for game match_2026_80_1 in bucket 2026-10-03T15:15:00.000Z",
+      "metadata": {
+        "bucket": "2026-10-03T15:15:00.000Z",
+        "snapshotId": "match_2026_80_1__2026-10-03T15:15:00.000Z",
+        "bookmakers": [
+          "bet365",
+          "UNIBET"
+        ]
+      }
+    },
+    {
+      "logId": "log_1791066682838_ym2km",
+      "timestamp": "2026-10-03T22:31:22.838Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_SKIPPED_DUPLICATE",
+      "gameId": "match_2026_80_1",
+      "gameNo": 1,
+      "message": "Skipped duplicate snapshot for game match_2026_80_1 in bucket 2026-10-03T15:15:00.000Z",
+      "metadata": {
+        "bucket": "2026-10-03T15:15:00.000Z",
+        "snapshotId": "match_2026_80_1__2026-10-03T15:15:00.000Z"
+      }
+    },
+    {
+      "logId": "log_1791066682839_tdwt2",
+      "timestamp": "2026-10-03T22:31:22.839Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_COLLECTED",
+      "gameId": "match_2026_80_1",
+      "gameNo": 1,
+      "message": "Collected 2 bookmakers for game match_2026_80_1 in bucket 2026-10-03T15:30:00.000Z",
+      "metadata": {
+        "bucket": "2026-10-03T15:30:00.000Z",
+        "snapshotId": "match_2026_80_1__2026-10-03T15:30:00.000Z",
+        "bookmakers": [
+          "bet365",
+          "UNIBET"
+        ]
+      }
+    },
+    {
+      "logId": "log_1791066682845_4dlq7",
+      "timestamp": "2026-10-03T22:31:22.845Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_COLLECTED",
+      "gameId": "match_gap_test",
+      "gameNo": 99,
+      "message": "Collected 2 bookmakers for game match_gap_test in bucket 2026-10-03T10:00:00.000Z",
+      "metadata": {
+        "bucket": "2026-10-03T10:00:00.000Z",
+        "snapshotId": "match_gap_test__2026-10-03T10:00:00.000Z",
+        "bookmakers": [
+          "bet365",
+          "UNIBET"
+        ]
+      }
+    },
+    {
+      "logId": "log_1791066682846_y3c5o",
+      "timestamp": "2026-10-03T22:31:22.846Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_COLLECTED",
+      "gameId": "match_gap_test",
+      "gameNo": 99,
+      "message": "Collected 2 bookmakers for game match_gap_test in bucket 2026-10-03T10:15:00.000Z",
+      "metadata": {
+        "bucket": "2026-10-03T10:15:00.000Z",
+        "snapshotId": "match_gap_test__2026-10-03T10:15:00.000Z",
+        "bookmakers": [
+          "bet365",
+          "UNIBET"
+        ]
+      }
+    },
+    {
+      "logId": "log_1791066682846_zkcjx",
+      "timestamp": "2026-10-03T22:31:22.846Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_COLLECTED",
+      "gameId": "match_gap_test",
+      "gameNo": 99,
+      "message": "Collected 2 bookmakers for game match_gap_test in bucket 2026-10-03T10:45:00.000Z",
+      "metadata": {
+        "bucket": "2026-10-03T10:45:00.000Z",
+        "snapshotId": "match_gap_test__2026-10-03T10:45:00.000Z",
+        "bookmakers": [
+          "bet365",
+          "UNIBET"
+        ]
+      }
+    },
+    {
+      "logId": "log_1791066682850_1g8nk",
+      "timestamp": "2026-10-03T22:31:22.850Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791066682851_3diq0",
+      "timestamp": "2026-10-03T22:31:22.851Z",
+      "event": "SCHEDULER_STOPPED",
+      "message": "WiseToto foreign odds 15-minute scheduler stopped."
+    },
+    {
+      "logId": "log_1791066682853_r2ysa",
+      "timestamp": "2026-10-03T22:31:22.853Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {
+          "dryRun": true,
+          "mockHtmlFixture": {
+            "match_2026_80_1": "\n<div class=\"item_table\">\n  <table class=\"table_style\">\n    <tr><th>구분</th><th>승</th><th>무</th><th>패</th></tr>\n    <tr><td>베트맨</td><td>1.80</td><td>3.20</td><td>3.80</td></tr>\n  </table>\n</div>\n</div>\n<div class=\"item_table\">\n  <table class=\"table_style\">\n    <tr><th>BOOK MAKER</th><th>승</th><th>무</th><th>패</th></tr>\n    <tr>\n      <td>bet365</td>\n      <td>2.10 <span class=\"up\">▲</span></td>\n      <td>3.40</td>\n      <td>3.30 <span class=\"down\">▼</span></td>\n    </tr>\n    <tr>\n      <td>UNIBET</td>\n      <td>2.05</td>\n      <td>3.45</td>\n      <td>3.35</td>\n    </tr>\n    <tr>\n      <td>William Hill</td>\n      <td>2.00</td>\n      <td>3.30</td>\n      <td>3.50</td>\n    </tr>\n    <tr>\n      <td>bwin</td>\n      <td>2.15</td>\n      <td>3.25</td>\n      <td>3.20</td>\n    </tr>\n    <tr>\n      <td>SBOBET</td>\n      <td>2.08</td>\n      <td>3.35</td>\n      <td>3.40</td>\n    </tr>\n    <tr>\n      <td>Ladbrokes</td>\n      <td>2.05</td>\n      <td>3.30</td>\n      <td>3.40</td>\n    </tr>\n  </table>\n</div>\n</div>|!|\n"
+          }
+        }
+      }
+    },
+    {
+      "logId": "log_1791066683255_jfv4h",
+      "timestamp": "2026-10-03T22:31:23.255Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 401ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-03T22:31:22.853Z",
+        "completedAt": "2026-10-03T22:31:23.254Z",
+        "durationMs": 401
+      }
+    },
+    {
+      "logId": "log_1791566063560_p0mlh",
+      "timestamp": "2026-10-09T17:14:23.560Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791566964294_ishua",
+      "timestamp": "2026-10-09T17:29:24.294Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791566964917_vcaio",
+      "timestamp": "2026-10-09T17:29:24.917Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 624ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-09T17:29:24.293Z",
+        "completedAt": "2026-10-09T17:29:24.917Z",
+        "durationMs": 624
+      }
+    },
+    {
+      "logId": "log_1791567864331_a2mno",
+      "timestamp": "2026-10-09T17:44:24.331Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791567864907_kgf69",
+      "timestamp": "2026-10-09T17:44:24.907Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 576ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-09T17:44:24.331Z",
+        "completedAt": "2026-10-09T17:44:24.907Z",
+        "durationMs": 576
+      }
+    },
+    {
+      "logId": "log_1791568764537_rpu7s",
+      "timestamp": "2026-10-09T17:59:24.537Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791568765228_szmk0",
+      "timestamp": "2026-10-09T17:59:25.228Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 691ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-09T17:59:24.536Z",
+        "completedAt": "2026-10-09T17:59:25.227Z",
+        "durationMs": 691
+      }
+    },
+    {
+      "logId": "log_1791569156208_nxcbm",
+      "timestamp": "2026-10-09T18:05:56.208Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791570056979_36n83",
+      "timestamp": "2026-10-09T18:20:56.979Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791570057602_yfi69",
+      "timestamp": "2026-10-09T18:20:57.602Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 623ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-09T18:20:56.978Z",
+        "completedAt": "2026-10-09T18:20:57.601Z",
+        "durationMs": 623
+      }
+    },
+    {
+      "logId": "log_1791653397106_zqid2",
+      "timestamp": "2026-10-10T17:29:57.106Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791653532840_p5k0e",
+      "timestamp": "2026-10-10T17:32:12.840Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791654433620_9f6dx",
+      "timestamp": "2026-10-10T17:47:13.620Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791654434347_fzcu4",
+      "timestamp": "2026-10-10T17:47:14.347Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 727ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T17:47:13.619Z",
+        "completedAt": "2026-10-10T17:47:14.346Z",
+        "durationMs": 727
+      }
+    },
+    {
+      "logId": "log_1791655333654_oaf93",
+      "timestamp": "2026-10-10T18:02:13.654Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791655334385_2zldt",
+      "timestamp": "2026-10-10T18:02:14.385Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 732ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T18:02:13.653Z",
+        "completedAt": "2026-10-10T18:02:14.385Z",
+        "durationMs": 732
+      }
+    },
+    {
+      "logId": "log_1791655558374_srn0f",
+      "timestamp": "2026-10-10T18:05:58.374Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791656459159_1ov0d",
+      "timestamp": "2026-10-10T18:20:59.159Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791656459836_lrpv1",
+      "timestamp": "2026-10-10T18:20:59.836Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 678ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T18:20:59.158Z",
+        "completedAt": "2026-10-10T18:20:59.836Z",
+        "durationMs": 678
+      }
+    },
+    {
+      "logId": "log_1791657359159_jwaz2",
+      "timestamp": "2026-10-10T18:35:59.159Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791657359794_nqirt",
+      "timestamp": "2026-10-10T18:35:59.794Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 636ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T18:35:59.158Z",
+        "completedAt": "2026-10-10T18:35:59.794Z",
+        "durationMs": 636
+      }
+    },
+    {
+      "logId": "log_1791658259159_kysbt",
+      "timestamp": "2026-10-10T18:50:59.159Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791658259886_hepdq",
+      "timestamp": "2026-10-10T18:50:59.886Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 727ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T18:50:59.158Z",
+        "completedAt": "2026-10-10T18:50:59.885Z",
+        "durationMs": 727
+      }
+    },
+    {
+      "logId": "log_1791658280337_sdw09",
+      "timestamp": "2026-10-10T18:51:20.337Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791659180340_bf4p8",
+      "timestamp": "2026-10-10T19:06:20.340Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791659181098_ajbx1",
+      "timestamp": "2026-10-10T19:06:21.098Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 759ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T19:06:20.339Z",
+        "completedAt": "2026-10-10T19:06:21.097Z",
+        "durationMs": 759
+      }
+    },
+    {
+      "logId": "log_1791659838851_pepi6",
+      "timestamp": "2026-10-10T19:17:18.851Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791660738854_oytk6",
+      "timestamp": "2026-10-10T19:32:18.854Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791660739647_bttgo",
+      "timestamp": "2026-10-10T19:32:19.647Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 794ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T19:32:18.853Z",
+        "completedAt": "2026-10-10T19:32:19.647Z",
+        "durationMs": 794
+      }
+    },
+    {
+      "logId": "log_1791661105935_7i4by",
+      "timestamp": "2026-10-10T19:38:25.935Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791662005940_e6r4o",
+      "timestamp": "2026-10-10T19:53:25.940Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791662006752_xjzyp",
+      "timestamp": "2026-10-10T19:53:26.752Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 812ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T19:53:25.939Z",
+        "completedAt": "2026-10-10T19:53:26.751Z",
+        "durationMs": 812
+      }
+    },
+    {
+      "logId": "log_1791662158812_ol73k",
+      "timestamp": "2026-10-10T19:55:58.812Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791663058815_r8zul",
+      "timestamp": "2026-10-10T20:10:58.815Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791663059604_cf1pw",
+      "timestamp": "2026-10-10T20:10:59.604Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 789ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T20:10:58.814Z",
+        "completedAt": "2026-10-10T20:10:59.603Z",
+        "durationMs": 789
+      }
+    },
+    {
+      "logId": "log_1791663958814_wi8h2",
+      "timestamp": "2026-10-10T20:25:58.814Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791663959554_47bqi",
+      "timestamp": "2026-10-10T20:25:59.554Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 741ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T20:25:58.813Z",
+        "completedAt": "2026-10-10T20:25:59.554Z",
+        "durationMs": 741
+      }
+    },
+    {
+      "logId": "log_1791664858815_6oyy0",
+      "timestamp": "2026-10-10T20:40:58.815Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791664859635_255s1",
+      "timestamp": "2026-10-10T20:40:59.635Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 820ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T20:40:58.814Z",
+        "completedAt": "2026-10-10T20:40:59.634Z",
+        "durationMs": 820
+      }
+    },
+    {
+      "logId": "log_1791665196255_163u1",
+      "timestamp": "2026-10-10T20:46:36.255Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791665802334_qda0o",
+      "timestamp": "2026-10-10T20:56:42.334Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791666348235_0fjuu",
+      "timestamp": "2026-10-10T21:05:48.235Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791667248238_oxkz3",
+      "timestamp": "2026-10-10T21:20:48.238Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791667248962_o8y68",
+      "timestamp": "2026-10-10T21:20:48.962Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 724ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T21:20:48.237Z",
+        "completedAt": "2026-10-10T21:20:48.961Z",
+        "durationMs": 724
+      }
+    },
+    {
+      "logId": "log_1791667983115_n5cs8",
+      "timestamp": "2026-10-10T21:33:03.115Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791668472065_ystex",
+      "timestamp": "2026-10-10T21:41:12.065Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791669372069_jtc42",
+      "timestamp": "2026-10-10T21:56:12.069Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791669372843_4jkn6",
+      "timestamp": "2026-10-10T21:56:12.843Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 776ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-10T21:56:12.067Z",
+        "completedAt": "2026-10-10T21:56:12.843Z",
+        "durationMs": 776
+      }
+    },
+    {
+      "logId": "log_1791875678072_pxfiq",
+      "timestamp": "2026-10-13T07:14:38.072Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791875823739_qjdl3",
+      "timestamp": "2026-10-13T07:17:03.739Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791876267491_w9vw6",
+      "timestamp": "2026-10-13T07:24:27.491Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791876487985_evu8f",
+      "timestamp": "2026-10-13T07:28:07.985Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791877387989_5x1ou",
+      "timestamp": "2026-10-13T07:43:07.989Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791877388870_6npov",
+      "timestamp": "2026-10-13T07:43:08.870Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 881ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-13T07:43:07.988Z",
+        "completedAt": "2026-10-13T07:43:08.869Z",
+        "durationMs": 881
+      }
+    },
+    {
+      "logId": "log_1791878287988_fvjix",
+      "timestamp": "2026-10-13T07:58:07.989Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791878288793_px5pe",
+      "timestamp": "2026-10-13T07:58:08.793Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 804ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-13T07:58:07.988Z",
+        "completedAt": "2026-10-13T07:58:08.792Z",
+        "durationMs": 804
+      }
+    },
+    {
+      "logId": "log_1791879187990_zhaja",
+      "timestamp": "2026-10-13T08:13:07.990Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791879188803_tn2co",
+      "timestamp": "2026-10-13T08:13:08.803Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 813ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-13T08:13:07.989Z",
+        "completedAt": "2026-10-13T08:13:08.802Z",
+        "durationMs": 813
+      }
+    },
+    {
+      "logId": "log_1791879275078_j0mp2",
+      "timestamp": "2026-10-13T08:14:35.079Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791879745530_ypwzm",
+      "timestamp": "2026-10-13T08:22:25.530Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1791880645534_6vic9",
+      "timestamp": "2026-10-13T08:37:25.534Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_STARTED",
+      "message": "Foreign odds 15-minute snapshot cycle started.",
+      "metadata": {
+        "options": {}
+      }
+    },
+    {
+      "logId": "log_1791880646620_yt3ux",
+      "timestamp": "2026-10-13T08:37:26.620Z",
+      "event": "FOREIGN_ODDS_SNAPSHOT_CYCLE_COMPLETED",
+      "message": "Cycle completed in 1086ms: 0 inserted, 0 duplicates skipped, 0 no data, 0 errors.",
+      "metadata": {
+        "status": "SUCCESS",
+        "gamesScanned": 0,
+        "gamesWithForeignOdds": 0,
+        "snapshotsInserted": 0,
+        "duplicatesSkipped": 0,
+        "noData": 0,
+        "errors": 0,
+        "startedAt": "2026-10-13T08:37:25.533Z",
+        "completedAt": "2026-10-13T08:37:26.619Z",
+        "durationMs": 1086
+      }
+    },
+    {
+      "logId": "log_1792224999742_f39l7",
+      "timestamp": "2026-10-17T08:16:39.742Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1792225833122_aknw5",
+      "timestamp": "2026-10-17T08:30:33.122Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1792225867647_1npq8",
+      "timestamp": "2026-10-17T08:31:07.647Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    },
+    {
+      "logId": "log_1792469508506_5j9ir",
+      "timestamp": "2026-10-20T04:11:48.506Z",
+      "event": "SCHEDULER_STARTED",
+      "message": "WiseToto foreign odds 15-minute scheduler started with interval 900000ms (15.0m)."
+    }
+  ]
+}
