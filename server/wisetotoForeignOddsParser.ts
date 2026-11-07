@@ -52,7 +52,13 @@ const KNOWN_BOOKMAKERS: Record<string, string> = {
   "marathonbet": "Marathonbet",
   "interwetten": "Interwetten",
   "188bet": "188Bet",
-  "dafabet": "Dafabet"
+  "dafabet": "Dafabet",
+  "betandwin": "bwin",
+  "BetAndWin": "bwin",
+  "sbobet2": "SBOBET",
+  "Sbobet2": "SBOBET",
+  "betathome": "bet-at-home",
+  "BetAtHome": "bet-at-home"
 };
 
 export function normalizeBookmakerName(rawName: string): string {
@@ -67,13 +73,26 @@ export function normalizeBookmakerName(rawName: string): string {
   return clean;
 }
 
+export function extractBookmakerNameFromCell(cellHtml: string): string {
+  if (!cellHtml) return "";
+  const tdAlt = (cellHtml.match(/<td[^>]*\balt=["']([^"']+)["']/i) || [])[1]?.trim();
+  if (tdAlt) return tdAlt;
+  const imgAlt = (cellHtml.match(/<img[^>]*\balt=["']([^"']+)["']/i) || [])[1]?.trim();
+  if (imgAlt) return imgAlt;
+  const imgSrc = (cellHtml.match(/\/icon\/([^/.]+)\.(?:png|jpg|gif)/i) || [])[1]?.trim();
+  if (imgSrc && !imgSrc.startsWith("ico_") && !imgSrc.startsWith("text_")) return imgSrc;
+  return cellHtml.replace(/<[^>]+>/g, "").trim();
+}
+
 export function parseOddsMovement(htmlOrText: string): OddsMovement {
   if (!htmlOrText) return "unknown";
   
   if (
+    htmlOrText.includes("ico_up.png") ||
     htmlOrText.includes('class="up"') ||
     htmlOrText.includes("class='up'") ||
     htmlOrText.includes("▲") ||
+    htmlOrText.includes("↑") ||
     htmlOrText.includes("&#9650;") ||
     htmlOrText.includes("&utrif;")
   ) {
@@ -81,9 +100,11 @@ export function parseOddsMovement(htmlOrText: string): OddsMovement {
   }
   
   if (
+    htmlOrText.includes("ico_down.png") ||
     htmlOrText.includes('class="down"') ||
     htmlOrText.includes("class='down'") ||
     htmlOrText.includes("▼") ||
+    htmlOrText.includes("↓") ||
     htmlOrText.includes("&#9660;") ||
     htmlOrText.includes("&dtrif;")
   ) {
@@ -100,7 +121,7 @@ export function parseOddsMovement(htmlOrText: string): OddsMovement {
 
 export function extractOddsValue(htmlOrText: string): number | null {
   if (!htmlOrText) return null;
-  const clean = htmlOrText.replace(/<[^>]+>/g, "").replace(/[▲▼]/g, "").trim();
+  const clean = htmlOrText.replace(/<[^>]+>/g, "").replace(/[▲▼↑↓]/g, "").trim();
   const match = clean.match(/(\d+\.\d+|\d+)/);
   if (!match) return null;
   const val = parseFloat(match[1]);
@@ -118,7 +139,7 @@ export interface ParseRateInfoOptions {
 }
 
 /**
- * Main parser function for WiseToto get_detail_rate_info.htm HTML response
+ * Main parser function for WiseToto get_detail_rate_info.htm / get_foreign_rate.htm HTML response
  */
 export function parseWisetotoRateInfoHtml(
   rawHtml: string,
@@ -191,8 +212,12 @@ export function parseWisetotoRateInfoHtml(
     }
   }
 
-  // 2. Parse Foreign Bookmakers Table (Section 1 or any table containing bookmaker names)
-  const foreignSectionHtml = sections[1] || (cleanHtml.includes("BOOK MAKER") || cleanHtml.includes("해외 배당") ? cleanHtml : "");
+  // 2. Parse Foreign Bookmakers Table (Section 1 or #dividend_rate / BOOK MAKER table)
+  const dividendSectionMatch = cleanHtml.match(/<div[^>]*id=["'](?:dividend_rate|rate_inner_wrap)["'][^>]*>([\s\S]*?)$/i);
+  const foreignSectionHtml =
+    sections[1] ||
+    (dividendSectionMatch ? dividendSectionMatch[1] : "") ||
+    (cleanHtml.includes("BOOK MAKER") || cleanHtml.includes("해외 배당") ? cleanHtml : "");
   const foreignBookmakers: ForeignBookmakerOdds[] = [];
 
   if (foreignSectionHtml) {
@@ -202,20 +227,19 @@ export function parseWisetotoRateInfoHtml(
     const rows = foreignSectionHtml.match(/<tr[^>]*>([\s\S]*?)<\/tr>/gi) || [];
     
     for (const row of rows) {
-      // Skip table header rows
-      if (row.includes("<th") || row.includes("BOOK MAKER") || row.includes("북메이커")) {
+      // Skip table header rows or empty state rows
+      if (row.includes("<th") || row.includes("BOOK MAKER") || row.includes("북메이커") || row.includes("데이터가 없습니다")) {
         continue;
       }
 
       const cells = row.match(/<td[^>]*>([\s\S]*?)<\/td>/gi) || [];
-      if (cells.length < 2) continue;
+      if (cells.length < 3) continue;
 
-      const rawBookmakerName = cells[0].replace(/<[^>]+>/g, "").trim();
+      const rawBookmakerName = extractBookmakerNameFromCell(cells[0]);
       if (!rawBookmakerName || rawBookmakerName === "-" || rawBookmakerName.length < 2) continue;
 
       const normalizedName = normalizeBookmakerName(rawBookmakerName);
 
-      // Handle 3-way (Soccer: Bookmaker, Win, Draw, Lose) vs 2-way (Baseball/Basketball: Bookmaker, Win, Lose)
       let homeOdds: number | null = null;
       let drawOdds: number | null = null;
       let awayOdds: number | null = null;
@@ -223,8 +247,18 @@ export function parseWisetotoRateInfoHtml(
       let drawMovement: OddsMovement = "unknown";
       let awayMovement: OddsMovement = "unknown";
 
-      if (cells.length >= 4) {
-        // 3-way market
+      if (cells.length >= 5) {
+        // 5-column table (Handicap or Under/Over where cells[1] is line)
+        homeOdds = extractOddsValue(cells[2]);
+        homeMovement = parseOddsMovement(cells[2]);
+
+        drawOdds = extractOddsValue(cells[3]);
+        drawMovement = parseOddsMovement(cells[3]);
+
+        awayOdds = extractOddsValue(cells[4]);
+        awayMovement = parseOddsMovement(cells[4]);
+      } else if (cells.length === 4) {
+        // 4-column table (Bookmaker, Win, Draw, Lose)
         homeOdds = extractOddsValue(cells[1]);
         homeMovement = parseOddsMovement(cells[1]);
 
@@ -234,7 +268,7 @@ export function parseWisetotoRateInfoHtml(
         awayOdds = extractOddsValue(cells[3]);
         awayMovement = parseOddsMovement(cells[3]);
       } else if (cells.length === 3) {
-        // 2-way market
+        // 3-column table (Bookmaker, Win, Lose)
         homeOdds = extractOddsValue(cells[1]);
         homeMovement = parseOddsMovement(cells[1]);
 

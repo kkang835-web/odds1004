@@ -18,23 +18,17 @@ export default function App() {
   const [currentTab, setCurrentTab] = useState<TabType>('proto');
   const [gameType, setGameType] = useState<GameType>('pt1');
   const [totoType, setTotoType] = useState<TotoType>('sc');
-  const [selectedYear, setSelectedYear] = useState<number>(2026);
+  const [selectedYear, setSelectedYear] = useState<number>(initialCalendar.year);
   const [selectedRound, setSelectedRound] = useState<number>(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const urlRound = urlParams.get('round');
     if (urlRound && Number(urlRound) > 0) {
       return Number(urlRound);
     }
-    return 125;
+    return initialCalendar.protoRound;
   });
-  const [isVerifiedPreviewMode, setIsVerifiedPreviewMode] = useState<boolean>(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlRound = Number(urlParams.get('round'));
-    if (urlRound > 0) {
-      return urlRound === 122 || urlRound === 125;
-    }
-    return true;
-  });
+  const [isVerifiedPreviewMode, setIsVerifiedPreviewMode] = useState<boolean>(false);
+  const hasAutoSyncedProtoRoundRef = useRef<boolean>(false);
   const [showWisetotoImport, setShowWisetotoImport] = useState<boolean>(false);
   const [legalModal, setLegalModal] = useState<ModalType>(null);
   const [, setActiveRounds] = useState<{ pt1: number; sc: number; bs: number; bk: number; year?: number; today?: string }>({
@@ -95,7 +89,15 @@ export default function App() {
           if (data && typeof data === 'object') {
             setActiveRounds(data);
             const liveYear = data.year || cal.year;
-            if (currentTab === 'toto') {
+            if (currentTab === 'proto') {
+              const urlParams = new URLSearchParams(window.location.search);
+              const hasExplicitUrlRound = Boolean(urlParams.get('round'));
+              if (!hasAutoSyncedProtoRoundRef.current && !hasExplicitUrlRound) {
+                hasAutoSyncedProtoRoundRef.current = true;
+                setSelectedYear(liveYear);
+                setSelectedRound(data.pt1 || cal.protoRound);
+              }
+            } else if (currentTab === 'toto') {
               setSelectedYear(liveYear);
               const defaultTotoRound = totoType === 'sc' ? cal.totoSoccerRound : (totoType === 'bs' ? cal.totoBaseballRound : cal.totoBasketballRound);
               setSelectedRound(data[totoType] || defaultTotoRound);
@@ -130,9 +132,7 @@ export default function App() {
   };
 
   const fetchMatches = useCallback(async (force = false) => {
-    const isSupportedVerifiedRound = selectedYear === 2026 && (selectedRound === 122 || selectedRound === 125);
-    const isPreviewActive = isSupportedVerifiedRound && isVerifiedPreviewMode;
-    const cacheKey = `${gameType}_${selectedYear}_${selectedRound}${isPreviewActive ? '_preview' : ''}`;
+    const cacheKey = `${gameType}_${selectedYear}_${selectedRound}`;
     const cached = matchClientCache.current.get(cacheKey);
     const now = Date.now();
     const isCacheValid = cached && (now - cached.timestamp < 30_000); // 30s Client TTL
@@ -153,7 +153,7 @@ export default function App() {
     }
 
     try {
-      const url = `/api/matches?gameType=${gameType}&year=${selectedYear}&round=${selectedRound}${isPreviewActive ? '&verifiedPreview=true' : ''}${force ? '&force=true&refresh=true' : ''}`;
+      const url = `/api/matches?gameType=${gameType}&year=${selectedYear}&round=${selectedRound}${force ? '&force=true&refresh=true' : ''}`;
       const res = await fetch(url);
       if (!res.ok) throw new Error(`Failed to fetch matches: ${res.status}`);
       const data = await res.json();
@@ -184,8 +184,8 @@ export default function App() {
         domesticRefundRate: data.domesticRefundRate,
         foreignRefundRate: data.foreignRefundRate,
         fetchedAt: data.fetchedAt,
-        isVerifiedForeignPreview: Boolean(data.isVerifiedForeignPreview),
-        verifiedPreviewRound: data.verifiedPreviewRound || null,
+        isVerifiedForeignPreview: false,
+        verifiedPreviewRound: null,
         foreignSourceOrigin: data.foreignSourceOrigin || null
       };
       setRoundMetadata(meta);
@@ -198,7 +198,7 @@ export default function App() {
         setLoadingMatches(false);
       }
     }
-  }, [gameType, selectedYear, selectedRound, isVerifiedPreviewMode]);
+  }, [gameType, selectedYear, selectedRound]);
 
   useEffect(() => {
     fetchMatches(false);

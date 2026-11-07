@@ -1368,17 +1368,9 @@ export function MatchTable({
     overscan: 12,
   });
 
-  // Ensure viewport starts at the first verified foreign odds match on Round 122 (or top on Round 125 / others)
+  // Ensure viewport starts at the top on round change
   useEffect(() => {
     if (isLoading || filteredMatches.length === 0) return;
-    if (selectedYear === 2026 && selectedRound === 122 && !onlyForeignOdds && sportFilter === 'all' && leagueFilter === 'all') {
-      const firstForeignIdx = filteredMatches.findIndex(m => m.oddsSource?.foreign === 'real' && m.foreign);
-      if (firstForeignIdx > 0) {
-        rowVirtualizer.scrollToIndex(firstForeignIdx, { align: 'start' });
-        cardVirtualizer.scrollToIndex(firstForeignIdx, { align: 'start' });
-        return;
-      }
-    }
     rowVirtualizer.scrollToIndex(0, { align: 'start' });
     cardVirtualizer.scrollToIndex(0, { align: 'start' });
   }, [selectedYear, selectedRound, isLoading, filteredMatches.length]);
@@ -1465,11 +1457,7 @@ export function MatchTable({
               >
                 {Array.from({ length: maxRoundsForYear }, (_, i) => maxRoundsForYear - i).map(r => (
                   <option key={r} value={r} className="bg-slate-800 text-white">
-                    {selectedYear === 2026 && r === 125
-                      ? `${r}회차 (해외배당 검증 84건)`
-                      : selectedYear === 2026 && r === 122
-                        ? `${r}회차 (해외배당 검증 40건)`
-                        : `${r}회차`}
+                    {r}회차
                   </option>
                 ))}
               </select>
@@ -1656,18 +1644,11 @@ export function MatchTable({
         {/* Real Data vs Simulation Provenance Indicator */}
         <div className="flex flex-wrap items-center justify-between gap-2 p-2 rounded-xl bg-white border border-slate-200 shadow-2xs">
           <div className="flex items-center gap-2 flex-wrap">
-            {isVerifiedForeignPreviewActive && selectedYear === 2026 && (selectedRound === 122 || selectedRound === 125) ? (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-black">
-                <span className="w-2 h-2 rounded-full bg-amber-600 animate-pulse"></span>
-                <span>
-                  🔬 VERIFIED PREVIEW: {selectedRound}회차 벳인포 실측 배당 검증 모드 [정상 {verifiedOkCount}건 / 원본미제공 {verifiedNotProvidedCount}건]
-                </span>
-              </span>
-            ) : matches.length > 0 && (matches[0].dataSource === 'real' || !matches[0].isSimulated) ? (
+            {matches.length > 0 && (matches[0].dataSource === 'real' || !matches[0].isSimulated) ? (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-black">
                 <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
                 <span>
-                  🟢 REAL DATA: {matches[0]?.domesticSourceName ? '베트맨(BetMan) 공식 발매 배당 연동' : '와이즈토토(WiseToto) 실시간 공시 데이터 연동'} [운영 모드]
+                  🟢 REAL DATA: 와이즈토토(WiseToto) 실시간 국내·해외배당 연동 [{selectedYear}년 {selectedRound}회차]
                 </span>
               </span>
             ) : (
@@ -1677,59 +1658,15 @@ export function MatchTable({
               </span>
             )}
             <span className="text-[11px] text-slate-500 font-mono hidden sm:inline">
-              국내 출처: {matches[0]?.domesticSourceName || matches[0]?.sourceName || '베트맨(BetMan) 공식 발매 배당'}
+              출처: 와이즈토토(WiseToto) 공시 배당 및 해외 북메이커 평균 (Bet365 · Unibet · WilliamHill · Bwin · Sbobet · Ladbrokes)
             </span>
           </div>
 
           <div className="flex items-center gap-1.5 text-[11px] text-slate-600 flex-wrap">
-            <button
-              type="button"
-              onClick={() => onActivateVerifiedPreview ? onActivateVerifiedPreview(125) : onRoundChange(125)}
-              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs ${
-                selectedYear === 2026 && selectedRound === 125
-                  ? 'bg-amber-600 text-white ring-2 ring-amber-300'
-                  : 'bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300'
-              }`}
-              title="2026년 125회차 벳인포 실측 해외 평균 배당(전체 427건 / 정상 84건) 검증 미리보기로 전환합니다."
-            >
-              <span>🔬 125회차 검증 미리보기 (84건)</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => onActivateVerifiedPreview ? onActivateVerifiedPreview(122) : onRoundChange(122)}
-              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs ${
-                selectedYear === 2026 && selectedRound === 122
-                  ? 'bg-amber-600 text-white ring-2 ring-amber-300'
-                  : 'bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300'
-              }`}
-              title="2026년 122회차 Supabase 스테이징 실측 해외 평균 배당(218건 / 정상 40건) 검증 미리보기로 전환합니다."
-            >
-              <span>🔬 122회차 검증 미리보기 (40건)</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                onYearChange(2026);
-                onRoundChange(126);
-              }}
-              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs ${
-                selectedYear === 2026 && selectedRound === 126
-                  ? 'bg-emerald-700 text-white ring-2 ring-emerald-300'
-                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300'
-              }`}
-              title="2026년 126회차 일반 운영 화면으로 전환합니다 (전용 해외 배당 파일 없음 · 125회차 격리 확인)."
-            >
-              <span>🟢 126회차 (일반 운영)</span>
-            </button>
-
-            <span className="font-bold ml-1">연동 검증 범위:</span>
+            <span className="font-bold">연동 현황:</span>
             <span className="font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
               {matches.length > 0 && (matches[0].dataSource === 'real' || !matches[0].isSimulated)
-                ? (isVerifiedForeignPreviewActive
-                    ? `국내 BetMan 공식 ${realGameCount}경기 · 해외 평균 배당 검증 ${verifiedOkCount}경기 정상 / ${verifiedNotProvidedCount}경기 미제공`
-                    : `국내 BetMan 공식 ${realGameCount}경기 · 해외 Pinnacle 실시간 매칭 ${pinnacleMatchedCount}경기`)
+                ? `국내 공식 ${realGameCount}경기 · 와이즈토토 해외 평균 배당 ${foreignMatchedCount}경기 매칭`
                 : '수리모형 추정값 (시뮬레이션)'
               }
             </span>
@@ -1756,101 +1693,29 @@ export function MatchTable({
           <div className="bg-amber-50/80 p-2.5 rounded-xl border border-amber-200 flex items-center justify-between">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="font-black text-amber-900 text-xs sm:text-sm">🌐 해외 평균 배당</span>
-              {isVerifiedForeignPreviewActive ? (
-                <>
-                  <span className="bg-amber-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">
-                    검증 미리보기 [{verifiedOkCount}경기 정상 배당 · {verifiedNotProvidedCount}경기 원본 미제공]
-                  </span>
-                  <span className="bg-amber-100 text-amber-900 border border-amber-300 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold">
-                    출처: {roundMetadata?.foreignSourceOrigin === 'local_test_json_fallback' ? '로컬 JSON (125회차)' : 'Supabase Staging (122회차)'} · 과거 배당 스냅샷
-                  </span>
-                  {verifiedMatchErrorCount > 0 && (
-                    <span className="bg-red-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">
-                      매칭 실패 [{verifiedMatchErrorCount}경기]
-                    </span>
-                  )}
-                  {selectedYear === 2026 && selectedRound !== 125 && (
-                    <button
-                      type="button"
-                      onClick={() => onActivateVerifiedPreview ? onActivateVerifiedPreview(125) : onRoundChange(125)}
-                      className="text-[10px] bg-amber-600 hover:bg-amber-700 text-white px-2 py-0.5 rounded font-bold transition-all cursor-pointer shadow-xs"
-                      title="해외 평균 배당 전체 427건(정상 84건)이 편성된 125회차로 이동합니다."
-                    >
-                      🔍 125회차 검증 미리보기 바로가기 (84경기 정상)
-                    </button>
-                  )}
-                  {selectedYear === 2026 && selectedRound !== 122 && (
-                    <button
-                      type="button"
-                      onClick={() => onActivateVerifiedPreview ? onActivateVerifiedPreview(122) : onRoundChange(122)}
-                      className="text-[10px] bg-amber-700 hover:bg-amber-800 text-white px-2 py-0.5 rounded font-bold transition-all cursor-pointer shadow-xs"
-                      title="해외 평균 배당 218건(정상 40건)이 편성된 122회차로 이동합니다."
-                    >
-                      🔍 122회차 검증 미리보기 바로가기 (40경기 정상)
-                    </button>
-                  )}
-                </>
-              ) : foreignMatchedCount > 0 ? (
+              {foreignMatchedCount > 0 ? (
                 <>
                   <span className="bg-emerald-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">
-                    피나클(Pinnacle) 연동 [{pinnacleMatchedCount}경기]
+                    와이즈토토 해외배당 연동 [{foreignMatchedCount}경기]
                   </span>
-                  {staleForeignCount > 0 && (
-                    <span className="bg-orange-100 text-orange-950 border border-orange-300 px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1" title="기존 신선도 기준(15분)을 초과한 오래된 캐시 배당입니다. 최신 배당 갱신이 필요합니다.">
-                      <span>⚠️ STALE 오래된 캐시 [{staleForeignCount}경기]</span>
-                    </span>
-                  )}
-                  {cachedForeignCount > 0 && (
-                    <span className="bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1" title="기존에 수집된 신선한 캐시 배당을 안전하게 재사용 중입니다.">
-                      <span>📦 CACHED 안전 가동 [{cachedForeignCount}경기]</span>
-                    </span>
-                  )}
-                  {liveForeignCount > 0 && (
-                    <span className="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">
-                      ⚡ LIVE 실시간 [{liveForeignCount}경기]
-                    </span>
-                  )}
+                  <span className="bg-amber-100 text-amber-900 border border-amber-300 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold">
+                    Bet365 · Unibet · WilliamHill · Bwin · Sbobet · Ladbrokes 평균
+                  </span>
                 </>
               ) : (
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="bg-amber-200 text-amber-900 px-1.5 py-0.2 rounded text-[10px] font-bold">
-                    해당 회차 전용 해외배당 미제공 (원본 미제공)
-                  </span>
-                  {selectedYear === 2026 && selectedRound !== 125 && (
-                    <button
-                      type="button"
-                      onClick={() => onActivateVerifiedPreview ? onActivateVerifiedPreview(125) : onRoundChange(125)}
-                      className="text-[10px] bg-amber-600 hover:bg-amber-700 text-white px-2 py-0.5 rounded font-bold transition-all cursor-pointer shadow-xs"
-                      title="해외 평균 배당 실측 427건(정상 84경기)이 편성된 125회차로 이동합니다."
-                    >
-                      🔍 125회차 검증 미리보기 바로가기 (84경기 정상 배당)
-                    </button>
-                  )}
-                  {selectedYear === 2026 && selectedRound !== 122 && (
-                    <button
-                      type="button"
-                      onClick={() => onActivateVerifiedPreview ? onActivateVerifiedPreview(122) : onRoundChange(122)}
-                      className="text-[10px] bg-amber-700 hover:bg-amber-800 text-white px-2 py-0.5 rounded font-bold transition-all cursor-pointer shadow-xs"
-                      title="해외 평균 배당 실측 218건(정상 40경기)이 편성된 122회차로 이동합니다."
-                    >
-                      🔍 122회차 검증 미리보기 바로가기 (40경기 정상 배당)
-                    </button>
-                  )}
-                </div>
+                <span className="bg-amber-200 text-amber-900 px-1.5 py-0.2 rounded text-[10px] font-bold">
+                  해당 회차 해외배당 미제공
+                </span>
               )}
             </div>
             <div className="text-right">
               <span className="text-gray-500">
-                {isVerifiedForeignPreviewActive 
-                  ? '데이터 출처: ' 
-                  : (actualPinnacleAvgRefundRate ? '실측 환급률(Payout): ' : '환급률 기준: ')}
+                {actualPinnacleAvgRefundRate ? '실측 환급률(Payout): ' : '환급률 기준: '}
               </span>
               <strong className="text-amber-900 font-mono text-xs sm:text-sm">
-                {isVerifiedForeignPreviewActive
-                  ? '해외 평균 배당 (검증 데이터셋)'
-                  : (actualPinnacleAvgRefundRate 
-                    ? `${actualPinnacleAvgRefundRate} (실측 ${foreignMatchedCount}경기)` 
-                    : '미제공 (참고 기준값: 95.51%)')}
+                {actualPinnacleAvgRefundRate 
+                  ? `${actualPinnacleAvgRefundRate} (실측 ${foreignMatchedCount}경기)` 
+                  : '미제공 (참고 기준값: 95.51%)'}
               </strong>
             </div>
           </div>

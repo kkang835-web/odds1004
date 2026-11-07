@@ -4265,24 +4265,10 @@ async function scrapeWisetotoMatches(gameType: string, year: number, round: numb
 
       const hasDraw = sport === 'soccer' && domDraw !== null;
 
-      // Foreign Odds (Realistic Global Market Benchmark e.g. Pinnacle / Bet365 95.51% refund calibration)
+      // Foreign Odds are populated strictly via enrichMatchesWithWisetotoForeignOdds (real get_foreign_rate.htm)
       let foreignWin: number | null = null;
       let foreignDraw: number | null = null;
       let foreignLose: number | null = null;
-
-      if (domWin && domLose) {
-        const invSumDom = (1 / domWin) + (hasDraw && domDraw ? (1 / domDraw) : 0) + (1 / domLose);
-        const payoutDom = 1 / invSumDom;
-        const scaleFactor = 0.9551 / payoutDom;
-
-        foreignWin = +(domWin * scaleFactor).toFixed(2);
-        if (hasDraw && domDraw) {
-          foreignDraw = +(domDraw * scaleFactor).toFixed(2);
-        }
-        foreignLose = +(domLose * scaleFactor).toFixed(2);
-      } else if (domWin) {
-        foreignWin = +(domWin * 1.085).toFixed(2);
-      }
 
       // Result Tag & Status
       const tagMatch = ul.match(/<span class="tag[^"]*">([^<]+)<\/span>/);
@@ -4403,13 +4389,7 @@ async function scrapeWisetotoMatches(gameType: string, year: number, round: numb
           lose: domLose,
           refundRate: domRefundRate
         },
-        foreign: {
-          win: foreignWin,
-          draw: foreignDraw,
-          lose: foreignLose,
-          refundRate: "95.51%",
-          trend: gameNo % 3 === 0 ? 'up' : gameNo % 3 === 1 ? 'down' : 'flat'
-        },
+        foreign: undefined,
         status,
         score,
         hitOutcome,
@@ -4421,7 +4401,7 @@ async function scrapeWisetotoMatches(gameType: string, year: number, round: numb
         sourceName: '와이즈토토(WiseToto) 실시간 공시 데이터',
         oddsSource: {
           domestic: 'real' as const,
-          foreign: foreignWin ? ('derived' as const) : ('unavailable' as const)
+          foreign: 'unavailable' as const
         }
       });
     }
@@ -4977,7 +4957,7 @@ async function getLiveActiveRounds(): Promise<LiveActiveRounds> {
   const defaults = calculateCalendarTodayRounds(new Date());
   try {
     const [indexRes, scCheck, bsCheck, bkCheck] = await Promise.allSettled([
-      fetch("https://www.wisetoto.com/index.htm", {
+      fetch("https://www.wisetoto.com/index.htm?tab_type=proto", {
         headers: {
           "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
@@ -5032,7 +5012,7 @@ async function getLiveActiveRounds(): Promise<LiveActiveRounds> {
         if (y && y >= 2024) detectedYear = y;
         const cat = bm[2].toLowerCase();
         const r = parseInt(bm[4], 10);
-        if (cat === "pt1" && (!active.pt1 || r > active.pt1)) active.pt1 = r;
+        if (cat === "pt1" && r > 0) active.pt1 = r;
         if (cat === "sc1" && (!active.sc || r > active.sc)) active.sc = r;
         if (cat === "bs1" && (!active.bs || r > active.bs)) active.bs = r;
         if (cat === "bk1" && (!active.bk || r > active.bk)) active.bk = r;
@@ -5043,7 +5023,9 @@ async function getLiveActiveRounds(): Promise<LiveActiveRounds> {
         const selectedOption = sel[1].match(/<option[^>]*value=['"]?(\d+)['"]?[^>]*selected/i);
         if (selectedOption) {
           const val = parseInt(selectedOption[1], 10);
-          if (sel[0].includes("game_round") || sel[0].includes("select02")) {
+          if (sel[0].includes("game_category=pt1") && sel[0].includes("select01") && val >= 2024) {
+            detectedYear = val;
+          } else if ((sel[0].includes("game_category=pt1") && sel[0].includes("select02")) || sel[0].includes("name=\"game_round\"")) {
             active.pt1 = val;
           }
         }
@@ -5552,17 +5534,321 @@ async function enrichMatchesWithVerifiedForeignOdds(
   return sourceOrigin;
 }
 
+interface WisetotoParsedBookmakerRow {
+  bookmaker: string;
+  line: number | null;
+  win: number;
+  draw: number | null;
+  lose: number;
+  winMove: 'up' | 'down' | 'flat';
+  drawMove: 'up' | 'down' | 'flat';
+  loseMove: 'up' | 'down' | 'flat';
+}
+
+const wisetotoForeignRateCache = new Map<string, { fetchedAt: number; rows: WisetotoParsedBookmakerRow[] }>();
+const WISETOTO_FOREIGN_RATE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
+function parseWisetotoForeignRateTable(html: string, kind: 'n' | 'h' | 'u'): WisetotoParsedBookmakerRow[] {
+  if (!html || html.includes("데이터가 없습니다")) return [];
+  const rows = html.match(/<tr[^>]*>[\s\S]*?<\/tr>/gi) || [];
+  const out: WisetotoParsedBookmakerRow[] = [];
+
+  const getMove = (td: string): 'up' | 'down' | 'flat' => {
+    if (!td) return 'flat';
+    if (td.includes("ico_up.png") || td.includes("▲") || td.includes("↑")) return 'up';
+    if (td.includes("ico_down.png") || td.includes("▼") || td.includes("↓")) return 'down';
+    return 'flat';
+  };
+
+  const getNum = (td: string): number | null => {
+    if (!td) return null;
+    const clean = td.replace(/<[^>]+>/g, "").replace(/[▲▼↑↓]/g, "").trim();
+    if (!clean || clean === "-") return null;
+    const m = clean.match(/([+-]?\d+(?:\.\d+)?)/);
+    return m ? parseFloat(m[1]) : null;
+  };
+
+  for (const row of rows) {
+    if (row.includes("<th") || row.includes("BOOK MAKER") || row.includes("데이터가 없습니다")) continue;
+    const tds = row.match(/<td[^>]*>[\s\S]*?<\/td>/gi) || [];
+    if (tds.length < 4) continue;
+
+    const bm =
+      (tds[0].match(/\balt=["']([^"']+)["']/i) || [])[1]?.trim() ||
+      (tds[0].match(/\/icon\/([^/.]+)\.(?:png|jpg|gif)/i) || [])[1]?.trim() ||
+      tds[0].replace(/<[^>]+>/g, "").trim();
+    if (!bm || bm === "-") continue;
+
+    if (kind === 'n') {
+      const win = getNum(tds[1]);
+      const draw = getNum(tds[2]);
+      const lose = getNum(tds[3]);
+      if (win && win > 1.0 && lose && lose > 1.0) {
+        out.push({
+          bookmaker: bm,
+          line: null,
+          win,
+          draw: draw && draw > 1.0 ? draw : null,
+          lose,
+          winMove: getMove(tds[1]),
+          drawMove: getMove(tds[2]),
+          loseMove: getMove(tds[3])
+        });
+      }
+    } else if (kind === 'h' && tds.length >= 5) {
+      const line = getNum(tds[1]);
+      const win = getNum(tds[2]);
+      const draw = getNum(tds[3]);
+      const lose = getNum(tds[4]);
+      if (win && win > 1.0 && lose && lose > 1.0) {
+        out.push({
+          bookmaker: bm,
+          line,
+          win,
+          draw: draw && draw > 1.0 ? draw : null,
+          lose,
+          winMove: getMove(tds[2]),
+          drawMove: getMove(tds[3]),
+          loseMove: getMove(tds[4])
+        });
+      }
+    } else if (kind === 'u' && tds.length >= 5) {
+      const line = getNum(tds[1]);
+      const win = getNum(tds[2]); // Under
+      const lose = getNum(tds[4]); // Over
+      if (win && win > 1.0 && lose && lose > 1.0) {
+        out.push({
+          bookmaker: bm,
+          line,
+          win,
+          draw: null,
+          lose,
+          winMove: getMove(tds[2]),
+          drawMove: 'flat',
+          loseMove: getMove(tds[4])
+        });
+      }
+    }
+  }
+  return out;
+}
+
+/**
+ * Enrich matches with real WiseToto overseas bookmaker odds (get_foreign_rate.htm)
+ * Matches by WiseToto's exact scheduleInfoSeq and market kind ('n' = 일반, 'h' = 핸디캡, 'u' = 언더오버).
+ */
+async function enrichMatchesWithWisetotoForeignOdds(
+  matches: any[],
+  forceRefresh: boolean = false
+): Promise<number> {
+  if (!Array.isArray(matches) || matches.length === 0) return 0;
+
+  const now = Date.now();
+  const tasks: { seq: string; kind: 'n' | 'h' | 'u' }[] = [];
+  const taskKeys = new Set<string>();
+
+  for (const m of matches) {
+    const seq = String(m.scheduleInfoSeq || "").trim();
+    if (!seq) continue;
+    if (m.marketPeriod === 'FIRST_HALF') continue;
+    const label = String(m.categoryLabel || "");
+    if (
+      label.includes("SUM") ||
+      label.includes("홀") ||
+      label.includes("짝") ||
+      label.includes("승⑤패") ||
+      label.includes("승5패") ||
+      label.includes("승①패") ||
+      label.includes("승1패") ||
+      m.categoryType === '승1패'
+    ) {
+      continue;
+    }
+
+    const kind: 'n' | 'h' | 'u' =
+      m.categoryType === '핸디캡' ? 'h' : m.categoryType === '언더오버' ? 'u' : 'n';
+    const key = `${seq}_${kind}`;
+    if (taskKeys.has(key)) continue;
+
+    const cached = wisetotoForeignRateCache.get(key);
+    if (!forceRefresh && cached && now - cached.fetchedAt < WISETOTO_FOREIGN_RATE_TTL_MS) {
+      continue;
+    }
+
+    taskKeys.add(key);
+    tasks.push({ seq, kind });
+  }
+
+  if (tasks.length > 0) {
+    const CONCURRENCY = 25;
+    for (let i = 0; i < tasks.length; i += CONCURRENCY) {
+      const batch = tasks.slice(i, i + CONCURRENCY);
+      await Promise.all(
+        batch.map(async ({ seq, kind }) => {
+          const key = `${seq}_${kind}`;
+          const url = `https://www.wisetoto.com/util/gameinfo/get_foreign_rate.htm?schedule_info_seq=${seq}&rate_kind=${kind}`;
+          try {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 5000);
+            const res = await fetch(url, {
+              headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+                "Referer": "https://www.wisetoto.com/index.htm?tab_type=proto",
+                "X-Requested-With": "XMLHttpRequest"
+              },
+              signal: controller.signal
+            });
+            clearTimeout(timer);
+            if (res.ok) {
+              const arrayBuffer = await res.arrayBuffer();
+              const buf = Buffer.from(arrayBuffer);
+              let text = buf.toString("utf-8");
+              if (text.includes("\uFFFD")) {
+                text = iconv.decode(buf, "euc-kr");
+              }
+              const parsedRows = parseWisetotoForeignRateTable(text, kind);
+              wisetotoForeignRateCache.set(key, { fetchedAt: Date.now(), rows: parsedRows });
+            }
+          } catch {
+            // Retain existing cache if any, or skip on network timeout
+          }
+        })
+      );
+    }
+  }
+
+  let enrichedCount = 0;
+  const fetchedIso = new Date().toISOString();
+
+  for (const m of matches) {
+    const seq = String(m.scheduleInfoSeq || "").trim();
+    const label = String(m.categoryLabel || "");
+    const isUnsupportedMarket =
+      !seq ||
+      m.marketPeriod === 'FIRST_HALF' ||
+      label.includes("SUM") ||
+      label.includes("홀") ||
+      label.includes("짝") ||
+      label.includes("승⑤패") ||
+      label.includes("승5패") ||
+      label.includes("승①패") ||
+      label.includes("승1패") ||
+      m.categoryType === '승1패';
+
+    if (isUnsupportedMarket) {
+      m.foreign = undefined;
+      m.oddsSource = {
+        domestic: m.oddsSource?.domestic || 'real',
+        foreign: 'unavailable'
+      };
+      m.foreignSourceName = "와이즈토토 해외배당 (해당 유형 미제공)";
+      m.foreignBookmaker = "해외 평균 배당";
+      m.foreignStatus = "UNAVAILABLE";
+      continue;
+    }
+
+    const kind: 'n' | 'h' | 'u' =
+      m.categoryType === '핸디캡' ? 'h' : m.categoryType === '언더오버' ? 'u' : 'n';
+    const cached = wisetotoForeignRateCache.get(`${seq}_${kind}`);
+    let bms = cached ? [...cached.rows] : [];
+
+    if (kind === 'h' && bms.length > 0) {
+      const targetLine = m.handicapLine ?? m.handicapOrLine;
+      if (targetLine !== null && targetLine !== undefined) {
+        const exact = bms.filter(b => b.line !== null && Math.abs(b.line - targetLine) < 0.05);
+        if (exact.length > 0) {
+          bms = exact;
+        } else if (m.sport === 'basketball' || m.sport === 'volleyball' || m.sport === 'baseball') {
+          const tol = m.sport === 'baseball' ? 1.0 : 2.5;
+          bms = bms.filter(
+            b => b.line !== null && b.line * targetLine > 0 && Math.abs(b.line - targetLine) <= tol
+          );
+        } else {
+          bms = [];
+        }
+      }
+    } else if (kind === 'u' && bms.length > 0) {
+      const targetLine = m.uoLine ?? m.handicapOrLine;
+      if (targetLine !== null && targetLine !== undefined) {
+        const exact = bms.filter(b => b.line !== null && Math.abs(b.line - targetLine) < 0.05);
+        if (exact.length > 0) {
+          bms = exact;
+        } else if (m.sport === 'basketball' || m.sport === 'volleyball' || m.sport === 'baseball') {
+          const tol = m.sport === 'baseball' ? 1.0 : 3.5;
+          bms = bms.filter(b => b.line !== null && Math.abs(b.line - targetLine) <= tol);
+        } else {
+          bms = [];
+        }
+      }
+    }
+
+    if (bms.length > 0) {
+      const avgW = Number((bms.reduce((s, b) => s + b.win, 0) / bms.length).toFixed(2));
+      const avgL = Number((bms.reduce((s, b) => s + b.lose, 0) / bms.length).toFixed(2));
+      const isTwoWayMarket =
+        kind === 'u' ||
+        m.sport === 'basketball' ||
+        m.sport === 'baseball' ||
+        m.sport === 'volleyball' ||
+        (m.domestic && (m.domestic.draw === null || m.domestic.draw === undefined));
+
+      let avgD: number | null = null;
+      if (!isTwoWayMarket) {
+        const validDraws = bms.filter(b => b.draw !== null && b.draw > 1.0);
+        if (validDraws.length > 0) {
+          avgD = Number((validDraws.reduce((s, b) => s + (b.draw || 0), 0) / validDraws.length).toFixed(2));
+        }
+      }
+
+      const invSum = avgD !== null ? (1 / avgW + 1 / avgD + 1 / avgL) : (1 / avgW + 1 / avgL);
+      const refundRate = invSum > 0 ? `${((1 / invSum) * 100).toFixed(2)}%` : "94.50%";
+
+      const upCount = bms.filter(b => b.winMove === 'up').length;
+      const downCount = bms.filter(b => b.winMove === 'down').length;
+      const trend: 'up' | 'down' | 'flat' = upCount > downCount ? 'up' : downCount > upCount ? 'down' : 'flat';
+
+      m.foreign = {
+        win: avgW,
+        draw: avgD,
+        lose: avgL,
+        refundRate,
+        trend
+      };
+      m.foreignBookmakers = bms;
+      m.oddsSource = {
+        domestic: m.oddsSource?.domestic || 'real',
+        foreign: 'real'
+      };
+      m.foreignSourceName = `와이즈토토(WiseToto) 해외 평균 배당 (${bms.length}개사 평균)`;
+      m.foreignBookmaker = `와이즈토토 해외배당 (${bms.length}개사 평균)`;
+      m.foreignLastUpdate = fetchedIso;
+      m.foreignStatus = 'LIVE';
+      enrichedCount++;
+    } else if (m.oddsSource?.foreign !== 'real') {
+      m.foreign = undefined;
+      m.oddsSource = {
+        domestic: m.oddsSource?.domestic || 'real',
+        foreign: 'unavailable'
+      };
+      m.foreignSourceName = "와이즈토토 해외배당 (원본 미제공)";
+      m.foreignBookmaker = "해외 평균 배당";
+      m.foreignStatus = "UNAVAILABLE";
+    }
+  }
+
+  return enrichedCount;
+}
+
 // Get Matches for Year & Round (Real Wisetoto Live Scraper with Fallback)
 app.get("/api/matches", async (req, res) => {
   const active = await getLiveActiveRounds();
-  const liveDefaultRound = active.pt1 || 106;
+  const liveDefaultRound = active.pt1 || 130;
   const reqRound = req.query.round ? String(req.query.round) : String(liveDefaultRound);
   const gameType = String(req.query.gameType || "pt1");
-  const year = String(req.query.year || "2026");
+  const year = String(req.query.year || String(active.year || 2026));
   const forceQuery = String(req.query.force || "");
   const refreshQuery = String(req.query.refresh || "");
   const isForce = forceQuery.toLowerCase() === "true" || refreshQuery.toLowerCase() === "true";
-  const isVerifiedPreview = String(req.query.verifiedPreview || req.query.verifiedForeignPreview || "").toLowerCase() === "true";
 
   const parsedYear = Number(year);
   const parsedRound = Number(reqRound);
@@ -5614,7 +5900,7 @@ app.get("/api/matches", async (req, res) => {
                   };
                   m.oddsSource = {
                     domestic: 'real',
-                    foreign: m.oddsSource?.foreign || 'derived'
+                    foreign: m.oddsSource?.foreign || 'unavailable'
                   };
                   m.domesticSourceName = '베트맨(BetMan) 공식 발매 배당';
                   m.betmanMatchSeq = bm.matchSeq;
@@ -5661,37 +5947,22 @@ app.get("/api/matches", async (req, res) => {
       console.warn("[BetMan Enrichment] Skipped domestic odds linking:", e.message);
     }
 
-    // The Odds API: Enrich with real foreign Pinnacle odds
-    try {
-      if (gameType === "pt1") {
-        await enrichMatchesWithTheOddsApi(scraped.matches, isForce);
-      }
-    } catch {
-      // Gracefully continue with available data
-    }
+    let returnMatches = scraped.matches.map(m => ({
+      ...m,
+      domestic: (m.domestic && (typeof m.domestic.win === 'number' || typeof m.domestic.lose === 'number'))
+        ? { ...m.domestic }
+        : (m.matchOdds && (typeof m.matchOdds.win === 'number' || typeof m.matchOdds.lose === 'number'))
+          ? { win: m.matchOdds.win, draw: m.matchOdds.draw, lose: m.matchOdds.lose, refundRate: m.domestic?.refundRate || "87.90%" }
+          : (m.handicapOdds && (typeof m.handicapOdds.win === 'number' || typeof m.handicapOdds.lose === 'number'))
+            ? { win: m.handicapOdds.win, draw: m.handicapOdds.draw, lose: m.handicapOdds.lose, refundRate: m.domestic?.refundRate || "87.90%" }
+            : (m.uoOdds && (typeof m.uoOdds.win === 'number' || typeof m.uoOdds.lose === 'number'))
+              ? { win: m.uoOdds.win, draw: m.uoOdds.draw, lose: m.uoOdds.lose, refundRate: m.domestic?.refundRate || "87.90%" }
+              : m.domestic ? { ...m.domestic } : null,
+      oddsSource: m.oddsSource ? { ...m.oddsSource } : undefined
+    }));
 
-    // Enrich foreign odds strictly when a round-matched verified dataset exists for the requested round
-    let returnMatches = scraped.matches.map(m => {
-      const cleanForeignSourceName = (m.foreignSourceName && m.foreignSourceName.includes("API 키 미설정"))
-        ? "해외 평균 배당 (원본 미제공)"
-        : m.foreignSourceName;
-      return {
-        ...m,
-        foreignSourceName: cleanForeignSourceName,
-        domestic: (m.domestic && (typeof m.domestic.win === 'number' || typeof m.domestic.lose === 'number'))
-          ? { ...m.domestic }
-          : (m.matchOdds && (typeof m.matchOdds.win === 'number' || typeof m.matchOdds.lose === 'number'))
-            ? { win: m.matchOdds.win, draw: m.matchOdds.draw, lose: m.matchOdds.lose, refundRate: m.domestic?.refundRate || "87.90%" }
-            : (m.handicapOdds && (typeof m.handicapOdds.win === 'number' || typeof m.handicapOdds.lose === 'number'))
-              ? { win: m.handicapOdds.win, draw: m.handicapOdds.draw, lose: m.handicapOdds.lose, refundRate: m.domestic?.refundRate || "87.90%" }
-              : (m.uoOdds && (typeof m.uoOdds.win === 'number' || typeof m.uoOdds.lose === 'number'))
-                ? { win: m.uoOdds.win, draw: m.uoOdds.draw, lose: m.uoOdds.lose, refundRate: m.domestic?.refundRate || "87.90%" }
-                : m.domestic ? { ...m.domestic } : null,
-        oddsSource: m.oddsSource ? { ...m.oddsSource } : undefined
-      };
-    });
-    const verifiedSourceOrigin = await enrichMatchesWithVerifiedForeignOdds(returnMatches, parsedRound, parsedYear, gameType);
-    const hasVerifiedEnrichment = Boolean(verifiedSourceOrigin);
+    // Enrich directly with WiseToto's official overseas bookmaker odds (get_foreign_rate.htm)
+    const wisetotoForeignCount = await enrichMatchesWithWisetotoForeignOdds(returnMatches, isForce);
 
     return res.json({
       gameType,
@@ -5707,12 +5978,10 @@ app.get("/api/matches", async (req, res) => {
       isLiveScraped: true,
       dataSource: 'real' as const,
       isSimulated: false,
-      isVerifiedForeignPreview: hasVerifiedEnrichment,
-      verifiedPreviewRound: hasVerifiedEnrichment ? parsedRound : null,
-      foreignSourceOrigin: verifiedSourceOrigin,
-      sourceName: hasVerifiedEnrichment
-        ? '와이즈토토(WiseToto) 공식 실시간 공시 배당 [해외 배당 연동 모드]'
-        : '와이즈토토(WiseToto) 공식 실시간 공시 배당',
+      isVerifiedForeignPreview: false,
+      verifiedPreviewRound: null,
+      foreignSourceOrigin: wisetotoForeignCount > 0 ? 'wisetoto_foreign_rate' : null,
+      sourceName: '와이즈토토(WiseToto) 공식 실시간 국내·해외 배당',
       matches: returnMatches,
       isStale: scraped.isStale || false
     });
@@ -5721,36 +5990,19 @@ app.get("/api/matches", async (req, res) => {
   // 2. Fallback to Deterministic Generator
   const matches = generateAccurateParsedMatches(String(gameType), parsedYear, parsedRound);
 
-  // The Odds API: Enrich fallback matches with real foreign Pinnacle odds if available
-  try {
-    if (gameType === "pt1") {
-      await enrichMatchesWithTheOddsApi(matches, isForce);
-    }
-  } catch {
-    // Gracefully continue with fallback matches
-  }
-
-  let returnMatches = matches.map(m => {
-    const cleanForeignSourceName = (m.foreignSourceName && m.foreignSourceName.includes("API 키 미설정"))
-      ? "해외 평균 배당 (원본 미제공)"
-      : m.foreignSourceName;
-    return {
-      ...m,
-      foreignSourceName: cleanForeignSourceName,
-      domestic: (m.domestic && (typeof m.domestic.win === 'number' || typeof m.domestic.lose === 'number'))
-        ? { ...m.domestic }
-        : (m.matchOdds && (typeof m.matchOdds.win === 'number' || typeof m.matchOdds.lose === 'number'))
-          ? { win: m.matchOdds.win, draw: m.matchOdds.draw, lose: m.matchOdds.lose, refundRate: m.domestic?.refundRate || "87.90%" }
-          : (m.handicapOdds && (typeof m.handicapOdds.win === 'number' || typeof m.handicapOdds.lose === 'number'))
-            ? { win: m.handicapOdds.win, draw: m.handicapOdds.draw, lose: m.handicapOdds.lose, refundRate: m.domestic?.refundRate || "87.90%" }
-            : (m.uoOdds && (typeof m.uoOdds.win === 'number' || typeof m.uoOdds.lose === 'number'))
-              ? { win: m.uoOdds.win, draw: m.uoOdds.draw, lose: m.uoOdds.lose, refundRate: m.domestic?.refundRate || "87.90%" }
-              : m.domestic ? { ...m.domestic } : null,
-      oddsSource: m.oddsSource ? { ...m.oddsSource } : undefined
-    };
-  });
-  const fallbackVerifiedSourceOrigin = await enrichMatchesWithVerifiedForeignOdds(returnMatches, parsedRound, parsedYear, gameType);
-  const hasFallbackVerified = Boolean(fallbackVerifiedSourceOrigin);
+  let returnMatches = matches.map(m => ({
+    ...m,
+    domestic: (m.domestic && (typeof m.domestic.win === 'number' || typeof m.domestic.lose === 'number'))
+      ? { ...m.domestic }
+      : (m.matchOdds && (typeof m.matchOdds.win === 'number' || typeof m.matchOdds.lose === 'number'))
+        ? { win: m.matchOdds.win, draw: m.matchOdds.draw, lose: m.matchOdds.lose, refundRate: m.domestic?.refundRate || "87.90%" }
+        : (m.handicapOdds && (typeof m.handicapOdds.win === 'number' || typeof m.handicapOdds.lose === 'number'))
+          ? { win: m.handicapOdds.win, draw: m.handicapOdds.draw, lose: m.handicapOdds.lose, refundRate: m.domestic?.refundRate || "87.90%" }
+          : (m.uoOdds && (typeof m.uoOdds.win === 'number' || typeof m.uoOdds.lose === 'number'))
+            ? { win: m.uoOdds.win, draw: m.uoOdds.draw, lose: m.uoOdds.lose, refundRate: m.domestic?.refundRate || "87.90%" }
+            : m.domestic ? { ...m.domestic } : null,
+    oddsSource: m.oddsSource ? { ...m.oddsSource } : undefined
+  }));
 
   const maxR = protoRoundLimits[parsedYear] || 105;
   const roundDates = calculateRoundDates(parsedYear, parsedRound);
@@ -5774,12 +6026,10 @@ app.get("/api/matches", async (req, res) => {
     isLiveScraped: false,
     dataSource: 'simulation' as const,
     isSimulated: true,
-    isVerifiedForeignPreview: hasFallbackVerified,
-    verifiedPreviewRound: hasFallbackVerified ? parsedRound : null,
-    foreignSourceOrigin: fallbackVerifiedSourceOrigin,
-    sourceName: hasFallbackVerified
-      ? 'SportsQuant 수리 퀀트 시뮬레이션 모델 [해외 배당 연동 모드]'
-      : 'SportsQuant 수리 퀀트 시뮬레이션 모델 (Deterministic Fallback)',
+    isVerifiedForeignPreview: false,
+    verifiedPreviewRound: null,
+    foreignSourceOrigin: null,
+    sourceName: 'SportsQuant 수리 퀀트 시뮬레이션 모델 (Deterministic Fallback)',
     matches: returnMatches
   });
 });
