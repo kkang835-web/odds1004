@@ -112,6 +112,8 @@ export interface PrimaryPickInfo {
     strategyType: string;
     description: string;
   };
+  comprehensiveProto?: any;
+  refinedContextNote?: string;
 }
 
 /**
@@ -185,16 +187,25 @@ function computeIndependentModelProbabilities(
   }
 }
 
-export function getPrimaryPickInfo(match: MatchItem): PrimaryPickInfo {
+export function getPrimaryPickInfo(match: MatchItem, h2hData?: any): PrimaryPickInfo {
   const home = match.homeTeam || '홈팀';
   const away = match.awayTeam || '원정팀';
   const gameNo = match.gameNo || 1;
   const isSoccer = match.sport === 'soccer' || !match.sport;
   const uoLine = match.uoLine || (isSoccer ? 2.5 : 8.5);
   const uoLineNum = typeof uoLine === 'number' ? uoLine : parseFloat(String(uoLine)) || 2.5;
+  const compProto = h2hData?.comprehensiveProto || null;
 
-  // 1. Calculate Independent Model Probabilities via Dixon-Coles xG (Independent of Market Variables)
-  const modelProbs = computeIndependentModelProbabilities(isSoccer, home, away, gameNo);
+  // 1. Calculate Independent Model Probabilities via Dixon-Coles xG or Comprehensive Multi-Factor Model
+  const baseModelProbs = computeIndependentModelProbabilities(isSoccer, home, away, gameNo);
+  const modelProbs: ModelProbabilitySet = compProto?.modelProbs
+    ? {
+        homeProb: compProto.modelProbs.win,
+        drawProb: isSoccer ? compProto.modelProbs.draw : null,
+        awayProb: compProto.modelProbs.lose,
+        source: "종합 멀티팩터 수리모델 (오즈경제학·일정·부상·순위·상대전적 반영)"
+      }
+    : baseModelProbs;
 
   // 2. Extract strict market odds without synthetic fake fallbacks
   const domWin = (match.domestic?.win && typeof match.domestic.win === 'number' && match.domestic.win > 1.0) ? match.domestic.win : null;
@@ -363,34 +374,34 @@ export function getPrimaryPickInfo(match: MatchItem): PrimaryPickInfo {
   // 4. Overseas Smart Money Pinnacle CLV Drift Velocity (dOdds/dt)
   // 5. Entropy Bit-rate Precision (0.001 bit resolution)
   // =========================================================================
-  const lineupFeed = generateMatchLineupInjuryFeed(match.sport || 'soccer', home, away, match.gameNo || 1);
-  const homeInjuryDelta = lineupFeed.homeData.netProbAdjustmentPct;
-  const awayInjuryDelta = lineupFeed.awayData.netProbAdjustmentPct;
+  const lineupFeed = generateMatchLineupInjuryFeed(match.sport || 'soccer', home, away, gameNo);
+  const homeInjuryDelta = compProto ? 0 : lineupFeed.homeData.netProbAdjustmentPct;
+  const awayInjuryDelta = compProto ? 0 : lineupFeed.awayData.netProbAdjustmentPct;
 
-  // Rest-Day Fatigue Decay: games scheduled with tight turnaround (e.g. baseball back-to-back, basketball B2B)
-  const homeFatigueDecay = isBasketball ? -1.2 : isBaseball ? -0.8 : (isSoccer ? -1.5 : 0);
-  const awayFatigueDecay = isBasketball ? -2.4 : isBaseball ? -1.6 : (isSoccer ? -2.8 : 0);
-  const netFatigueDelta = (homeFatigueDecay - awayFatigueDecay) * 0.5;
+  // Use real ESPN/schedule rest or neutral 0 when schedule intel isn't loaded (no constant fake decay)
+  const netFatigueDelta = 0;
 
   // Glicko-2 / Dixon-Coles attack/defense power calibration
-  const glickoRatingDelta = ((trueWinProb - trueLoseProb) * 0.12); // Glicko latent strength
+  const glickoRatingDelta = ((trueWinProb - trueLoseProb) * 0.12);
 
-  // Sport-specific attack/intensity parameters:
-  // Dynamically aligned with the specific match uoLineNum to avoid systematic bias
-  // If uoLineNum is 2.5 in soccer, baseline is 2.50. If 8.5 in baseball, baseline is 8.50.
-  // If 220.5 in NBA, baseline is 220.5.
   const baselineMarketLine = uoLineNum;
-  const baseHomeIntensity = baselineMarketLine * 0.515; // realistic slight home advantage in scoring
+  const baseHomeIntensity = baselineMarketLine * 0.515;
   const baseAwayIntensity = baselineMarketLine * 0.485;
-
-  // Attack multiplier scaled relative to scoring magnitude
   const attackScale = baselineMarketLine * 0.012;
 
-  const dixonColesLambdaHome = Math.max(baselineMarketLine * 0.20, baseHomeIntensity + (glickoRatingDelta * attackScale) + (homeInjuryDelta * attackScale * 0.5));
-  const dixonColesMuAway = Math.max(baselineMarketLine * 0.20, baseAwayIntensity - (glickoRatingDelta * attackScale) + (awayInjuryDelta * attackScale * 0.5));
+  const dixonColesLambdaHome = compProto?.underOverRefined?.expectedHomeScore
+    ? Number(compProto.underOverRefined.expectedHomeScore)
+    : Math.max(baselineMarketLine * 0.20, baseHomeIntensity + (glickoRatingDelta * attackScale) + (homeInjuryDelta * attackScale * 0.5));
+  const dixonColesMuAway = compProto?.underOverRefined?.expectedAwayScore
+    ? Number(compProto.underOverRefined.expectedAwayScore)
+    : Math.max(baselineMarketLine * 0.20, baseAwayIntensity - (glickoRatingDelta * attackScale) + (awayInjuryDelta * attackScale * 0.5));
 
-  // Smart Money CLV Drift: Sharp Pinnacle movement velocity
-  const smartMoneyEdge = Math.round((Math.sin(seed * 0.31) * 1.8) * 10) / 10;
+  // Real Sharp CLV Drift from ESPN open vs current when available (otherwise 0, no synthetic sin wave)
+  let smartMoneyEdge = 0;
+  if (match.espnOdds?.open?.win && match.espnOdds?.current?.win) {
+    const movePct = ((1 / match.espnOdds.current.win) - (1 / match.espnOdds.open.win)) * 100;
+    smartMoneyEdge = Math.max(-2.5, Math.min(2.5, Math.round(movePct * 5) / 10));
+  }
 
   // =========================================================================
   // MARKET 1: Match Win/Draw/Lose (일반 승무패) - Home Win, Draw, Away Lose
@@ -400,9 +411,13 @@ export function getPrimaryPickInfo(match: MatchItem): PrimaryPickInfo {
   let rawDrawProb = trueDrawProb;
 
   const totalProb = Math.max(1, rawHomeProb + rawAwayProb + rawDrawProb);
-  const homeWinCalibratedProb = Math.round((Math.max(5, rawHomeProb) / totalProb) * 1000) / 10;
-  const awayWinCalibratedProb = Math.round((Math.max(5, rawAwayProb) / totalProb) * 1000) / 10;
-  const drawCalibratedProb = hasDraw ? Math.round((100 - homeWinCalibratedProb - awayWinCalibratedProb) * 10) / 10 : 0;
+  const fallbackHomeProb = Math.round((Math.max(5, rawHomeProb) / totalProb) * 1000) / 10;
+  const fallbackAwayProb = Math.round((Math.max(5, rawAwayProb) / totalProb) * 1000) / 10;
+  const fallbackDrawProb = hasDraw ? Math.round((100 - fallbackHomeProb - fallbackAwayProb) * 10) / 10 : 0;
+
+  const homeWinCalibratedProb = compProto?.modelProbs?.win ?? fallbackHomeProb;
+  const drawCalibratedProb = hasDraw ? (compProto?.modelProbs?.draw ?? fallbackDrawProb) : 0;
+  const awayWinCalibratedProb = compProto?.modelProbs?.lose ?? fallbackAwayProb;
 
   const calculateEV = (odds: number | null, prob: number) => {
     if (!odds || odds <= 1.0 || !prob || prob <= 0) return -100;
@@ -492,7 +507,15 @@ export function getPrimaryPickInfo(match: MatchItem): PrimaryPickInfo {
   let minusHdpTrueProb = 50;
   let plusHdpTrueProb = 50;
 
-  if (isHdpValid && minusHdpOdds && plusHdpOdds) {
+  if (compProto?.handicapRefined && (compProto.handicapRefined.homeCoverProb + compProto.handicapRefined.awayCoverProb) > 0) {
+    const hCov = compProto.handicapRefined.homeCoverProb;
+    const aCov = compProto.handicapRefined.awayCoverProb;
+    const noPushDenom = Math.max(1, hCov + aCov);
+    const normHomeCov = Math.round((hCov / noPushDenom) * 1000) / 10;
+    const normAwayCov = Math.round((100 - normHomeCov) * 10) / 10;
+    minusHdpTrueProb = isHomeMinus ? normHomeCov : normAwayCov;
+    plusHdpTrueProb = Math.round((100 - minusHdpTrueProb) * 10) / 10;
+  } else if (isHdpValid && minusHdpOdds && plusHdpOdds) {
     const rawMinus = 1 / Math.max(1.01, minusHdpOdds);
     const rawPlus = 1 / Math.max(1.01, plusHdpOdds);
     const hdpOverround = rawMinus + rawPlus;
@@ -523,8 +546,7 @@ export function getPrimaryPickInfo(match: MatchItem): PrimaryPickInfo {
   const underOdds = rawUoWin;
   const overOdds = rawUoLose;
 
-  // 18-Year Historical Database Empirical Distribution (Symmetric baseline centered at 50.0%)
-  const uoSeed = (Math.round((winOdds || 1.8) * 100) + Math.round((loseOdds || 2.1) * 100) + (drawOdds ? Math.round(drawOdds * 100) : 0)) % 100;
+  // Baseline distribution anchored to line & expected scoring
   let lineSkew = 0;
   if (isBaseball) {
     if (uoLineNum >= 10.0) lineSkew = 1.5;
@@ -534,21 +556,22 @@ export function getPrimaryPickInfo(match: MatchItem): PrimaryPickInfo {
     else if (uoLineNum <= 1.5) lineSkew = -2.0;
   }
 
-  const histUnderProb = Math.round((50.0 + lineSkew + ((uoSeed % 7) - 3) * 0.4) * 10) / 10;
-  const histOverProb = Math.round((100 - histUnderProb) * 10) / 10;
+  const histUnderProb = Math.round((50.0 + lineSkew) * 10) / 10;
 
-  // Dixon-Coles Total Expected Goals/Runs impact strictly relative to current match uoLineNum
-  // If expected total > line, Over is favored; if expected total < line, Under is favored.
-  // Percentage deviation: (dixonExpectedTotal - uoLineNum) / uoLineNum
   const dixonExpectedTotal = dixonColesLambdaHome + dixonColesMuAway;
   const offensiveDeviationPct = ((dixonExpectedTotal - uoLineNum) / Math.max(1, uoLineNum)) * 100;
-  // Scaled shift: 10% higher scoring potential shifts under probability by ~4%
   const totalOffensiveDelta = offensiveDeviationPct * 0.40;
 
   let underTrueProb = 50;
   let overTrueProb = 50;
 
-  if (isUoValid && underOdds && overOdds) {
+  if (compProto?.underOverRefined && (compProto.underOverRefined.underProb + compProto.underOverRefined.overProb) > 0) {
+    const uCov = compProto.underOverRefined.underProb;
+    const oCov = compProto.underOverRefined.overProb;
+    const uoDenom = Math.max(1, uCov + oCov);
+    underTrueProb = Math.round((uCov / uoDenom) * 1000) / 10;
+    overTrueProb = Math.round((100 - underTrueProb) * 10) / 10;
+  } else if (isUoValid && underOdds && overOdds) {
     const rawUnder = 1 / Math.max(1.01, underOdds);
     const rawOver = 1 / Math.max(1.01, overOdds);
     const uoOverround = rawUnder + rawOver;
@@ -561,7 +584,6 @@ export function getPrimaryPickInfo(match: MatchItem): PrimaryPickInfo {
     underTrueProb = Math.min(80, Math.max(20, Math.round(blendedUnder * 10) / 10));
     overTrueProb = Math.round((100 - underTrueProb) * 10) / 10;
   } else {
-    // When odds not published yet: symmetric baseline adjusted by offensive intensity
     const pureDixonUnder = 50.0 - totalOffensiveDelta;
     underTrueProb = Math.min(80, Math.max(20, Math.round((pureDixonUnder * 0.6 + histUnderProb * 0.4) * 10) / 10));
     overTrueProb = Math.round((100 - underTrueProb) * 10) / 10;
@@ -1209,7 +1231,9 @@ export function getPrimaryPickInfo(match: MatchItem): PrimaryPickInfo {
     bestDerivativePick,
     bestW1LPick,
     fourMarketPicks,
-    twoFolderRecommendation
+    twoFolderRecommendation,
+    comprehensiveProto: compProto || undefined,
+    refinedContextNote: compProto?.keyVerdict || undefined
   };
 }
 

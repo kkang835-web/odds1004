@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MatchLineupInjuryData, generateMatchLineupInjuryFeed } from '../../utils/lineupInjuryManager';
 import { SoccerPitchView, getCountryFlagUrl } from './SoccerPitchView';
 import { getSofascoreLineup } from '../../utils/sofascoreLineupNormalizer';
+import { getNationalTeamInfo } from '../../utils/playerNationalityResolver';
 
 interface LineupTabViewProps {
   h2hData: any;
@@ -76,6 +77,7 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
       isAce: Boolean(p.isAce || p.isCaptain),
       countryName: p.countryName,
       countryCode: p.countryCode,
+      flagUrl: p.flagUrl,
       rating: p.rating,
       statNote: `No.${p.shirtNumber} | ${p.position} (평점 ${p.rating || '7.0'})`
     }))
@@ -91,6 +93,7 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
           isAce: Boolean(p.isCaptain || p.is_captain || p.captain || pInfo.isCaptain || p.isAce),
           countryName: pInfo.country?.name || pInfo.countryName || p.countryName,
           countryCode: pInfo.country?.alpha2 || pInfo.country?.alpha3 || pInfo.countryCode || p.countryCode,
+          flagUrl: p.flagUrl || pInfo.flagUrl,
           rating: p.statistics?.rating || pInfo.statistics?.rating,
           statNote: (p.shirtNumber || p.jerseyNumber || pInfo.shirtNumber) ? `No.${p.shirtNumber || p.jerseyNumber || pInfo.shirtNumber}` : undefined
         };
@@ -107,6 +110,7 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
       isAce: Boolean(p.isAce || p.isCaptain),
       countryName: p.countryName,
       countryCode: p.countryCode,
+      flagUrl: p.flagUrl,
       rating: p.rating,
       statNote: `No.${p.shirtNumber} | ${p.position} (평점 ${p.rating || '7.0'})`
     }))
@@ -122,15 +126,31 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
           isAce: Boolean(p.isCaptain || p.is_captain || p.captain || pInfo.isCaptain || p.isAce),
           countryName: pInfo.country?.name || pInfo.countryName || p.countryName,
           countryCode: pInfo.country?.alpha2 || pInfo.country?.alpha3 || pInfo.countryCode || p.countryCode,
+          flagUrl: p.flagUrl || pInfo.flagUrl,
           rating: p.statistics?.rating || pInfo.statistics?.rating,
           statNote: (p.shirtNumber || p.jerseyNumber || pInfo.shirtNumber) ? `No.${p.shirtNumber || p.jerseyNumber || pInfo.shirtNumber}` : undefined
         };
       })
     || [];
 
-  // Guarantee non-empty 11 starters for soccer or detect unsupported league
+  const isLiveScrapedLineup = Boolean((lineupInjuryData as any)?.isLiveScraped || wisetotoLineup?.isLiveScraped);
+  const liveSourceLabel = (lineupInjuryData as any)?.sourceName || h2hData?.espnIntel?.sourceName || (wisetotoLineup?.isLiveScraped ? '와이즈토토(WiseToto) 실시간 수집' : '실시간 스크래핑 연동');
+  const homeNatLock = getNationalTeamInfo(homeTeam);
+  const awayNatLock = getNationalTeamInfo(awayTeam);
+  const homeClubLogo = [h2hData?.homeLogo, (lineupInjuryData as any)?.homeLogo].find((u: any) => typeof u === 'string' && u && !u.includes('flagcdn.com'));
+  const awayClubLogo = [h2hData?.awayLogo, (lineupInjuryData as any)?.awayLogo].find((u: any) => typeof u === 'string' && u && !u.includes('flagcdn.com'));
+  const homeFlagSingle = homeNatLock
+    ? `https://flagcdn.com/w40/${homeNatLock.countryCode.toLowerCase()}.png`
+    : (h2hData?.isNationalMatch ? (h2hData?.homeFlag || (lineupInjuryData as any)?.homeFlag) : undefined);
+  const awayFlagSingle = awayNatLock
+    ? `https://flagcdn.com/w40/${awayNatLock.countryCode.toLowerCase()}.png`
+    : (h2hData?.isNationalMatch ? (h2hData?.awayFlag || (lineupInjuryData as any)?.awayFlag) : undefined);
+  const homeHeaderIcon = homeNatLock ? homeFlagSingle : (homeClubLogo || (h2hData?.isNationalMatch ? homeFlagSingle : undefined));
+  const awayHeaderIcon = awayNatLock ? awayFlagSingle : (awayClubLogo || (h2hData?.isNationalMatch ? awayFlagSingle : undefined));
+
+  // Guarantee non-empty 11 starters for soccer only when no live scraped roster exists
   let isSoccerUnsupported = false;
-  if (normalizedSport === 'soccer') {
+  if (normalizedSport === 'soccer' && !isLiveScrapedLineup) {
     if (!rawHomeStarters || rawHomeStarters.length < 11 || !rawAwayStarters || rawAwayStarters.length < 11) {
       const fallbackFeed = generateMatchLineupInjuryFeed('soccer', homeTeam, awayTeam, 1);
       if (fallbackFeed.isSupportedLeague === false) {
@@ -156,13 +176,13 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
     ? false 
     : sofascoreData 
       ? sofascoreData.confirmed 
-      : (lineupInjuryData?.isOfficialConfirmed ?? true);
+      : (lineupInjuryData?.isOfficialConfirmed ?? false);
 
   const confirmedText = isSoccerUnsupported
     ? '데이터를 지원하지 않는 리그'
     : sofascoreData 
       ? (sofascoreData.confirmed ? 'SofaScore 공식 확정 라인업 연동' : 'SofaScore 라인업 연동')
-      : (lineupInjuryData?.confirmedTimeText || '경기 1시간 전 공식 확정 발표');
+      : (lineupInjuryData?.confirmedTimeText || 'ESPN · WiseToto 실시간 로스터 & 결장 리포트');
 
   const cleanHomeFormation = (() => {
     if (sofascoreData?.normalized?.homeFormation) return sofascoreData.normalized.homeFormation;
@@ -316,30 +336,50 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
       <div className="bg-[#0f1d2c] border border-[#1b344d] rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-lg">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
+            {homeHeaderIcon && (
+              <img
+                src={homeHeaderIcon}
+                alt={homeTeam}
+                className={homeNatLock ? 'w-5 h-3.5 object-cover rounded-sm border border-slate-700 shrink-0' : 'w-6 h-6 object-contain rounded-sm shrink-0'}
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              />
+            )}
             <span className="text-base sm:text-lg font-black text-amber-300 flex items-center gap-1.5">
-              <span>🏟️</span>
               <span>{homeTeam} vs {awayTeam} 라인업 & 결장자 리포트</span>
             </span>
+            {awayHeaderIcon && (
+              <img
+                src={awayHeaderIcon}
+                alt={awayTeam}
+                className={awayNatLock ? 'w-5 h-3.5 object-cover rounded-sm border border-slate-700 shrink-0' : 'w-6 h-6 object-contain rounded-sm shrink-0'}
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              />
+            )}
             <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full border flex items-center gap-1.5 ${
               isSoccerUnsupported
                 ? 'bg-amber-950/80 text-amber-300 border-amber-600/50'
                 : isConfirmed 
                   ? 'bg-emerald-950 text-emerald-300 border-emerald-700/60' 
-                  : 'bg-amber-950 text-amber-300 border-amber-700/60'
+                  : 'bg-cyan-950 text-cyan-300 border-cyan-700/60'
             }`}>
               <span className={`w-1.5 h-1.5 rounded-full ${isSoccerUnsupported ? 'bg-amber-400' : 'bg-current animate-pulse'}`}></span>
-              <span>{isSoccerUnsupported ? '데이터를 지원하지 않는 리그' : isConfirmed ? '공식 1군 라인업 확정' : '예상 라인업'}</span>
+              <span>{isSoccerUnsupported ? '데이터 미지원 리그' : isConfirmed ? '확정 라인업' : '1군 로스터 · 선발 대기'}</span>
             </span>
+            {isLiveScrapedLineup && (
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-900/50 text-emerald-300 border border-emerald-700/50">
+                ⚡ {liveSourceLabel}
+              </span>
+            )}
           </div>
           <p className="text-xs text-slate-400 mt-1">
-            {confirmedText} | 종목별({normalizedSport === 'baseball' ? '야구 선발투수·타순' : normalizedSport === 'soccer' ? '축구 선발 11명·포메이션' : '스타팅 라인업'}) 실시간 전력 데이터
+            {confirmedText} | {normalizedSport === 'baseball' ? '야구 선발투수·타순' : normalizedSport === 'soccer' ? '축구 선발/1군 로스터·포메이션' : normalizedSport === 'basketball' ? '농구 베스트 로테이션·부상자(OUT/GTD)' : '스타팅 라인업'} 실시간 수집 데이터
           </p>
         </div>
 
         {/* Quant Calibration Badge */}
         {lineupInjuryData?.quantCalibrationReport && (
           <div className="bg-[#09131f] border border-slate-800 p-2.5 rounded-xl text-xs space-y-1 self-start md:self-auto min-w-[200px]">
-            <div className="text-[10px] text-slate-400 font-bold">라인업/결장자 승률 보정</div>
+            <div className="text-[10px] text-slate-400 font-bold">결장자·로스터 승률 보정</div>
             <div className="flex items-center justify-between gap-2 font-mono">
               <span className="text-blue-300">{homeTeam}: {lineupInjuryData.quantCalibrationReport.homeNetImpact}</span>
               <span className="text-rose-300">{awayTeam}: {lineupInjuryData.quantCalibrationReport.awayNetImpact}</span>
@@ -348,20 +388,14 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
         )}
       </div>
 
-      {/* SofaScore Official API Controller (Soccer) */}
+      {/* Optional Collapsed Manual SofaScore Override (Soccer only) */}
       {normalizedSport === 'soccer' && (
-        <div className="bg-[#0a1626] border border-blue-900/50 rounded-xl p-3 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 font-bold border border-blue-700/60 flex items-center gap-1">
-              <span>⚡</span>
-              <span>SofaScore 공식 API [GET]</span>
-            </span>
-            <span className="text-slate-400 text-[11px]">
-              {sofaStatusText || `이벤트 ID: ${eventIdInput || '자동 감지'}`}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2">
+        <details className="bg-[#0a1626] border border-slate-800 rounded-xl px-3 py-2 text-xs">
+          <summary className="cursor-pointer text-slate-400 hover:text-slate-200 font-semibold flex items-center justify-between">
+            <span>🔧 수동 SofaScore Event ID 직접 조회 (선택 사항)</span>
+            <span className="text-[10px] font-mono text-slate-500">{sofaStatusText || (eventIdInput ? `ID: ${eventIdInput}` : '자동 ESPN/WiseToto 연동 중')}</span>
+          </summary>
+          <div className="mt-2 pt-2 border-t border-slate-800/80 flex items-center gap-2">
             <div className="flex items-center bg-[#070f1a] border border-slate-700 rounded-lg px-2 py-1">
               <span className="text-[10px] text-slate-400 mr-1.5 font-mono">ID</span>
               <input
@@ -380,12 +414,11 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
                   ? 'bg-slate-700 text-slate-400 cursor-wait' 
                   : 'bg-blue-600 hover:bg-blue-500 text-white shadow-sm'
               }`}
-              title="GET https://www.sofascore.com/api/v1/event/{id}/lineups 호출 및 304 ETag 캐시 검증"
             >
-              <span>{isSofaLoading ? '요청 중...' : '실시간 GET 조회'}</span>
+              <span>{isSofaLoading ? '조회 중...' : '실시간 GET 조회'}</span>
             </button>
           </div>
-        </div>
+        </details>
       )}
 
       {/* 2. BASEBALL SPECIFIC VIEW */}
@@ -397,7 +430,11 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
             <div className="bg-[#0c1624] border border-blue-900/40 rounded-2xl p-4 space-y-3">
               <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-blue-400"></span>
+                  {homeHeaderIcon ? (
+                    <img src={homeHeaderIcon} alt={homeTeam} className="w-5 h-5 object-contain shrink-0" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
+                  ) : (
+                    <span className="w-2.5 h-2.5 rounded-full bg-blue-400"></span>
+                  )}
                   <span className="font-black text-sm text-blue-300">{homeTeam} 선발투수</span>
                 </div>
                 <span className="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded font-mono border border-blue-800/60">
@@ -443,7 +480,11 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
             <div className="bg-[#0c1624] border border-rose-900/40 rounded-2xl p-4 space-y-3">
               <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+                  {awayHeaderIcon ? (
+                    <img src={awayHeaderIcon} alt={awayTeam} className="w-5 h-5 object-contain shrink-0" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
+                  ) : (
+                    <span className="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+                  )}
                   <span className="font-black text-sm text-rose-300">{awayTeam} 선발투수</span>
                 </div>
                 <span className="text-xs bg-rose-950 text-rose-300 px-2 py-0.5 rounded font-mono border border-rose-800/60">
@@ -758,7 +799,11 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
               <div className={`${activeLineupTab === 'away' ? 'hidden lg:block' : 'block'} bg-[#0d1726] border border-blue-900/40 rounded-2xl p-4 space-y-3`}>
                 <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-blue-400"></span>
+                    {homeHeaderIcon ? (
+                      <img src={homeHeaderIcon} alt={homeTeam} className={homeNatLock ? 'w-4 h-3 object-cover rounded-sm border border-slate-700 shrink-0' : 'w-5 h-5 object-contain rounded-sm shrink-0'} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
+                    ) : (
+                      <span className="w-2.5 h-2.5 rounded-full bg-blue-400"></span>
+                    )}
                     <span className="font-black text-sm text-blue-300">{homeTeam} 선발 라인업</span>
                   </div>
                   <span className="text-xs bg-blue-950 text-blue-300 px-2 py-0.5 rounded font-mono border border-blue-800/60">
@@ -776,14 +821,22 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
                   ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                       {homeData.pitcherOrStarters.map((p: any, idx: number) => {
-                        const flagUrl = getCountryFlagUrl(p.countryCode, p.countryName, p.name || p.shortName, homeTeam);
+                        const flagUrl = homeNatLock
+                          ? `https://flagcdn.com/w40/${homeNatLock.countryCode.toLowerCase()}.png`
+                          : (p.flagUrl || getCountryFlagUrl(p.countryCode, p.countryName, p.name || p.shortName));
                         return (
                           <div key={idx} className="bg-[#09131f] px-2.5 py-1.5 rounded-lg border border-slate-800/80 flex items-center justify-between text-xs">
                             <div className="flex items-center gap-1.5 min-w-0">
                               {flagUrl ? (
-                                <img src={flagUrl} alt="flag" className="w-4 h-3 object-cover rounded-sm shadow-sm shrink-0" title={p.countryName || p.countryCode} />
+                                <img
+                                  src={flagUrl}
+                                  alt="flag"
+                                  className="w-4 h-3 object-cover rounded-sm shadow-sm shrink-0"
+                                  title={homeNatLock?.countryName || p.countryName || p.countryCode}
+                                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                                />
                               ) : null}
-                              <span className="text-[10px] bg-slate-800 text-slate-400 px-1 py-0.2 rounded font-mono w-6 text-center shrink-0">
+                              <span className="text-[10px] bg-slate-800 text-slate-400 px-1 py-0.2 rounded font-mono min-w-6 text-center shrink-0">
                                 {p.position}
                               </span>
                               <span className={`font-medium truncate ${p.isAce ? 'text-amber-300 font-bold' : 'text-slate-200'}`}>
@@ -821,7 +874,11 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
               <div className={`${activeLineupTab === 'home' ? 'hidden lg:block' : 'block'} bg-[#0d1726] border border-rose-900/40 rounded-2xl p-4 space-y-3`}>
                 <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+                    {awayHeaderIcon ? (
+                      <img src={awayHeaderIcon} alt={awayTeam} className={awayNatLock ? 'w-4 h-3 object-cover rounded-sm border border-slate-700 shrink-0' : 'w-5 h-5 object-contain rounded-sm shrink-0'} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
+                    ) : (
+                      <span className="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+                    )}
                     <span className="font-black text-sm text-rose-300">{awayTeam} 선발 라인업</span>
                   </div>
                   <span className="text-xs bg-rose-950 text-rose-300 px-2 py-0.5 rounded font-mono border border-rose-800/60">
@@ -839,14 +896,22 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
                   ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                       {awayData.pitcherOrStarters.map((p: any, idx: number) => {
-                        const flagUrl = getCountryFlagUrl(p.countryCode, p.countryName, p.name || p.shortName, awayTeam);
+                        const flagUrl = awayNatLock
+                          ? `https://flagcdn.com/w40/${awayNatLock.countryCode.toLowerCase()}.png`
+                          : (p.flagUrl || getCountryFlagUrl(p.countryCode, p.countryName, p.name || p.shortName));
                         return (
                           <div key={idx} className="bg-[#09131f] px-2.5 py-1.5 rounded-lg border border-slate-800/80 flex items-center justify-between text-xs">
                             <div className="flex items-center gap-1.5 min-w-0">
                               {flagUrl ? (
-                                <img src={flagUrl} alt="flag" className="w-4 h-3 object-cover rounded-sm shadow-sm shrink-0" title={p.countryName || p.countryCode} />
+                                <img
+                                  src={flagUrl}
+                                  alt="flag"
+                                  className="w-4 h-3 object-cover rounded-sm shadow-sm shrink-0"
+                                  title={awayNatLock?.countryName || p.countryName || p.countryCode}
+                                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                                />
                               ) : null}
-                              <span className="text-[10px] bg-slate-800 text-slate-400 px-1 py-0.2 rounded font-mono w-6 text-center shrink-0">
+                              <span className="text-[10px] bg-slate-800 text-slate-400 px-1 py-0.2 rounded font-mono min-w-6 text-center shrink-0">
                                 {p.position}
                               </span>
                               <span className={`font-medium truncate ${p.isAce ? 'text-amber-300 font-bold' : 'text-slate-200'}`}>
@@ -939,70 +1004,102 @@ export function LineupTabView({ h2hData, homeTeam, awayTeam, sport, league }: Li
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Home Injuries */}
+          {/* Home Injuries (OUT vs GTD separated) */}
           <div className={`${activeInjuriesTab === 'away' ? 'hidden md:block' : 'block'} space-y-2`}>
-            <div className="text-xs font-bold text-blue-300 flex items-center gap-1.5">
-              <span>{homeTeam} 결장자</span>
-              <span className="text-[10px] text-slate-400">({homeData.injuries?.length || 0}명)</span>
+            <div className="text-xs font-bold text-blue-300 flex items-center justify-between gap-1.5">
+              <span>{homeTeam} 결장자 ({homeData.injuries?.length || 0}명)</span>
+              {homeData.injuries && homeData.injuries.length > 0 && (
+                <div className="flex items-center gap-1 text-[10px]">
+                  <span className="bg-rose-950 text-rose-300 px-1.5 py-0.5 rounded border border-rose-800/40">
+                    OUT {homeData.injuries.filter((i: any) => String(i.status).includes('OUT') || String(i.status).includes('확정')).length}
+                  </span>
+                  <span className="bg-amber-950 text-amber-300 px-1.5 py-0.5 rounded border border-amber-800/40">
+                    GTD {homeData.injuries.filter((i: any) => !String(i.status).includes('OUT') && !String(i.status).includes('확정')).length}
+                  </span>
+                </div>
+              )}
             </div>
             {(!homeData.injuries || homeData.injuries.length === 0) ? (
               <div className="bg-[#09131f] p-3 rounded-xl border border-slate-800/80 text-xs text-emerald-400 flex items-center gap-2">
                 <span>✅</span>
-                <span>주요 결장자 없이 100% 최정상 전력 가동 가능</span>
+                <span>보고된 부상·결장 이슈 없음 (정상 전력)</span>
               </div>
             ) : (
               <div className="space-y-1.5">
-                {homeData.injuries.map((inj: any, idx: number) => (
-                  <div key={idx} className="bg-[#09131f] p-2.5 rounded-xl border border-slate-800/80 flex items-start justify-between text-xs">
-                    <div>
-                      <div className="font-bold text-slate-200 flex items-center gap-1.5">
-                        <span>{inj.name}</span>
-                        <span className="text-[10px] text-slate-400">({inj.position})</span>
-                        <span className="text-[10px] bg-rose-950 text-rose-300 px-1.5 py-0.2 rounded border border-rose-800/40">
-                          {inj.status}
-                        </span>
+                {homeData.injuries.map((inj: any, idx: number) => {
+                  const isOut = String(inj.status || '').includes('OUT') || String(inj.status || '').includes('확정');
+                  return (
+                    <div key={idx} className="bg-[#09131f] p-2.5 rounded-xl border border-slate-800/80 flex items-start justify-between gap-2 text-xs">
+                      <div>
+                        <div className="font-bold text-slate-200 flex items-center gap-1.5 flex-wrap">
+                          <span>{inj.name}</span>
+                          <span className="text-[10px] text-slate-400">({inj.position})</span>
+                          <span className={`text-[10px] px-1.5 py-0.2 rounded border ${
+                            isOut
+                              ? 'bg-rose-950 text-rose-300 border-rose-800/40'
+                              : 'bg-amber-950 text-amber-300 border-amber-800/40'
+                          }`}>
+                            {inj.status}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-slate-400 mt-0.5 leading-snug">{inj.reason}</div>
                       </div>
-                      <div className="text-[11px] text-slate-400 mt-0.5">{inj.reason}</div>
+                      <span className={`font-mono text-[11px] font-bold shrink-0 ${isOut ? 'text-rose-400' : 'text-amber-400'}`}>
+                        {inj.impactProbPct ? `${inj.impactProbPct}%p` : (isOut ? '-3.0%p' : '-1.2%p')}
+                      </span>
                     </div>
-                    <span className="text-rose-400 font-mono text-[11px] font-bold shrink-0">
-                      {inj.impactProbPct ? `${inj.impactProbPct}%p` : '-2.0%p'}
-                    </span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
 
-          {/* Away Injuries */}
+          {/* Away Injuries (OUT vs GTD separated) */}
           <div className={`${activeInjuriesTab === 'home' ? 'hidden md:block' : 'block'} space-y-2`}>
-            <div className="text-xs font-bold text-rose-300 flex items-center gap-1.5">
-              <span>{awayTeam} 결장자</span>
-              <span className="text-[10px] text-slate-400">({awayData.injuries?.length || 0}명)</span>
+            <div className="text-xs font-bold text-rose-300 flex items-center justify-between gap-1.5">
+              <span>{awayTeam} 결장자 ({awayData.injuries?.length || 0}명)</span>
+              {awayData.injuries && awayData.injuries.length > 0 && (
+                <div className="flex items-center gap-1 text-[10px]">
+                  <span className="bg-rose-950 text-rose-300 px-1.5 py-0.5 rounded border border-rose-800/40">
+                    OUT {awayData.injuries.filter((i: any) => String(i.status).includes('OUT') || String(i.status).includes('확정')).length}
+                  </span>
+                  <span className="bg-amber-950 text-amber-300 px-1.5 py-0.5 rounded border border-amber-800/40">
+                    GTD {awayData.injuries.filter((i: any) => !String(i.status).includes('OUT') && !String(i.status).includes('확정')).length}
+                  </span>
+                </div>
+              )}
             </div>
             {(!awayData.injuries || awayData.injuries.length === 0) ? (
               <div className="bg-[#09131f] p-3 rounded-xl border border-slate-800/80 text-xs text-emerald-400 flex items-center gap-2">
                 <span>✅</span>
-                <span>주요 결장자 없이 100% 최정상 전력 가동 가능</span>
+                <span>보고된 부상·결장 이슈 없음 (정상 전력)</span>
               </div>
             ) : (
               <div className="space-y-1.5">
-                {awayData.injuries.map((inj: any, idx: number) => (
-                  <div key={idx} className="bg-[#09131f] p-2.5 rounded-xl border border-slate-800/80 flex items-start justify-between text-xs">
-                    <div>
-                      <div className="font-bold text-slate-200 flex items-center gap-1.5">
-                        <span>{inj.name}</span>
-                        <span className="text-[10px] text-slate-400">({inj.position})</span>
-                        <span className="text-[10px] bg-rose-950 text-rose-300 px-1.5 py-0.2 rounded border border-rose-800/40">
-                          {inj.status}
-                        </span>
+                {awayData.injuries.map((inj: any, idx: number) => {
+                  const isOut = String(inj.status || '').includes('OUT') || String(inj.status || '').includes('확정');
+                  return (
+                    <div key={idx} className="bg-[#09131f] p-2.5 rounded-xl border border-slate-800/80 flex items-start justify-between gap-2 text-xs">
+                      <div>
+                        <div className="font-bold text-slate-200 flex items-center gap-1.5 flex-wrap">
+                          <span>{inj.name}</span>
+                          <span className="text-[10px] text-slate-400">({inj.position})</span>
+                          <span className={`text-[10px] px-1.5 py-0.2 rounded border ${
+                            isOut
+                              ? 'bg-rose-950 text-rose-300 border-rose-800/40'
+                              : 'bg-amber-950 text-amber-300 border-amber-800/40'
+                          }`}>
+                            {inj.status}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-slate-400 mt-0.5 leading-snug">{inj.reason}</div>
                       </div>
-                      <div className="text-[11px] text-slate-400 mt-0.5">{inj.reason}</div>
+                      <span className={`font-mono text-[11px] font-bold shrink-0 ${isOut ? 'text-rose-400' : 'text-amber-400'}`}>
+                        {inj.impactProbPct ? `${inj.impactProbPct}%p` : (isOut ? '-3.0%p' : '-1.2%p')}
+                      </span>
                     </div>
-                    <span className="text-rose-400 font-mono text-[11px] font-bold shrink-0">
-                      {inj.impactProbPct ? `${inj.impactProbPct}%p` : '-2.0%p'}
-                    </span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>

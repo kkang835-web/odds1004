@@ -3,13 +3,13 @@ import { MatchItem } from '../types';
 import { getStandardKoreanTeamName } from '../utils/teamNameMatcher';
 import { getPrimaryPickInfo } from '../utils/quantPickEvaluator';
 import { generateMatchPreviewArticle } from '../utils/matchPreviewGenerator';
+import { getNationalTeamInfo } from '../utils/playerNationalityResolver';
 import { QuantValueTabView } from './analysis/QuantValueTabView';
 import { H2HTabView } from './analysis/H2HTabView';
 import { RecentMatchesTabView } from './analysis/RecentMatchesTabView';
 import { LineupTabView } from './analysis/LineupTabView';
 import { LeagueStandingsTabView } from './analysis/LeagueStandingsTabView';
 import { OddsPreviewTabView } from './analysis/OddsPreviewTabView';
-import { MatchCommentsSection } from './MatchCommentsSection';
 
 export type AnalysisTabKey = 'view_quant' | 'view_h2h' | 'view_recent' | 'view_lineup' | 'view_standings' | 'view_odds_preview';
 
@@ -77,6 +77,16 @@ export default function DetailedAnalysisModal({
       sport: sport,
       canonicalMatchId: String(rawMatch?.canonicalMatchId || '')
     });
+    const w = rawMatch?.domestic?.win || rawMatch?.domesticOdds?.win || rawMatch?.winOdds || rawMatch?.win;
+    const d = rawMatch?.domestic?.draw || rawMatch?.domesticOdds?.draw || rawMatch?.drawOdds || rawMatch?.draw;
+    const l = rawMatch?.domestic?.lose || rawMatch?.domesticOdds?.lose || rawMatch?.loseOdds || rawMatch?.lose;
+    const hLine = rawMatch?.handicapOrLine ?? rawMatch?.handicapLine;
+    const uLine = rawMatch?.uoLine;
+    if (w && Number(w) > 1) params.set('win', String(w));
+    if (d && Number(d) > 1) params.set('draw', String(d));
+    if (l && Number(l) > 1) params.set('lose', String(l));
+    if (hLine !== undefined && hLine !== null) params.set('handicapLine', String(hLine));
+    if (uLine !== undefined && uLine !== null) params.set('uoLine', String(uLine));
 
     fetch(`/api/matches/h2h?${params.toString()}`)
       .then(r => (r.ok ? r.json() : null))
@@ -128,7 +138,7 @@ export default function DetailedAnalysisModal({
     status: '경기전',
     score: null,
     date
-  });
+  }, h2hData);
 
   const winCand = primaryPick?.candidates?.find(c => c.marketLabel === '일반(승)');
   const drawCand = primaryPick?.candidates?.find(c => c.marketLabel === '일반(무)');
@@ -260,12 +270,46 @@ export default function DetailedAnalysisModal({
             <span className="text-lg sm:text-xl shrink-0">{sportEmoji}</span>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                <h2 className="text-xs sm:text-base font-black tracking-tight text-white flex items-center gap-1 truncate">
-                  <span>분석:</span>
-                  <span className="text-amber-300 truncate">{fullHomeTeam}</span>
-                  <span className="text-slate-500 font-normal">vs</span>
-                  <span className="text-slate-200 truncate">{fullAwayTeam}</span>
-                </h2>
+                {(() => {
+                  const homeNat = getNationalTeamInfo(fullHomeTeam) || getNationalTeamInfo(shortHome);
+                  const awayNat = getNationalTeamInfo(fullAwayTeam) || getNationalTeamInfo(shortAway);
+                  const isHomeNat = Boolean(homeNat);
+                  const isAwayNat = Boolean(awayNat);
+                  const hClubLogo = [h2hData?.homeLogo, rawMatch?.homeLogo].find((u: any) => typeof u === 'string' && u && !u.includes('flagcdn.com'));
+                  const aClubLogo = [h2hData?.awayLogo, rawMatch?.awayLogo].find((u: any) => typeof u === 'string' && u && !u.includes('flagcdn.com'));
+                  const hFlagSingle = homeNat
+                    ? `https://flagcdn.com/w40/${homeNat.countryCode.toLowerCase()}.png`
+                    : (h2hData?.isNationalMatch ? (h2hData?.homeFlag || rawMatch?.homeFlag) : undefined);
+                  const aFlagSingle = awayNat
+                    ? `https://flagcdn.com/w40/${awayNat.countryCode.toLowerCase()}.png`
+                    : (h2hData?.isNationalMatch ? (h2hData?.awayFlag || rawMatch?.awayFlag) : undefined);
+                  const homeIcon = isHomeNat ? hFlagSingle : (hClubLogo || (h2hData?.isNationalMatch ? hFlagSingle : undefined));
+                  const awayIcon = isAwayNat ? aFlagSingle : (aClubLogo || (h2hData?.isNationalMatch ? aFlagSingle : undefined));
+                  return (
+                    <h2 className="text-xs sm:text-base font-black tracking-tight text-white flex items-center gap-1.5 truncate">
+                      <span>분석:</span>
+                      {homeIcon && (
+                        <img
+                          src={homeIcon}
+                          alt=""
+                          className={isHomeNat ? 'w-4 h-3 object-cover rounded-sm border border-slate-700 shrink-0' : 'w-4 h-4 sm:w-5 sm:h-5 object-contain rounded-sm shrink-0'}
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                        />
+                      )}
+                      <span className="text-amber-300 truncate">{fullHomeTeam}</span>
+                      <span className="text-slate-500 font-normal">vs</span>
+                      {awayIcon && (
+                        <img
+                          src={awayIcon}
+                          alt=""
+                          className={isAwayNat ? 'w-4 h-3 object-cover rounded-sm border border-slate-700 shrink-0' : 'w-4 h-4 sm:w-5 sm:h-5 object-contain rounded-sm shrink-0'}
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                        />
+                      )}
+                      <span className="text-slate-200 truncate">{fullAwayTeam}</span>
+                    </h2>
+                  );
+                })()}
                 <span className="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.2 rounded font-mono border border-slate-700 shrink-0">
                   No. {gameNo}
                 </span>
@@ -408,6 +452,8 @@ export default function DetailedAnalysisModal({
               uoCand={uoCand}
               handicapLine={handicapLine}
               uoLine={uoLine}
+              comprehensiveProto={h2hData?.comprehensiveProto}
+              h2hData={h2hData}
             />
           )}
 
@@ -454,6 +500,7 @@ export default function DetailedAnalysisModal({
           {activeView === 'view_odds_preview' && (
             <OddsPreviewTabView
               rawMatch={rawMatch}
+              h2hData={h2hData}
               homeTeam={fullHomeTeam}
               awayTeam={fullAwayTeam}
               sport={sport}
@@ -470,15 +517,6 @@ export default function DetailedAnalysisModal({
             />
           )}
 
-          {/* Real-time Match Comments & Discussion Section */}
-          <div className="pt-4">
-            <MatchCommentsSection
-              matchId={`${rawMatch?.year || 2026}_${rawMatch?.round || 1}_${gameNo}`}
-              homeTeam={fullHomeTeam}
-              awayTeam={fullAwayTeam}
-              sport={sport}
-            />
-          </div>
         </div>
 
         {/* ========================================================================= */}

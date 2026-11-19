@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getCountryFlagUrl as resolveFlagUrl, resolvePlayerCountry } from '../../utils/playerNationalityResolver';
+import { getCountryFlagUrl as resolveFlagUrl, resolvePlayerCountry, getNationalTeamInfo } from '../../utils/playerNationalityResolver';
 
 export interface PitchPlayer {
   name: string;
@@ -10,6 +10,7 @@ export interface PitchPlayer {
   isAce?: boolean;
   countryName?: string;
   countryCode?: string;
+  flagUrl?: string;
   rating?: number | string;
   playerId?: string | number;
   imageLink?: string;
@@ -125,8 +126,11 @@ export const SoccerPitchView: React.FC<SoccerPitchViewProps> = ({
 
   const renderPlayerToken = (p: PitchPlayer, isHome: boolean) => {
     const teamContext = isHome ? homeTeam : awayTeam;
-    const flagUrl = getCountryFlagUrl(p.countryCode, p.countryName, p.name || p.shortName, teamContext);
-    const resolvedNat = resolvePlayerCountry(p.countryCode, p.countryName, p.name || p.shortName, teamContext);
+    const natLock = getNationalTeamInfo(teamContext);
+    const flagUrl = natLock
+      ? `https://flagcdn.com/w40/${natLock.countryCode.toLowerCase()}.png`
+      : (p.flagUrl || getCountryFlagUrl(p.countryCode, p.countryName, p.name || p.shortName));
+    const resolvedNat = natLock || resolvePlayerCountry(p.countryCode, p.countryName, p.name || p.shortName);
     const displayName = p.shortName || p.name;
     const isCaptain = Boolean(p.isCaptain);
 
@@ -134,7 +138,7 @@ export const SoccerPitchView: React.FC<SoccerPitchViewProps> = ({
       <div 
         key={`${p.name}-${p.shirtNumber}`}
         className="flex flex-col items-center group relative cursor-pointer select-none transition-transform hover:scale-105"
-        title={`${p.name} | No.${p.shirtNumber} | ${p.position} | 국적: ${resolvedNat.countryName} | 평점 ${p.rating || '7.0'}`}
+        title={`${p.name} | No.${p.shirtNumber} | ${p.position}${resolvedNat.countryName ? ` | 국적: ${resolvedNat.countryName}` : ''} | 평점 ${p.rating || '7.0'}`}
       >
         {/* Token Circle */}
         <div className="relative">
@@ -162,20 +166,21 @@ export const SoccerPitchView: React.FC<SoccerPitchViewProps> = ({
             </div>
           </div>
 
-          {/* National Flag Badge */}
+          {/* National Flag Badge (Only shown when actual player nationality is verified) */}
           {flagUrl ? (
             <div className="absolute -bottom-1 -right-1 bg-black/85 p-0.5 rounded border border-white/80 shadow-md">
               <img
                 src={flagUrl}
                 alt={resolvedNat.countryName || '국적'}
                 className="w-3.5 h-2.5 sm:w-4 sm:h-3 object-cover rounded-sm"
+                onError={(e) => {
+                  const parent = e.currentTarget.parentElement;
+                  if (parent) parent.style.display = 'none';
+                  e.currentTarget.style.display = 'none';
+                }}
               />
             </div>
-          ) : (
-            <div className="absolute -bottom-1 -right-1 bg-slate-900 text-[9px] px-0.5 rounded border border-slate-600 text-slate-300">
-              ⚽
-            </div>
-          )}
+          ) : null}
         </div>
 
         {/* Player Name Tag (SofaScore exact style) */}

@@ -156,7 +156,8 @@ function getPhysicalScore(
 /**
  * Calculates and formats the Display Score for match table rows.
  * For Handicap markets: Displays the handicap settlement score directly as the main score (e.g. 1:0 or 0:0).
- * For General / UO / SUM markets: Displays the actual physical match final score (e.g. 2:0 or 1:6).
+ * For Under/Over & SUM markets: Displays the combined total sum (e.g. 합계 213 or 합계 3).
+ * For General / W1L / W5L markets: Displays the actual physical match final score (e.g. 2:0 or 1:6).
  */
 function getDisplayScore(
   m: MatchItem, 
@@ -165,8 +166,17 @@ function getDisplayScore(
 ): string {
   if (m.status !== '종료') return '-:-';
 
-  // 1. For 3-Way Handicap markets, display the handicap settlement score directly as the main score
-  const isHandicap = m.categoryType === '핸디캡' || (m.categoryLabel && (m.categoryLabel.startsWith('H') || m.categoryLabel.includes('핸디')));
+  const mType = identifyMarketType(m);
+
+  // 1. For Under/Over & SUM (홀짝) markets, display combined total score number only
+  if (mType === 'UNDER_OVER' || mType === 'SUM') {
+    const phys = getPhysicalScore(m, generalMatchMap, allMatches);
+    if (!phys) return '-';
+    return `${phys.home + phys.away}`;
+  }
+
+  // 2. For 3-Way Handicap markets, display the handicap settlement score directly as the main score
+  const isHandicap = mType === 'HANDICAP';
   if (isHandicap && m.settlementScore && typeof m.settlementScore.home === 'number' && typeof m.settlementScore.away === 'number') {
     return `${m.settlementScore.home}:${m.settlementScore.away}`;
   }
@@ -443,8 +453,11 @@ export function getForeignUnavailableReason(m: MatchItem): string {
     return '원본 미제공 (NOT_PROVIDED)';
   }
   const mType = identifyMarketType(m);
+  if (mType === 'HANDICAP' || mType === 'UNDER_OVER') {
+    return '해당 기준선 해외배당 미제공';
+  }
   if (mType !== '1X2' && mType !== 'MONEYLINE') {
-    return '지원되지 않는 시장 (h2h 미해당)';
+    return '국내 전용 시장 (해외 미제공)';
   }
   if (sourceName.includes('쿼터 소진')) {
     return 'API 쿼터 소진 (UNAVAILABLE)';
@@ -688,8 +701,8 @@ export function getMatchHitStatus(
         ...defaultStatus,
         outcomeTag: isOdd ? '홀' : '짝',
         activeOddsSlot: isOdd ? 'win' : 'lose',
-        homeTeamWon,
-        awayTeamWon
+        homeTeamWon: false,
+        awayTeamWon: false
       };
     }
     if (phys) {
@@ -699,8 +712,8 @@ export function getMatchHitStatus(
         ...defaultStatus,
         outcomeTag: isOdd ? '홀' : '짝',
         activeOddsSlot: isOdd ? 'win' : 'lose',
-        homeTeamWon,
-        awayTeamWon
+        homeTeamWon: false,
+        awayTeamWon: false
       };
     }
     // If neither official 홀/짝 tag nor physical scores are confirmed, return empty (미제공)
@@ -813,19 +826,19 @@ export function getMatchHitStatus(
         isLoseHit: m.rawResultTag === '오버',
         outcomeTag: m.rawResultTag,
         activeOddsSlot: isWin ? 'win' : (isVoid ? 'middle' : 'lose'),
-        homeTeamWon,
-        awayTeamWon
+        homeTeamWon: false,
+        awayTeamWon: false
       };
     }
     if (phys) {
       const uLine = m.uoLine ?? m.handicapOrLine ?? 0;
       const total = phys.home + phys.away;
       if (total < uLine) {
-        return { ...defaultStatus, isWinHit: true, outcomeTag: '언더', activeOddsSlot: 'win', homeTeamWon, awayTeamWon };
+        return { ...defaultStatus, isWinHit: true, outcomeTag: '언더', activeOddsSlot: 'win', homeTeamWon: false, awayTeamWon: false };
       } else if (total > uLine) {
-        return { ...defaultStatus, isLoseHit: true, outcomeTag: '오버', activeOddsSlot: 'lose', homeTeamWon, awayTeamWon };
+        return { ...defaultStatus, isLoseHit: true, outcomeTag: '오버', activeOddsSlot: 'lose', homeTeamWon: false, awayTeamWon: false };
       } else {
-        return { ...defaultStatus, isDrawHit: true, outcomeTag: '적특', activeOddsSlot: 'middle', homeTeamWon, awayTeamWon };
+        return { ...defaultStatus, isDrawHit: true, outcomeTag: '적특', activeOddsSlot: 'middle', homeTeamWon: false, awayTeamWon: false };
       }
     }
     const isWin = m.hitOutcome === 'win';
@@ -838,8 +851,8 @@ export function getMatchHitStatus(
       isLoseHit: isLose,
       outcomeTag: isWin ? '언더' : (isLose ? '오버' : (isVoid ? '적특' : '')),
       activeOddsSlot: isWin ? 'win' : (isVoid ? 'middle' : (isLose ? 'lose' : null)),
-      homeTeamWon,
-      awayTeamWon
+      homeTeamWon: false,
+      awayTeamWon: false
     };
   }
 
@@ -2062,7 +2075,7 @@ export function MatchTable({
 
                         {/* 5. 홈팀 vs 원정팀 (결과 스코어) */}
                         <td className="p-2 text-center">
-                          <div className="flex items-center justify-center gap-2">
+                          <div className="flex items-center justify-center gap-1.5">
                             <span className={`text-right flex-1 truncate font-medium ${homeTeamWon ? 'text-blue-700 font-black' : 'text-gray-900'}`}>
                               {m.homeTeam}
                             </span>
@@ -2099,8 +2112,8 @@ export function MatchTable({
                           </div>
                         </td>
 
-                        {/* 7. 해외 시장 기준값 (해외 평균 배당) - 3칸 대칭 구조 & 순수 배당 숫자만 표시 */}
-                        <td className="p-2 text-center bg-amber-50/40 border-l border-amber-100 font-mono whitespace-nowrap">
+                        {/* 7. 해외 시장 기준값 (해외 평균 배당) */}
+                        <td className="p-2 text-center bg-amber-50/40 border-l border-amber-100 font-mono whitespace-nowrap" title={m.foreignSourceName || '해외 평균 배당'}>
                           {m.oddsSource?.foreign === 'real' && m.foreign ? (
                             <div className="grid grid-cols-3 gap-1 w-full max-w-[150px] mx-auto text-[11px] items-center">
                               {/* Foreign Slot 1 */}

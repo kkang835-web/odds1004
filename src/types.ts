@@ -325,6 +325,86 @@ export interface MatchItem {
   foreignIsQuotaExhausted?: boolean;
   foreignMarket?: string;
   foreignEventId?: string;
+  foreignBookmakerCount?: number;
+  foreignBookmakers?: Array<{
+    bookmaker: string;
+    line: number | null;
+    win: number;
+    draw: number | null;
+    lose: number;
+    winMove: 'up' | 'down' | 'flat';
+    drawMove: 'up' | 'down' | 'flat';
+    loseMove: 'up' | 'down' | 'flat';
+  }>;
+  foreignLine?: number | null;
+  foreignMarkets?: {
+    normal?: {
+      line: number | null;
+      avg: OddsDetail;
+      bookmakers: Array<{
+        bookmaker: string;
+        line: number | null;
+        win: number;
+        draw: number | null;
+        lose: number;
+        winMove: 'up' | 'down' | 'flat';
+        drawMove: 'up' | 'down' | 'flat';
+        loseMove: 'up' | 'down' | 'flat';
+      }>;
+      sourceName?: string;
+    };
+    handicap?: {
+      line: number | null;
+      avg: OddsDetail;
+      bookmakers: Array<{
+        bookmaker: string;
+        line: number | null;
+        win: number;
+        draw: number | null;
+        lose: number;
+        winMove: 'up' | 'down' | 'flat';
+        drawMove: 'up' | 'down' | 'flat';
+        loseMove: 'up' | 'down' | 'flat';
+      }>;
+      sourceName?: string;
+    };
+    underOver?: {
+      line: number | null;
+      avg: OddsDetail;
+      bookmakers: Array<{
+        bookmaker: string;
+        line: number | null;
+        win: number;
+        draw: number | null;
+        lose: number;
+        winMove: 'up' | 'down' | 'flat';
+        drawMove: 'up' | 'down' | 'flat';
+        loseMove: 'up' | 'down' | 'flat';
+      }>;
+      sourceName?: string;
+    };
+  };
+  foreignOpening?: {
+    win: number | null;
+    draw: number | null;
+    lose: number | null;
+  };
+  espnOdds?: {
+    provider?: string;
+    details?: string;
+    overUnder?: number | null;
+    spread?: number | null;
+    open?: { win: number | null; draw: number | null; lose: number | null };
+    current?: { win: number | null; draw: number | null; lose: number | null };
+    winMove?: 'up' | 'down' | 'flat';
+    loseMove?: 'up' | 'down' | 'flat';
+  };
+  oddsHistory?: any[];
+  homeLogo?: string;
+  awayLogo?: string;
+  homeFlag?: string;
+  awayFlag?: string;
+  isNationalMatch?: boolean;
   betmanHomeName?: string;
   betmanAwayName?: string;
   oddsSource?: {

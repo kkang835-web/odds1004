@@ -24,12 +24,23 @@ export interface PreviewEvaluatedInputs {
 export interface JournalistSection {
   sectionNo: string;
   title: string;
+  subhead?: string;
   content: string;
   badge?: string;
 }
 
+export interface PreviewBasicInfo {
+  datetimeKst: string;
+  venue: string;
+  homeSummary: string;
+  awaySummary: string;
+}
+
 export interface PreviewArticleData {
   title: string;
+  headline: string;
+  leadParagraph: string;
+  basicInfo: PreviewBasicInfo;
   formattedDate: string;
   matchDate: string;
   matchupName: string;
@@ -37,7 +48,7 @@ export interface PreviewArticleData {
   seoKeywords: string[];
   seoMetaDescription: string;
   jsonLdSnippet: string;
-  // Professional 11 Journalist Sections
+  // Structured Journalist Sections
   sections: JournalistSection[];
   quickOverview: string;
   recentFormText: string;
@@ -496,8 +507,37 @@ export function validateQuantDependency(primaryPick: any): { isValid: boolean; v
   };
 }
 
+function formatKoreanDateTimeNatural(formattedDate: string): string {
+  // Converts "2026년 11월 19일 (목) 09:00" -> "11월 19일(목) 오전 9시 (한국 시간)"
+  const m = formattedDate.match(/(?:202\d년\s*)?(\d{1,2}월\s*\d{1,2}일)\s*\(([^)]+)\)\s*(\d{1,2}):(\d{2})/);
+  if (!m) return `${formattedDate} (한국 시간)`;
+  const datePart = m[1].replace(/\s+/g, ' ');
+  const wd = m[2];
+  const hh = parseInt(m[3], 10);
+  const mm = parseInt(m[4], 10);
+  const ampm = hh < 12 ? '오전' : (hh === 12 ? '낮' : '오후');
+  const h12 = hh === 0 ? 12 : (hh > 12 ? hh - 12 : hh);
+  const timeStr = mm > 0 ? `${ampm} ${h12}시 ${mm}분` : `${ampm} ${h12}시`;
+  return `${datePart}(${wd}) ${timeStr} (한국 시간)`;
+}
+
+function formatRecordWinLoss(recStr?: string): string {
+  if (!recStr) return '';
+  const m = recStr.match(/^(\d+)-(\d+)(?:-(\d+))?$/);
+  if (!m) return recStr;
+  if (m[3] !== undefined) return `${m[1]}승 ${m[2]}무 ${m[3]}패`;
+  return `${m[1]}승 ${m[2]}패`;
+}
+
+function formatShortKoreanGameDate(raw?: string): string {
+  if (!raw) return '';
+  const m = String(raw).match(/(?:20)?\d{2}[-.](\d{1,2})[-.](\d{1,2})/);
+  if (!m) return String(raw);
+  return `${parseInt(m[1], 10)}월 ${parseInt(m[2], 10)}일`;
+}
+
 /**
- * Generates sport-specific match preview article
+ * Generates sport-specific match preview article in crisp Sports-Journalist Column prose
  */
 export function generateMatchPreviewArticle(
   match: MatchItem | any,
@@ -510,27 +550,31 @@ export function generateMatchPreviewArticle(
 
   const fullHome = match?.homeTeam ? getStandardKoreanTeamName(match.homeTeam) : (match?.home || '홈팀');
   const fullAway = match?.awayTeam ? getStandardKoreanTeamName(match.awayTeam) : (match?.away || '원정팀');
-  
+
   const shortHome = match?.homeTeam || match?.home || fullHome.split(' ')[0] || '홈팀';
   const shortAway = match?.awayTeam || match?.away || fullAway.split(' ')[0] || '원정팀';
-  
+
   const league = match?.league || (sport === 'baseball' ? '프로야구' : sport === 'soccer' ? '축구 리그' : sport === 'basketball' ? '프로농구' : '프로배구');
-  const rawDate = match?.date || '2026-09-22';
+  const rawDate = match?.date || '2026-11-19 09:00';
   const formattedDate = formatFullKoreanDate(rawDate);
+  const naturalKstDateTime = formatKoreanDateTimeNatural(formattedDate);
   const matchDate = formattedDate.split('(')[0].trim();
   const gameNo = match?.gameNo || match?.id || match?.matchNo || 1;
-  const venue = match?.venue || `${fullHome} 홈 경기장`;
+  const espnIntel = h2hData?.espnIntel || null;
+  const killtotoIntel = h2hData?.killtotoIntel || null;
+  const venueRaw = espnIntel?.venue || killtotoIntel?.stadium || match?.venue;
+  const venue = venueRaw ? `${venueRaw} (${fullHome} 홈)` : `${fullHome} 홈 경기장`;
   const currentTimestamp = new Date().toISOString().replace('T', ' ').slice(0, 16);
 
   // Extract domestic odds strictly
-  const rawDomWin = (match?.domestic?.win && typeof match.domestic.win === 'number' && match.domestic.win > 1.0) 
-    ? match.domestic.win 
+  const rawDomWin = (match?.domestic?.win && typeof match.domestic.win === 'number' && match.domestic.win > 1.0)
+    ? match.domestic.win
     : ((match?.domesticOdds?.win && typeof match.domesticOdds.win === 'number' && match.domesticOdds.win > 1.0) ? match.domesticOdds.win : null);
-  const rawDomDraw = (match?.domestic?.draw && typeof match.domestic.draw === 'number' && match.domestic.draw > 1.0) 
-    ? match.domestic.draw 
+  const rawDomDraw = (match?.domestic?.draw && typeof match.domestic.draw === 'number' && match.domestic.draw > 1.0)
+    ? match.domestic.draw
     : ((match?.domesticOdds?.draw && typeof match.domesticOdds.draw === 'number' && match.domesticOdds.draw > 1.0) ? match.domesticOdds.draw : null);
-  const rawDomLose = (match?.domestic?.lose && typeof match.domestic.lose === 'number' && match.domestic.lose > 1.0) 
-    ? match.domestic.lose 
+  const rawDomLose = (match?.domestic?.lose && typeof match.domestic.lose === 'number' && match.domestic.lose > 1.0)
+    ? match.domestic.lose
     : ((match?.domesticOdds?.lose && typeof match.domesticOdds.lose === 'number' && match.domesticOdds.lose > 1.0) ? match.domesticOdds.lose : null);
 
   const isSoccerSport = sport === 'soccer';
@@ -550,7 +594,7 @@ export function generateMatchPreviewArticle(
     categoryLabel: match?.market || '일반'
   });
 
-  // Calculate Proportional No-Vig True Probabilities
+  // Proportional No-Vig Probabilities
   let homeTrueProb = 50;
   let drawTrueProb = 0;
   let awayTrueProb = 50;
@@ -566,18 +610,20 @@ export function generateMatchPreviewArticle(
     awayTrueProb = Math.round((100 - homeTrueProb - drawTrueProb) * 10) / 10;
   }
 
-  const isHomeWinner = homeTrueProb >= awayTrueProb;
+  // Prefer ESPN BPI / Quant predictor win probability if available, else No-Vig / primary
+  const modelHomePct = espnIntel?.predictor?.homeWinPct ?? Math.round(homeTrueProb);
+  const modelAwayPct = espnIntel?.predictor?.awayWinPct ?? Math.round(awayTrueProb);
+  const isHomeWinner = modelHomePct >= modelAwayPct;
   const favTeam = evaluated?.favTeam || (isHomeWinner ? fullHome : fullAway);
+  const favModelPct = Math.round(Math.max(modelHomePct, modelAwayPct));
 
-  // Exact handicap line resolution
   const handicapLine = match?.handicapOrLine || match?.handicapLine || (sport === 'baseball' ? -1.5 : sport === 'soccer' ? -1.0 : -4.5);
   const rawHandiNum = typeof handicapLine === 'number' ? handicapLine : parseFloat(String(handicapLine)) || -1.0;
   const handiAbs = Math.abs(rawHandiNum);
   const homeHdpString = rawHandiNum < 0 ? `${fullHome} -${handiAbs} 마핸` : `${fullHome} +${handiAbs} 플핸`;
   const awayHdpString = rawHandiNum < 0 ? `${fullAway} +${handiAbs} 플핸` : `${fullAway} -${handiAbs} 마핸`;
 
-  // Under/Over resolution
-  const uoLine = match?.uoLine || (sport === 'baseball' ? 8.5 : sport === 'soccer' ? 2.5 : 165.5);
+  const uoLine = match?.uoLine || match?.foreignLine || (sport === 'baseball' ? 8.5 : sport === 'soccer' ? 2.5 : 165.5);
   const uoCut = typeof uoLine === 'number' ? uoLine : parseFloat(String(uoLine)) || 2.5;
 
   const isPickAvailable = primary.status !== 'pass' && primary.odds > 1.0;
@@ -602,12 +648,12 @@ export function generateMatchPreviewArticle(
   const roi = isPickAvailable ? (evaluated?.roi || `${primary.expectedRoi > 0 ? '+' : ''}${primary.expectedRoi.toFixed(1)}%`) : '-';
   const kellyStake = isPickAvailable ? (evaluated?.kellyStake || '2.5%') : '-';
 
-  // 1. Ingest Real Lineup / Injury Data
+  // 1. Lineup & Injury Data
   const fallbackFeed = generateMatchLineupInjuryFeed(match);
   const activeLineup: MatchLineupInjuryData = lineupData || fallbackFeed;
   const isLineupConfirmed = activeLineup.isOfficialConfirmed;
 
-  // 2. Ingest Real H2H & Recent Matches strictly
+  // 2. Real H2H & Recent Matches
   const rawHomeMatches = h2hData?.homeRecentForm?.recentMatches || h2hData?.homeRecent || [];
   const rawAwayMatches = h2hData?.awayRecentForm?.recentMatches || h2hData?.awayRecent || [];
   const rawH2hMatches = h2hData?.h2h?.matches || h2hData?.h2hMatches || [];
@@ -626,11 +672,23 @@ export function generateMatchPreviewArticle(
   let h2hHomeScored = 0;
   let h2hAwayScored = 0;
 
+  let validH2hCount = 0;
   if (hasH2hData) {
     h2hMatches.forEach((m: any) => {
+      let s1 = typeof m.homeScore === 'number' ? m.homeScore : (typeof m.scoreFor === 'number' ? m.scoreFor : NaN);
+      let s2 = typeof m.awayScore === 'number' ? m.awayScore : (typeof m.scoreAgainst === 'number' ? m.scoreAgainst : NaN);
+      if (!Number.isFinite(s1) || !Number.isFinite(s2)) {
+        const sm = String(m.score || '').match(/(\d+)\s*[:\-]\s*(\d+)/);
+        if (sm) {
+          s1 = parseInt(sm[1], 10);
+          s2 = parseInt(sm[2], 10);
+        }
+      }
+      if (!Number.isFinite(s1) || !Number.isFinite(s2)) return;
+      validH2hCount++;
       const isTargetHome = m.homeTeam === fullHome || m.home === fullHome || m.isHome !== false;
-      const hSc = isTargetHome ? (m.homeScore ?? m.scoreFor ?? 0) : (m.awayScore ?? m.scoreAgainst ?? 0);
-      const aSc = isTargetHome ? (m.awayScore ?? m.scoreAgainst ?? 0) : (m.homeScore ?? m.scoreFor ?? 0);
+      const hSc = isTargetHome ? s1 : s2;
+      const aSc = isTargetHome ? s2 : s1;
       h2hHomeScored += hSc;
       h2hAwayScored += aSc;
       if (hSc > aSc) h2hHomeWins++;
@@ -639,223 +697,324 @@ export function generateMatchPreviewArticle(
     });
   }
 
-  const h2hHomeAvg = hasH2hData ? (h2hHomeScored / h2hCount).toFixed(1) : '-';
-  const h2hAwayAvg = hasH2hData ? (h2hAwayScored / h2hCount).toFixed(1) : '-';
+  const hasValidH2h = validH2hCount > 0;
+  const h2hHomeAvg = hasValidH2h ? (h2hHomeScored / validH2hCount).toFixed(1) : '-';
+  const h2hAwayAvg = hasValidH2h ? (h2hAwayScored / validH2hCount).toFixed(1) : '-';
 
-  // Ingest Injuries
+  // Injuries split by OUT vs GTD
   const homeInjuries = activeLineup.homeData?.injuries || [];
   const awayInjuries = activeLineup.awayData?.injuries || [];
+  const homeOutInj = homeInjuries.filter(i => String(i.status || '').includes('OUT'));
+  const homeGtdInj = homeInjuries.filter(i => !String(i.status || '').includes('OUT'));
+  const awayOutInj = awayInjuries.filter(i => String(i.status || '').includes('OUT'));
+  const awayGtdInj = awayInjuries.filter(i => !String(i.status || '').includes('OUT'));
 
-  const homeInjuriesSummary = homeInjuries.length > 0 
-    ? homeInjuries.map(i => `${i.name}(${i.position}, ${i.status})`).join(', ')
-    : '공식 확인된 주요 결장자 없음 (엔트리 정상 가동)';
-  const awayInjuriesSummary = awayInjuries.length > 0 
-    ? awayInjuries.map(i => `${i.name}(${i.position}, ${i.status})`).join(', ')
-    : '공식 확인된 주요 결장자 없음 (엔트리 정상 가동)';
+  // Records & Team Stats (ESPN / Standings)
+  const hRec = espnIntel?.homeRecord;
+  const aRec = espnIntel?.awayRecord;
+  const hSt = espnIntel?.homeTeamStats;
+  const aSt = espnIntel?.awayTeamStats;
+  const hLeaders = Array.isArray(espnIntel?.homeLeaders) ? espnIntel.homeLeaders : [];
+  const aLeaders = Array.isArray(espnIntel?.awayLeaders) ? espnIntel.awayLeaders : [];
+  const ktLeaders = Array.isArray(killtotoIntel?.leaders) ? killtotoIntel.leaders : [];
 
-  const homeLineupStatus = isLineupConfirmed ? 'CONFIRMED (공식 발표 선발 라인업)' : 'EXPECTED (공식 발표 전 예상 라인업)';
+  const normName = (s: string) => s.replace(/\s+/g, '').toLowerCase();
+  const homeRankRow = h2hData?.leagueStandings?.standings?.find((r: any) =>
+    r.teamName && (normName(fullHome).includes(normName(r.teamName)) || normName(r.teamName).includes(normName(shortHome)))
+  );
+  const awayRankRow = h2hData?.leagueStandings?.standings?.find((r: any) =>
+    r.teamName && (normName(fullAway).includes(normName(r.teamName)) || normName(r.teamName).includes(normName(shortAway)))
+  );
+
+  const homeRecordText = hRec?.overall
+    ? `${formatRecordWinLoss(hRec.overall)}${hRec.home ? ` (홈 ${hRec.home})` : ''}`
+    : (homeRankRow ? `${homeRankRow.win}승 ${homeRankRow.draw ? `${homeRankRow.draw}무 ` : ''}${homeRankRow.lose}패` : '시즌 전적 집계 중');
+  const awayRecordText = aRec?.overall
+    ? `${formatRecordWinLoss(aRec.overall)}${aRec.away ? ` (원정 ${aRec.away})` : ''}`
+    : (awayRankRow ? `${awayRankRow.win}승 ${awayRankRow.draw ? `${awayRankRow.draw}무 ` : ''}${awayRankRow.lose}패` : '시즌 전적 집계 중');
+
+  const homeRestText = typeof hRec?.restDays === 'number' ? `, ${hRec.restDays}일 휴식` : '';
+  const awayRestText = typeof aRec?.restDays === 'number' ? `, ${aRec.restDays}일 휴식` : '';
+
+  const basicInfo: PreviewBasicInfo = {
+    datetimeKst: naturalKstDateTime,
+    venue,
+    homeSummary: `${fullHome} ${homeRecordText}${homeRestText}`.trim(),
+    awaySummary: `${fullAway} ${awayRecordText}${awayRestText}`.trim()
+  };
 
   // =========================================================================
-  // Sport-Specific Section Text Builders (REAL DATA ONLY)
+  // Headline & Lead Paragraph (Memphis @ Cleveland Journalistic Tone)
   // =========================================================================
+  const keyMissingAway = awayOutInj[0];
+  const keyMissingHome = homeOutInj[0];
+  const headlineMissingTarget = keyMissingAway || keyMissingHome;
 
-  // [01. 경기 한눈에 보기]
-  const oddsOverviewText = hasDomesticOdds
-    ? `공식 고시 배당은 홈 승 ${domWin.toFixed(2)}, ${hasDraw && domDraw ? `무승부 ${domDraw.toFixed(2)}, ` : ''}원정 승 ${domLose.toFixed(2)}로 책정되었다. 배당에 내재된 시장 확률은 ${fullHome} ${homeTrueProb}%, ${hasDraw ? `무승부 ${drawTrueProb}%, ` : ''}${fullAway} ${awayTrueProb}%로 나타난다.`
-    : `현재 국내 공식 배당 고시 전 또는 실시간 데이터 동기화 단계입니다.`;
+  let headline = '';
+  if (aRec?.away && hRec?.home && headlineMissingTarget) {
+    headline = `${fullAway} 원정 ${aRec.away}, 그러나 ${headlineMissingTarget.name} 공백은 ${fullHome} 홈 ${hRec.home}와 만난다`;
+  } else if (aRec?.away && hRec?.home) {
+    headline = `${fullAway} 원정 ${aRec.away}의 기세, ${fullHome} 홈 ${hRec.home} 안방에서 시험대에 오른다`;
+  } else if (headlineMissingTarget) {
+    headline = `${headlineMissingTarget.name} 결장 변수 속 ${fullHome} vs ${fullAway}, 모델은 ${favTeam} ${favModelPct}% 우세 지목`;
+  } else if (hasRecentData) {
+    headline = `${fullHome} 최근 ${homeRecentStats.wins}승 ${homeRecentStats.losses}패 흐름, ${fullAway}의 ${awayRecentStats.wins}승 ${awayRecentStats.losses}패와 맞붙는다`;
+  } else {
+    headline = `${fullHome} vs ${fullAway}, 공수 지표와 배당 흐름이 가리키는 승부처는`;
+  }
 
-  const quickOverviewText = `2026년 공식 ${league} 정규 라운드에서 맞붙는 프로토 No.${gameNo} 경기다. ${formattedDate}에 ${venue}에서 시작된다. ${oddsOverviewText} 공식 경기 기록과 전력 지표를 바탕으로 실전 변수를 분석한다.`;
+  const leadParts: string[] = [];
+  if (aRec?.away && awayOutInj.length > 0) {
+    leadParts.push(`${fullAway}은 원정에서 ${aRec.away}를 기록 중이지만 핵심 자원 ${awayOutInj[0].name}이(가) 결장(${awayOutInj[0].reason})한다.`);
+  } else if (aRec?.overall) {
+    leadParts.push(`${fullAway}은 시즌 ${formatRecordWinLoss(aRec.overall)}${aRec.away ? `(원정 ${aRec.away})` : ''}의 흐름으로 이번 원정길에 나선다.`);
+  } else if (awayRecentStats.hasData) {
+    leadParts.push(`${fullAway}은 최근 ${awayRecentStats.count}경기 ${awayRecentStats.wins}승 ${awayRecentStats.draws ? `${awayRecentStats.draws}무 ` : ''}${awayRecentStats.losses}패를 기록 중이다.`);
+  }
 
-  // [02. 최근 5경기 득실 분석]
+  if (hRec?.home && hSt?.ppg) {
+    leadParts.push(`${fullHome}는 홈에서 ${hRec.home}을 기록했고 경기당 평균 ${hSt.ppg}득점을 올린다.`);
+  } else if (hSt?.ppg) {
+    leadParts.push(`${fullHome}는 경기당 평균 ${hSt.ppg}득점의 공격 템포를 유지하고 있다.`);
+  } else if (homeRecentStats.hasData) {
+    leadParts.push(`${fullHome}는 최근 ${homeRecentStats.count}경기 ${homeRecentStats.wins}승 ${homeRecentStats.draws ? `${homeRecentStats.draws}무 ` : ''}${homeRecentStats.losses}패, 평균 ${homeRecentStats.avgScored}${sport === 'soccer' ? '골' : '점'}을 기록했다.`);
+  }
+
+  const expectedCombinedPpg = (hSt?.ppg && aSt?.ppg) ? (hSt.ppg + aSt.ppg) : null;
+  const totalTendencyText = expectedCombinedPpg && uoCut > 10
+    ? (expectedCombinedPpg > uoCut ? '총득점은 기준선보다 높게 나올 가능성이 크다고 계산한다.' : '총득점은 기준선보다 낮게 형성될 공산이 크다고 본다.')
+    : (resolvedUnderOver.includes('오버') ? '다득점 오버 흐름 쪽에 미세한 무게가 실린다.' : '수비 밸런스에 따른 언더 성향에 무게를 둔다.');
+
+  leadParts.push(`모델은 이 경기를 ${favTeam} ${favModelPct}% 우세로 보며, ${totalTendencyText}`);
+
+  const minGp = Math.min(hSt?.gamesPlayed || 999, aSt?.gamesPlayed || 999);
+  if (minGp > 0 && minGp <= 20) {
+    leadParts.push(`다만 두 팀 모두 ${minGp}경기 안팎만 치른 초반 표본이어서 평균 수치는 쉽게 흔들릴 수 있다.`);
+  }
+
+  const leadParagraph = leadParts.join(' ');
+
+  // =========================================================================
+  // Section A: Season Stats & Recent 5 Comparison
+  // =========================================================================
   const unitName = sport === 'soccer' ? '골' : (sport === 'volleyball' ? '세트' : '점');
-  let recentFormDetailText = '';
+  const metricTokens: string[] = [];
+  if (hSt?.ppg && aSt?.ppg) metricTokens.push('득점·실점');
+  if (hSt?.apg && aSt?.apg) metricTokens.push('어시스트');
+  if (hSt?.rpg && aSt?.rpg) metricTokens.push('리바운드');
+  if (hSt?.threePPct && aSt?.threePPct) metricTokens.push('3점 성공률');
+  if (hSt?.tov && aSt?.tov) metricTokens.push('턴오버');
+  if (metricTokens.length === 0) metricTokens.push('득실·공격·수비 지표');
+  if (hasRecentData) metricTokens.push('최근 5경기');
 
+  const statsSectionTitle = `${fullHome} 대 ${fullAway} 시즌 기록 비교 — ${metricTokens.join('·')}`;
+
+  let statsSubhead = '';
+  if (hSt?.orpg && aSt?.orpg && Math.abs(hSt.orpg - aSt.orpg) >= 0.8) {
+    const better = aSt.orpg > hSt.orpg ? fullAway : fullHome;
+    const other = better === fullAway ? fullHome : fullAway;
+    const bVal = better === fullAway ? aSt.orpg : hSt.orpg;
+    const oVal = better === fullAway ? hSt.orpg : aSt.orpg;
+    statsSubhead = `${better}의 공격 리바운드 ${bVal}개가 ${other}의 ${oVal}개를 앞선다`;
+  } else if (hSt?.ppg && aSt?.ppg && Math.abs(hSt.ppg - aSt.ppg) >= 2.0) {
+    const better = hSt.ppg > aSt.ppg ? fullHome : fullAway;
+    const bVal = better === fullHome ? hSt.ppg : aSt.ppg;
+    const oVal = better === fullHome ? aSt.ppg : hSt.ppg;
+    statsSubhead = `평균 ${bVal}득점 대 ${oVal}득점, 화력 지표는 ${better} 쪽으로 기운다`;
+  } else if (hasRecentData) {
+    const hAvg = Number(homeRecentStats.avgScored);
+    const aAvg = Number(awayRecentStats.avgScored);
+    const better = hAvg >= aAvg ? fullHome : fullAway;
+    statsSubhead = `최근 5경기 평균 ${Math.max(hAvg, aAvg)}${unitName}을 올린 ${better}의 득점 흐름이 앞선다`;
+  } else {
+    statsSubhead = `배당 내재 확률 ${homeTrueProb}% vs ${awayTrueProb}%, 팽팽한 전력 대결이 예고된다`;
+  }
+
+  const statParagraphs: string[] = [];
+
+  if (hSt?.ppg && aSt?.ppg) {
+    const hOppgStr = hSt.oppg ? ` ${hSt.oppg}실점` : '';
+    const aOppgStr = aSt.oppg ? ` ${aSt.oppg}실점` : '';
+    let defGapStr = '';
+    if (hSt.oppg && aSt.oppg && Math.abs(hSt.oppg - aSt.oppg) >= 0.5) {
+      const defBetter = aSt.oppg < hSt.oppg ? fullAway : fullHome;
+      defGapStr = ` 실점에서는 ${defBetter}가 ${Math.abs(hSt.oppg - aSt.oppg).toFixed(1)}점 낮아 수비 안정감에서 앞선다.`;
+    }
+    statParagraphs.push(
+      `${fullHome}는 평균 ${hSt.ppg}득점${hOppgStr}, ${fullAway}은 ${aSt.ppg}득점${aOppgStr}을 기록 중이다.${defGapStr}`
+    );
+  } else if (hasRecentData) {
+    statParagraphs.push(
+      `최근 5경기 기준 ${fullHome}는 경기당 평균 ${homeRecentStats.avgScored}${unitName}·${homeRecentStats.avgConceded}${unitName} 실점(${homeRecentStats.wins}승 ${homeRecentStats.draws ? `${homeRecentStats.draws}무 ` : ''}${homeRecentStats.losses}패), ${fullAway}은 평균 ${awayRecentStats.avgScored}${unitName}·${awayRecentStats.avgConceded}${unitName} 실점(${awayRecentStats.wins}승 ${awayRecentStats.draws ? `${awayRecentStats.draws}무 ` : ''}${awayRecentStats.losses}패)을 기록했다.`
+    );
+  }
+
+  if (hSt?.rpg && aSt?.rpg && hSt?.threePPct && aSt?.threePPct) {
+    const rebBetter = aSt.rpg >= hSt.rpg ? fullAway : fullHome;
+    const orebTxt = (hSt.orpg && aSt.orpg)
+      ? ` 공격 리바운드는 ${fullAway} ${aSt.orpg}개 대 ${fullHome} ${hSt.orpg}개다.`
+      : '';
+    const ftTxt = (hSt.ftPct && aSt.ftPct)
+      ? ` 자유투 성공률은 ${fullAway} ${aSt.ftPct}% 대 ${fullHome} ${hSt.ftPct}%다.`
+      : '';
+    const fgTxt = (hSt.fgPct && aSt.fgPct)
+      ? ` 야투율은 ${fullAway} ${aSt.fgPct}%, ${fullHome} ${hSt.fgPct}%로 집계됐다.`
+      : '';
+    statParagraphs.push(
+      `리바운드에서도 ${rebBetter} 쪽이 근소한 우위를 점한다. 총 리바운드는 ${fullAway} ${aSt.rpg}개, ${fullHome} ${hSt.rpg}개다.${orebTxt} 3점 성공률은 ${fullAway} ${aSt.threePPct}%, ${fullHome} ${hSt.threePPct}%이고,${ftTxt}${fgTxt}`
+    );
+  }
+
+  if (hSt?.tov && aSt?.tov) {
+    const moreTov = aSt.tov > hSt.tov ? fullAway : fullHome;
+    const lessTov = moreTov === fullAway ? fullHome : fullAway;
+    const mVal = moreTov === fullAway ? aSt.tov : hSt.tov;
+    const lVal = moreTov === fullAway ? hSt.tov : aSt.tov;
+    statParagraphs.push(
+      `변수는 턴오버 관리다. ${moreTov}가 경기당 ${mVal}개로 ${lessTov}의 ${lVal}개보다 많아, 공격 기회에서 실책으로 흐름을 내줄 위험이 있다.`
+    );
+  }
+
+  // Recent 5 real match narrative + rest parity
   if (hasRecentData) {
-    recentFormDetailText = `${fullHome}은(는) 최근 5경기에서 실제 ${homeRecentStats.wins}승 ${homeRecentStats.draws}무 ${homeRecentStats.losses}패(승률 ${homeRecentStats.winRate}%)를 거두었고, 경기당 평균 ${homeRecentStats.avgScored}${unitName}, ${homeRecentStats.avgConceded}${unitName} 실점을 기록하며 득실 마진 ${homeRecentStats.diffStr}을 나타냈다. 반면 ${fullAway}은(는) 같은 기간 ${awayRecentStats.wins}승 ${awayRecentStats.draws}무 ${awayRecentStats.losses}패(승률 ${awayRecentStats.winRate}%)로 경기당 평균 ${awayRecentStats.avgScored}${unitName}과 ${awayRecentStats.avgConceded}${unitName} 실점을 기록, 득실 마진 ${awayRecentStats.diffStr}에 머물렀다. 최근 5경기 생산력 지표를 대조하면 ${fullHome}의 평균 득점이 ${fullAway} 대비 ${(Number(homeRecentStats.avgScored) - Number(awayRecentStats.avgScored)).toFixed(1)}${unitName} 차이를 보이며 흐름의 우위를 점하고 있다.`;
+    const hTop2 = homeRecentStats.recentList.slice(0, 2).map((g: any) =>
+      `${formatShortKoreanGameDate(g.date)} ${g.opponent}전을 ${g.score.replace(':', '-')}로 ${g.result === '승' ? '이겼' : (g.result === '무' ? '비겼' : '졌')}`
+    );
+    const aTop2 = awayRecentStats.recentList.slice(0, 2).map((g: any) =>
+      `${formatShortKoreanGameDate(g.date)} ${g.opponent}전에 ${g.score.replace(':', '-')}로 ${g.result === '승' ? '승리했' : (g.result === '무' ? '무승부를 거뒀' : '패배했')}`
+    );
+    const restSentence = (typeof hRec?.restDays === 'number' && typeof aRec?.restDays === 'number')
+      ? (hRec.restDays === aRec.restDays
+        ? ` 두 팀 모두 직전 경기 후 ${hRec.restDays}일을 쉬고 나와 휴식 조건은 같다.`
+        : ` 휴식일은 ${fullHome} ${hRec.restDays}일, ${fullAway} ${aRec.restDays}일로 체력 변수 차이가 존재한다.`)
+      : '';
+    statParagraphs.push(
+      `최근 흐름을 보면 ${fullHome}는 ${hTop2.join('고, ')}으며 최근 ${homeRecentStats.count}경기 ${homeRecentStats.wins}승 ${homeRecentStats.draws ? `${homeRecentStats.draws}무 ` : ''}${homeRecentStats.losses}패다. ${fullAway}은 ${aTop2.join('고, ')}으며 최근 ${awayRecentStats.count}경기 ${awayRecentStats.wins}승 ${awayRecentStats.draws ? `${awayRecentStats.draws}무 ` : ''}${awayRecentStats.losses}패를 기록 중이다.${restSentence}`
+    );
   } else {
-    recentFormDetailText = `[최근 경기 득실 분석 안내] 공식 전산망 및 프로토 공시 기준 양 팀의 최근 경기 세부 득실 데이터가 제공되지 않는 경기입니다. 가상 통계를 임의 생성하지 않고 실제 검증된 지표를 중심으로 분석을 진행합니다.`;
+    statParagraphs.push(
+      `공식 전산망 기준 양 팀의 직전 경기 세부 기록이 아직 집계되지 않아, 배당 시장이 반영한 공수 기대 마진과 맞대결 구도 위주로 승부처를 점검한다.`
+    );
   }
 
-  // [03. 상대전적 H2H]
-  let h2hDetailText = '';
-  if (hasH2hData) {
-    h2hDetailText = `양 팀의 공식 맞대결 최근 ${h2hCount}경기 기준 전적은 ${fullHome}이 ${h2hHomeWins}승, ${h2hDraws > 0 ? `${h2hDraws}무, ` : ''}${fullAway}이 ${h2hAwayWins}승을 기록했다. 이 기간 경기당 평균 득점은 ${fullHome}이 ${h2hHomeAvg}${unitName}, ${fullAway}이 ${h2hAwayAvg}${unitName}으로 집계되었다. 맞대결 득실 마진에서 ${(Number(h2hHomeAvg) - Number(h2hAwayAvg)).toFixed(1)}${unitName}의 격차가 관측되었으며, 과거 전적의 수치적 우위가 이번 홈·원정 경기 환경에서도 동일한 패턴으로 재현될지가 관건이다.`;
-  } else {
-    h2hDetailText = `[상대전적 H2H 안내] 공식 프로토 전산망 기준 양 팀 간의 과거 맞대결(H2H) 공식 기록이 제공되지 않는 경기입니다 (상대전적 데이터 없음). 가상 H2H 수치를 생성하지 않습니다.`;
+  if (hasValidH2h) {
+    statParagraphs.push(
+      `역대 맞대결 최근 ${validH2hCount}경기는 ${fullHome} ${h2hHomeWins}승 ${h2hDraws > 0 ? `${h2hDraws}무 ` : ''}${h2hAwayWins}패로 경기당 평균 ${h2hHomeAvg}${unitName} 대 ${h2hAwayAvg}${unitName}의 득점 흐름이 나타났다.`
+    );
   }
 
-  // [04. 선발 라인업 / 핵심 전력]
-  let pitcherOrAceText = '';
-  if (sport === 'soccer') {
-    pitcherOrAceText = `${fullHome}은(는) 1선 스트라이커와 2선 공격형 미드필더의 연계 플레이를 바탕으로 공격 전개를 진행한다. ${fullAway}은(는) 최전방 역습 공격수의 스프린트 결정력에 의존하는 전술 패턴을 보인다. 1선 득점 전환력과 중원 압박이 이번 경기의 주요 포인트다.`;
+  // =========================================================================
+  // Section B: Key Players / Leaders & Injury Report
+  // =========================================================================
+  const playersSectionTitle = `${fullHome}·${fullAway} 주요 전력 시즌 지표와 부상 보고`;
+  const playerParagraphs: string[] = [];
+  let playersSubhead = '';
+
+  if (hLeaders.length > 0 || aLeaders.length > 0) {
+    const hl1 = hLeaders[0];
+    const al1 = aLeaders[0];
+    playersSubhead = hl1
+      ? `${hl1.name}${hl1.ppg ? `의 평균 ${hl1.ppg}득점` : ''}이 ${fullAway} 공수 밸런스와 맞선다`
+      : `${fullHome}·${fullAway} 핵심 자원 매치업 점검`;
+
+    if (hl1) {
+      const statsStr = [
+        hl1.ppg ? `평균 ${hl1.ppg}득점` : '',
+        hl1.rpg ? `${hl1.rpg}리바운드` : '',
+        hl1.apg ? `${hl1.apg}어시스트` : ''
+      ].filter(Boolean).join(' ');
+      const hl2Str = hLeaders[1]
+        ? ` ${hLeaders[1].name}${hLeaders[1].ppg ? `(${hLeaders[1].ppg}득점)` : (hLeaders[1].apg ? `(${hLeaders[1].apg}어시스트)` : '')}이(가) 공격 전개를 뒷받침한다.`
+        : '';
+      playerParagraphs.push(`${fullHome} 공격의 중심은 ${hl1.name}이다. ${statsStr || hl1.summary || ''}를 기록하며 팀 득점을 이끌고 있다.${hl2Str}`);
+    }
+    if (al1) {
+      const statsStr = [
+        al1.ppg ? `평균 ${al1.ppg}득점` : '',
+        al1.rpg ? `${al1.rpg}리바운드` : '',
+        al1.apg ? `${al1.apg}어시스트` : ''
+      ].filter(Boolean).join(' ');
+      const al2Str = aLeaders[1]
+        ? ` ${aLeaders[1].name}${aLeaders[1].ppg ? `(${aLeaders[1].ppg}득점)` : ''}의 지원 사격 여부가 원정 득점력의 관건이다.`
+        : '';
+      playerParagraphs.push(`${fullAway}에서는 ${al1.name}이(가) ${statsStr || al1.summary || ''}로 핵심 역할을 맡고 있다.${al2Str}`);
+    }
+  } else if (ktLeaders.length > 0) {
+    const ptsLd = ktLeaders.find((l: any) => l.category.includes('득점')) || ktLeaders[0];
+    const rebLd = ktLeaders.find((l: any) => l.category.includes('리바운드'));
+    playersSubhead = `${ptsLd?.homePlayer?.name || fullHome} vs ${ptsLd?.awayPlayer?.name || fullAway}, 주포 화력 대결이 승부를 가른다`;
+    const scoreParts: string[] = [];
+    if (ptsLd?.homePlayer) scoreParts.push(`${fullHome}은 ${ptsLd.homePlayer.name}(평균 ${ptsLd.homePlayer.value}${ptsLd.category})`);
+    if (ptsLd?.awayPlayer) scoreParts.push(`${fullAway}은 ${ptsLd.awayPlayer.name}(평균 ${ptsLd.awayPlayer.value}${ptsLd.category})`);
+    const sentence1 = scoreParts.length > 0 ? `${scoreParts.join(', ')}이 팀 공격의 중심축을 이룬다.` : '';
+    const sentence2 = (rebLd?.homePlayer && rebLd?.awayPlayer)
+      ? ` 골밑 리바운드에서는 ${rebLd.homePlayer.name}(${rebLd.homePlayer.value})과 ${rebLd.awayPlayer.name}(${rebLd.awayPlayer.value})의 제공권 싸움이 핵심이다.`
+      : '';
+    if (sentence1 || sentence2) playerParagraphs.push(`${sentence1}${sentence2}`.trim());
   } else if (sport === 'baseball') {
-    const homeStarterRecord = activeLineup.wisetotoHome?.starterPitcher || activeLineup.homeData?.pitcherOrStarters?.[0];
-    const awayStarterRecord = activeLineup.wisetotoAway?.starterPitcher || activeLineup.awayData?.pitcherOrStarters?.[0];
-    const homeStarterName = homeStarterRecord?.name || (isLineupConfirmed ? `${fullHome} 선발투수` : '공식 선발투수 발표 전');
-    const awayStarterName = awayStarterRecord?.name || (isLineupConfirmed ? `${fullAway} 선발투수` : '공식 선발투수 발표 전');
-    const homeStarterEra = (homeStarterRecord as any)?.era || '3.65';
-    const awayStarterEra = (awayStarterRecord as any)?.era || '4.10';
-    const homeStarterInnings = (homeStarterRecord as any)?.innings || '5.2이닝';
-    const awayStarterInnings = (awayStarterRecord as any)?.innings || '5.0이닝';
-    const homeStarterSO = (homeStarterRecord as any)?.so || 5;
-    const awayStarterSO = (awayStarterRecord as any)?.so || 4;
-    const homeStarterBB = (homeStarterRecord as any)?.bb || 2;
-    const awayStarterBB = (awayStarterRecord as any)?.bb || 2;
-    pitcherOrAceText = `홈팀 ${fullHome} 선발 ${homeStarterName}은(는) 시즌 평균자책점(ERA) ${homeStarterEra}, 경기당 평균 ${homeStarterInnings} 소화, 탈삼진 ${homeStarterSO}개, 볼넷 ${homeStarterBB}개의 기록을 보이고 있다. 원정팀 ${fullAway} 선발 ${awayStarterName}은(는) ERA ${awayStarterEra}, 평균 ${awayStarterInnings} 소화, 탈삼진 ${awayStarterSO}개, 볼넷 ${awayStarterBB}개를 기록 중이다. 두 선발의 시즌 ERA 격차는 ${(Math.abs(parseFloat(homeStarterEra) - parseFloat(awayStarterEra))).toFixed(2)}점이다.`;
-  } else if (sport === 'basketball') {
-    pitcherOrAceText = `${fullHome}의 주전 라인업은 1선 득점원과 골밑 리바운더의 조화가 강점이며, ${fullAway}의 코어 듀오는 빠른 트랜지션 공격을 주도한다.`;
+    const hs = activeLineup.wisetotoHome?.starterPitcher || activeLineup.homeData?.pitcherOrStarters?.[0];
+    const as = activeLineup.wisetotoAway?.starterPitcher || activeLineup.awayData?.pitcherOrStarters?.[0];
+    playersSubhead = `${hs?.name || fullHome} vs ${as?.name || fullAway}, 선발 매치업이 초반 흐름을 좌우한다`;
+    playerParagraphs.push(
+      `${fullHome} 선발 ${hs?.name || '발표 대기'}${(hs as any)?.era ? `(ERA ${(hs as any).era})` : ''}와 ${fullAway} 선발 ${as?.name || '발표 대기'}${(as as any)?.era ? `(ERA ${(as as any).era})` : ''}의 초반 이닝 소화력이 핵심 변수다.`
+    );
   } else {
-    pitcherOrAceText = `${fullHome}의 주포 아포짓 스파이커와 ${fullAway}의 에이스 공격수 간 화력 대결이 핵심이다.`;
+    playersSubhead = isLineupConfirmed
+      ? `확정된 베스트 라인업의 결정력과 전술 완성도가 승패를 가른다`
+      : `핵심 주전 로테이션과 경기 당일 최종 명단이 변수다`;
+    const hTop = (activeLineup.homeData?.pitcherOrStarters || []).slice(0, 3).map(p => p.name).filter(Boolean);
+    const aTop = (activeLineup.awayData?.pitcherOrStarters || []).slice(0, 3).map(p => p.name).filter(Boolean);
+    if (hTop.length > 0 || aTop.length > 0) {
+      playerParagraphs.push(
+        `${fullHome}${hTop.length ? `는 ${hTop.join('·')}` : ''} 라인업을 중심으로 전개를 풀어가며, ${fullAway}${aTop.length ? `은 ${aTop.join('·')} 등이` : '은 주요 공격 자원이'} 맞대응에 나선다.`
+      );
+    }
   }
 
-  // [05. 공격 전개 및 득점 생산력]
-  let attackDetailText = '';
-  if (sport === 'soccer') {
-    attackDetailText = hasRecentData
-      ? `${fullHome}은(는) 최근 5경기에서 총 ${homeRecentStats.totalScored}골을 기록하여 경기당 ${homeRecentStats.avgScored}골의 화력을 보였고, ${fullAway}은(는) 총 ${awayRecentStats.totalScored}골로 경기당 ${awayRecentStats.avgScored}골을 생산했다. 득점 마진은 ${fullHome}이 +${(Number(homeRecentStats.avgScored) - Number(awayRecentStats.avgScored)).toFixed(1)}골 앞서 있다.`
-      : `[공격 지표 안내] 최근 경기 득점 세부 기록이 미제공된 매치업으로, 양 팀의 공정 배당 및 시장 확률에 기반한 전력 평가가 적용됩니다.`;
-  } else if (sport === 'baseball') {
-    attackDetailText = hasRecentData
-      ? `${fullHome} 타선은 최근 5경기에서 총 ${homeRecentStats.totalScored}득점을 합작하며 경기당 ${homeRecentStats.avgScored}점을 생산했다. ${fullAway} 타선은 같은 기간 총 ${awayRecentStats.totalScored}득점으로 경기당 ${awayRecentStats.avgScored}점에 머물렀다.`
-      : `[타선 지표 안내] 최근 득점 세부 데이터 집계 중입니다.`;
-  } else if (sport === 'basketball') {
-    attackDetailText = hasRecentData
-      ? `${fullHome}은(는) 최근 5경기 평균 ${homeRecentStats.avgScored}득점을 기록 중이며, ${fullAway}은(는) 평균 ${awayRecentStats.avgScored}득점을 기록하고 있다.`
-      : `[득점 지표 안내] 최근 득점 데이터 집계 중입니다.`;
+  // Injury Report Paragraph
+  let injurySubhead = '';
+  if (awayInjuries.length > 0 || homeInjuries.length > 0) {
+    const mainMissing = awayOutInj[0] || homeOutInj[0] || awayInjuries[0] || homeInjuries[0];
+    const affectedTeam = awayInjuries.includes(mainMissing) ? fullAway : fullHome;
+    injurySubhead = `${mainMissing.name}의 결장 변수가 ${affectedTeam}의 득점·로테이션 계산을 흔든다`;
+
+    if (awayInjuries.length > 0) {
+      const outNames = awayOutInj.map(i => i.name).join(', ');
+      const gtdNames = awayGtdInj.map(i => i.name).join(', ');
+      const segs: string[] = [];
+      if (outNames) segs.push(`${fullAway}은 ${outNames}이(가) 결장한다.`);
+      if (gtdNames) segs.push(`${gtdNames}은(는) 경기 당일 출전 여부를 판단한다.`);
+      if (awayOutInj.length > 0) segs.push(`공백이 발생한 포지션의 공격 부담이 남은 주전 자원들에게 분산된다.`);
+      playerParagraphs.push(segs.join(' '));
+    } else {
+      playerParagraphs.push(`${fullAway}은 현재 확인된 주요 결장 이슈 없이 정상 로테이션을 가동할 수 있다.`);
+    }
+
+    if (homeInjuries.length > 0) {
+      const outNames = homeOutInj.map(i => i.name).join(', ');
+      const gtdNames = homeGtdInj.map(i => i.name).join(', ');
+      const segs: string[] = [];
+      if (outNames) segs.push(`${fullHome}도 온전치 않다. ${outNames}이(가) 결장 명단에 올랐다.`);
+      if (gtdNames) segs.push(`${gtdNames}은(는) 당일 컨디션 점검 대상이다.`);
+      segs.push(`최종 출전 명단이 확정되기 전까지 로테이션 폭이 경기 막판 변수로 남는다.`);
+      playerParagraphs.push(segs.join(' '));
+    } else {
+      playerParagraphs.push(`${fullHome}는 별다른 핵심 결장자 없이 정상 전력을 유지하고 있다.`);
+    }
   } else {
-    attackDetailText = hasRecentData
-      ? `${fullHome}은(는) 최근 5경기 세트당 평균 ${homeRecentStats.avgScored}득점을 기록 중이며, ${fullAway}은(는) 세트당 ${awayRecentStats.avgScored}득점에 머물렀다.`
-      : `[공격 지표 안내] 최근 세트 득실 데이터 집계 중입니다.`;
+    injurySubhead = `양 팀 모두 핵심 부상 공백 없이 정상 전력으로 맞대결을 치른다`;
+    playerParagraphs.push(
+      `현재 공식 보고된 주요 결장자(OUT)는 확인되지 않았다. 경기 시작 직전 최종 엔트리 변동 여부만 점검하면 된다.`
+    );
   }
 
-  // [06. 수비 조직력 및 경기 후반 집중력]
-  let bullpenDetailText = '';
-  if (sport === 'soccer') {
-    bullpenDetailText = hasRecentData
-      ? `${fullHome}의 최근 평균 실점은 ${homeRecentStats.avgConceded}골이며, ${fullAway}의 평균 실점은 ${awayRecentStats.avgConceded}골이다. 후반 75분 이후 교체 카드 활용과 수비 조직력 유지가 승패를 가르는 핵심이다.`
-      : `[수비 지표 안내] 최근 실점 세부 데이터가 미제공된 매치업으로 경기 막판 수비 집중력이 변수입니다.`;
-  } else if (sport === 'baseball') {
-    const homeBullpenList = activeLineup.wisetotoHome?.bullpenPitchers || [];
-    const awayBullpenList = activeLineup.wisetotoAway?.bullpenPitchers || [];
-    const homeBullpenCount = homeBullpenList.length > 0 ? homeBullpenList.length : 4;
-    const awayBullpenCount = awayBullpenList.length > 0 ? awayBullpenList.length : 4;
-    bullpenDetailText = `${fullHome} 불펜진은 등록 계투 ${homeBullpenCount}명을 가동 중이며, 직전 경기 주요 계투진 등판 여부와 연투 관리를 통해 경기 후반 7~9회 실점률을 제어하고 있다. ${fullAway} 불펜진은 ${awayBullpenCount}명의 자원으로 원정 실점을 억제 중이다.`;
-  } else if (sport === 'basketball') {
-    bullpenDetailText = `${fullHome}의 4쿼터 수비 로테이션이 견고하며, ${fullAway}은(는) 경기 후반 파울 트러블 관리가 핵심 과제다.`;
-  } else {
-    bullpenDetailText = `${fullHome}의 세트 후반 20점 이후 블로킹 득점력이 강점이며, ${fullAway}은(는) 듀스 접전 상황에서 범실 관리가 필수적이다.`;
-  }
-
-  // [07. 라인업 및 부상·결장 리포트]
-  const lineupInjuryText = `[라인업 상태: ${homeLineupStatus}]\n• 홈팀 ${fullHome} 결장/부상 명단: ${homeInjuriesSummary}\n• 원정팀 ${fullAway} 결장/부상 명단: ${awayInjuriesSummary}\n공식 경기 시작 전 최종 ${league} 오피셜 명단 확인이 필요하다.`;
-
-  // [08. 홈·원정 환경 및 득실 편차]
-  let homeAwayEnvironmentText = '';
-  if (hasRecentData) {
-    homeAwayEnvironmentText = `${fullHome}의 최근 득실 지표와 ${fullAway}의 원정 실점 지표를 종합할 때, 홈 구장의 익숙한 환경과 관중 요인은 상대적 우위 마진으로 작용한다.`;
-  } else {
-    homeAwayEnvironmentText = `[홈·원정 환경 안내] 양 팀의 홈·원정 세부 표본이 미제공되어, 홈 경기장 고유의 이점 및 배당 환급률 구조를 중심으로 변수를 점검합니다.`;
-  }
-
-  // [09. 오늘 경기 핵심 체크포인트 5선]
-  let checkpoints: string[] = [];
-  if (sport === 'soccer') {
-    checkpoints = [
-      hasRecentData
-        ? `1. [최근 5경기 득실] ${fullHome} 평균 ${homeRecentStats.avgScored}득점/${homeRecentStats.avgConceded}실점 vs ${fullAway} 평균 ${awayRecentStats.avgScored}득점/${awayRecentStats.avgConceded}실점`
-        : `1. [최근 경기 득실] 공식 전산망 기준 세부 득실 데이터 미제공 (임의 수치 미생성)`,
-      hasH2hData
-        ? `2. [맞대결 전적] 최근 ${h2hCount}차례 공식 맞대결 ${fullHome} ${h2hHomeWins}승 ${h2hDraws > 0 ? `${h2hDraws}무 ` : ''}/ ${fullAway} ${h2hAwayWins}승 (경기당 평균 득점: ${h2hHomeAvg}골 vs ${h2hAwayAvg}골)`
-        : `2. [맞대결 전적] 공식 H2H 전적 데이터 미제공 (과거 맞대결 없음)`,
-      `3. [선발 라인업 및 전력] ${fullHome} 1선 득점 전환율 및 중원 점유율 vs ${fullAway} 역습 스프린트 결정력`,
-      hasDomesticOdds
-        ? `4. [공식 고시 배당] 국내 배당 ${domWin.toFixed(2)} / ${hasDraw && domDraw ? `${domDraw.toFixed(2)} / ` : ''}${domLose.toFixed(2)} 기반 No-Vig 참확률: 홈 ${homeTrueProb}% ${hasDraw ? `/ 무 ${drawTrueProb}% ` : ''}/ 원정 ${awayTrueProb}%`
-        : `4. [배당 데이터] 공식 배당 고시 대기 상태`,
-      `5. [후반 집중력] 후반 75분 이후 실점 억제율 및 양 팀 결장자 리포트 점검 완료`
-    ];
-  } else if (sport === 'baseball') {
-    const homeStarterRecord = activeLineup.wisetotoHome?.starterPitcher || activeLineup.homeData?.pitcherOrStarters?.[0];
-    const awayStarterRecord = activeLineup.wisetotoAway?.starterPitcher || activeLineup.awayData?.pitcherOrStarters?.[0];
-    const homeStarterEra = (homeStarterRecord as any)?.era || '3.65';
-    const awayStarterEra = (awayStarterRecord as any)?.era || '4.10';
-    checkpoints = [
-      hasRecentData
-        ? `1. [최근 5경기 득실] ${fullHome} 평균 ${homeRecentStats.avgScored}득점/${homeRecentStats.avgConceded}실점 vs ${fullAway} 평균 ${awayRecentStats.avgScored}득점/${awayRecentStats.avgConceded}실점`
-        : `1. [최근 경기 득실] 최근 득실 세부 데이터 집계 중`,
-      hasH2hData
-        ? `2. [맞대결 전적] 최근 ${h2hCount}차례 맞대결 ${fullHome} ${h2hHomeWins}승 / ${fullAway} ${h2hAwayWins}승 (경기당 평균 득점: ${h2hHomeAvg}점 vs ${h2hAwayAvg}점)`
-        : `2. [맞대결 전적] 공식 H2H 전적 데이터 미제공`,
-      `3. [선발투수 기록] ${fullHome} 선발 ERA ${homeStarterEra} vs ${fullAway} 선발 ERA ${awayStarterEra} (격차 ${(Math.abs(parseFloat(homeStarterEra) - parseFloat(awayStarterEra))).toFixed(2)}점)`,
-      `4. [공식 고시 배당] 국내 배당 ${domWin.toFixed(2)} / ${domLose.toFixed(2)} 기반 No-Vig 참확률: 홈 ${homeTrueProb}% vs 원정 ${awayTrueProb}%`,
-      `5. [불펜/수비 지표] 7회 이후 평균 실점 억제율 및 양 팀 결장자 리포트 점검 완료`
-    ];
-  } else if (sport === 'basketball') {
-    checkpoints = [
-      hasRecentData
-        ? `1. [최근 5경기 득실] ${fullHome} 평균 ${homeRecentStats.avgScored}득점/${homeRecentStats.avgConceded}실점 vs ${fullAway} 평균 ${awayRecentStats.avgScored}득점/${awayRecentStats.avgConceded}실점`
-        : `1. [최근 경기 득실] 세부 득실 데이터 집계 중`,
-      hasH2hData
-        ? `2. [맞대결 전적] 최근 ${h2hCount}차례 맞대결 ${fullHome} ${h2hHomeWins}승 / ${fullAway} ${h2hAwayWins}승`
-        : `2. [맞대결 전적] 공식 H2H 전적 데이터 미제공`,
-      `3. [백코트/포워드 전력] ${fullHome} 3점 야투 성공률 vs ${fullAway} 페인트존 득점 점유율`,
-      `4. [공식 고시 배당] 국내 배당 ${domWin.toFixed(2)} / ${domLose.toFixed(2)} 기반 No-Vig 참확률: 홈 ${homeTrueProb}% vs 원정 ${awayTrueProb}%`,
-      `5. [4쿼터 집중력] 4쿼터 실점 억제율 및 양 팀 결장자 리포트 점검 완료`
-    ];
-  } else {
-    checkpoints = [
-      hasRecentData
-        ? `1. [최근 5경기 득실] ${fullHome} 평균 ${homeRecentStats.avgScored}세트득점 vs ${fullAway} 평균 ${awayRecentStats.avgScored}세트득점`
-        : `1. [최근 경기 득실] 세트 득실 데이터 집계 중`,
-      hasH2hData
-        ? `2. [맞대결 전적] 최근 ${h2hCount}차례 맞대결 ${fullHome} ${h2hHomeWins}승 / ${fullAway} ${h2hAwayWins}승`
-        : `2. [맞대결 전적] 공식 H2H 전적 데이터 미제공`,
-      `3. [주포 화력] ${fullHome} 아포짓 공격성공률 vs ${fullAway} 미들블로커 블로킹 차단율`,
-      `4. [공식 고시 배당] 국내 배당 ${domWin.toFixed(2)} / ${domLose.toFixed(2)} 기반 No-Vig 참확률: 홈 ${homeTrueProb}% vs 원정 ${awayTrueProb}%`,
-      `5. [세트 후반 집중력] 20점 이후 범실 억제력 및 양 팀 결장자 리포트 점검 완료`
-    ];
-  }
-
-  // [10. 전문 기자형 경기 전망]
-  let leadOutlook = '';
-  let midGameOutlook = '';
-  let lateGameOutlook = '';
-  let closingOutlook = '';
-
-  if (sport === 'soccer') {
-    leadOutlook = hasRecentData
-      ? `최근 5경기 득실 마진(${homeRecentStats.diffStr} vs ${awayRecentStats.diffStr})과 공수 밸런스를 종합하면, 수치적 안정감에서 앞서는 ${favTeam}이 경기 주도권을 잡을 가능성이 높다.`
-      : `공식 배당과 전력 밸런스를 종합할 때, 수치적 우위에 있는 ${favTeam}이 경기 주도권을 잡을 가능성이 높다.`;
-    midGameOutlook = `경기 전반 15~30분 탐색전 이후 중원 압박과 세컨볼 경합에서의 승부가 1차 분수령이다. 박스 안 유효슈팅 전환율이 높은 팀이 먼저 선제골을 만들어낼 가능성이 크다.`;
-    lateGameOutlook = `후반 75분 이후 경기 막판에는 양 팀의 체력 저하와 교체 자원 투입에 따른 수비 조직력 유지가 승패를 가른다. ${fullHome}의 후반 실점 제어가 이어진다면 리드를 지켜낼 공산이 크다.`;
-    closingOutlook = hasRecentData
-      ? `결국 이번 경기의 핵심 승부처는 1선 공격수의 결정력과 득실 마진 ${(Number(homeRecentStats.avgScored) - Number(awayRecentStats.avgScored)).toFixed(1)}골의 공격 생산력 격차다.`
-      : `결국 이번 경기는 1선 결정력과 실점 제어 여부에서 최종 승부가 결정된다.`;
-  } else if (sport === 'baseball') {
-    const homeStarterRecord = activeLineup.wisetotoHome?.starterPitcher || activeLineup.homeData?.pitcherOrStarters?.[0];
-    const awayStarterRecord = activeLineup.wisetotoAway?.starterPitcher || activeLineup.awayData?.pitcherOrStarters?.[0];
-    const homeStarterEra = (homeStarterRecord as any)?.era || '3.65';
-    const awayStarterEra = (awayStarterRecord as any)?.era || '4.10';
-    leadOutlook = `최근 5경기 득실 마진과 선발투수 시즌 ERA(${homeStarterEra} vs ${awayStarterEra})를 종합하면, 수치적 안정감에서 앞서는 ${favTeam}이 경기 주도권을 잡을 가능성이 높다.`;
-    midGameOutlook = `경기 중반 4~6회에는 선발투수의 투구수가 70구를 넘어서며 두 번째 타순 반복이 일어나는 시점이 변수다. 최근 득점권 타율이 높은 팀이 상대 선발의 실투를 공략해 빅이닝을 만들 수 있다.`;
-    lateGameOutlook = `7회 이후 후반전은 불펜 주요 계투진의 소모도와 득실 마진에서 승패가 갈린다. ${fullHome} 불펜의 최근 실점 억제 지표가 유지된다면 리드를 지켜낼 공산이 크다.`;
-    closingOutlook = `결국 이번 경기의 핵심 승부처는 선발투수의 5이닝 자책점 제어 여부와 타선 공격 생산력 격차다.`;
-  } else if (sport === 'basketball') {
-    leadOutlook = `전력 지표와 코어 득점원의 화력을 종합하면 ${favTeam}이 우위를 점할 공산이 크다.`;
-    midGameOutlook = `2~3쿼터 트랜지션 상황에서 3점 외곽포 성공률과 빠른 백코트 전환이 경기 흐름을 결정짓는다.`;
-    lateGameOutlook = `4쿼터 클러치 타임에는 자유투 성공률과 골밑 리바운드 사수가 승패의 핵심 변수다.`;
-    closingOutlook = `결국 페인트존 득실 마진과 턴오버 제어력이 최종 승부를 가를 것이다.`;
-  } else {
-    leadOutlook = `세트 득실 마진과 공격 성공률을 종합하면 ${favTeam}이 경기 주도권을 잡을 가능성이 높다.`;
-    midGameOutlook = `2~3세트 중반 랠리 상황에서 세터의 볼 배분과 퀵오픈 성공률이 1차 승부처다.`;
-    lateGameOutlook = `4~5세트 후반 20점 이후에는 서브 에이스와 블로킹 차단율이 승패를 가른다.`;
-    closingOutlook = `결국 주포의 해결사 능력과 범실 제어가 최종 승패를 결정지을 핵심 지표다.`;
-  }
-
-  // [11. ODDSALGO 정량 퀀트 모델 분석]
+  // =========================================================================
+  // Quant Model Section (Strictly separated from editorial prose)
+  // =========================================================================
   const noVigProbText = hasDomesticOdds
-    ? (hasDraw 
+    ? (hasDraw
         ? `${fullHome} ${homeTrueProb}% / 무승부 ${drawTrueProb}% / ${fullAway} ${awayTrueProb}%`
-        : (sport === 'soccer' 
+        : (sport === 'soccer'
             ? `1X2 무승부 배당 미고시 (3-Way 산출 대기)`
             : `${fullHome} ${homeTrueProb}% vs ${fullAway} ${awayTrueProb}%`))
     : `공식 배당 미고시 (산출 대기)`;
@@ -865,157 +1024,87 @@ export function generateMatchPreviewArticle(
     : `공식 배당 미고시 (발매 대기)`;
 
   const quantModelSection = hasDomesticOdds ? `
-【ODDSALGO (오즈알고) 정량 퀀트 수리모델 분석 (Quantitative Engine)】
-※ 본 영역은 객관적인 수리 확률 모델에 의해 독립 연산된 정량 지표이며, 기자 분석 본문과 엄격히 분리됩니다.
-• 모델 참확률 (Model Prob) : ${fullHome} ${homeTrueProb}% / ${hasDraw ? `무승부 ${drawTrueProb}% / ` : ''}${fullAway} ${awayTrueProb}%
-• 시장 공식 배당 (Market Odds) : ${marketOddsText}
-• 비례 역수 공정 확률 (Proportional No-Vig) : ${noVigProbText}
-• 기대 가치 (EV) : ${primary.expectedRoi >= 0 ? `+${primary.expectedRoi.toFixed(1)}%` : `${primary.expectedRoi.toFixed(1)}%`}
-• 켈리 자금 분배율 (Kelly Stake) : ${kellyStake}
-• 퀀트 1순위 TOP 픽 : ${finalSummaryPick} (공정 승률 ${fundProb} / 기대수익률 ${roi})
-• 권장 베팅 라인 : [1X2] ${favTeam} 승리 | [핸디] ${resolvedHandicap} | [언오버] ${resolvedUnderOver}
+【ODDSALGO 정량 퀀트 수리모델 요약 (독립 연산)】
+• 모델 승률 추정 : ${fullHome} ${modelHomePct}%${hasDraw ? ` / 무 ${drawTrueProb}%` : ''} / ${fullAway} ${modelAwayPct}%
+• 시장 공식 배당 : ${marketOddsText} (공정 확률 ${noVigProbText})
+• 기대 가치 (EV) : ${primary.expectedRoi >= 0 ? `+${primary.expectedRoi.toFixed(1)}%` : `${primary.expectedRoi.toFixed(1)}%`} | 켈리 비중: ${kellyStake}
+• 1순위 TOP 픽 : ${finalSummaryPick} (공정 승률 ${fundProb} / 기대수익률 ${roi})
+• 마켓별 가이드 : [일반] ${favTeam} 승리 | [핸디] ${resolvedHandicap} | [언오버] ${resolvedUnderOver}
 `.trim() : `
-【ODDSALGO (오즈알고) 정량 퀀트 수리모델 분석 (Quantitative Engine)】
-※ 본 영역은 객관적인 수리 확률 모델에 의해 독립 연산된 정량 지표이며, 기자 분석 본문과 엄격히 분리됩니다.
-• 모델 참확률 (Model Prob) : 공식 배당 미고시 (산출 대기)
-• 시장 공식 배당 (Market Odds) : 공식 배당 미고시
-• 비례 역수 공정 확률 (Proportional No-Vig) : 공식 배당 미고시 (대기)
-• 기대 가치 (EV) : 미산출
-• 켈리 자금 분배율 (Kelly Stake) : 미산출
-• 퀀트 1순위 TOP 픽 : 공식 배당 고시 대기 (추천 미생성)
-• 권장 베팅 라인 : 공식 배당 고시 후 추천 라인 산출
+【ODDSALGO 정량 퀀트 수리모델 요약】
+• 공식 배당 고시 후 기대 가치(EV)와 권장 라인이 산출됩니다.
 `.trim();
 
-  // Full Journalist Raw Text Assembly
+  const basicInfoText = [
+    `일시: ${basicInfo.datetimeKst}`,
+    `장소: ${basicInfo.venue}`,
+    `홈: ${basicInfo.homeSummary}`,
+    `원정: ${basicInfo.awaySummary}`
+  ].join('\n');
+
+  const statsFullBody = `${statsSubhead}\n\n${statParagraphs.join('\n\n')}`;
+  const playersFullBody = `${playersSubhead}\n\n${playerParagraphs.slice(0, -1).join('\n\n') || playerParagraphs[0]}\n\n${injurySubhead}\n${playerParagraphs[playerParagraphs.length - 1] || ''}`.trim();
+
   const rawText = `
-[${matchDate} 프로토 No.${gameNo}] ${league} ${fullHome} vs ${fullAway} 전문 스포츠 기자 분석 프리뷰
+${headline}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-01. 【${titles.overview}】
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${quickOverviewText}
+${leadParagraph}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-02. 【${titles.recentForm}】
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${recentFormDetailText}
+경기 기본 정보
+${basicInfoText}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-03. 【${titles.h2h}】
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${h2hDetailText}
+${statsSectionTitle}
+${statsFullBody}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-04. 【${titles.lineupOrStarters}】
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${pitcherOrAceText}
+${playersSectionTitle}
+${playersFullBody}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-05. 【${titles.attack}】
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${attackDetailText}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-06. 【${titles.defense}】
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${bullpenDetailText}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-07. 【${titles.injuries}】
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${lineupInjuryText}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-08. 【${titles.environment}】
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${homeAwayEnvironmentText}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-09. 【${titles.checkpoints}】
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${checkpoints.join('\n')}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-10. 【${titles.outlook}】
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[초반 흐름] ${leadOutlook}
-[중반 승부처] ${midGameOutlook}
-[후반 잠금] ${lateGameOutlook}
-[핵심 변수] ${closingOutlook}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-11. 【${titles.quant}】
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${quantModelSection}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🏷️ 【데이터 출처 및 기준 시각】
-• 데이터 수집 기준 시각: ${currentTimestamp}
-• 데이터 출처: 오피셜 배당 및 실시간 스포츠 전력 통계 데이터베이스
-• 무결성 검증: ISO/IEC 25010 소프트웨어 품질 기준 준수
-#${shortHome.replace(/\s+/g, '')} #${shortAway.replace(/\s+/g, '')} #${league.replace(/\s+/g, '')} #프로토No${gameNo} #스포츠토토 #와이즈토토 #경기분석 #승부예측
+#${shortHome.replace(/\s+/g, '')} #${shortAway.replace(/\s+/g, '')} #${league.replace(/\s+/g, '')} #프로토No${gameNo} #경기분석
 `.trim();
 
-  // Validate preview text and quant state using all validators
   const vBySport = validatePreviewBySport(rawText, sport);
   const vData = validatePreviewData(rawText);
   const vOdds = validateOddsConsistency(match);
   const vQuant = validateQuantDependency(evaluated);
-
-  const allViolations = [
-    ...vBySport.violations,
-    ...vData.violations,
-    ...vOdds.violations,
-    ...vQuant.violations
-  ];
-
-  const validation = {
-    isValid: allViolations.length === 0,
-    violations: allViolations
-  };
+  const allViolations = [...vBySport.violations, ...vData.violations, ...vOdds.violations, ...vQuant.violations];
+  const validation = { isValid: allViolations.length === 0, violations: allViolations };
 
   const sections: JournalistSection[] = [
-    { sectionNo: '01', title: titles.overview, content: quickOverviewText },
-    { sectionNo: '02', title: titles.recentForm, content: recentFormDetailText },
-    { sectionNo: '03', title: titles.h2h, content: h2hDetailText },
-    { sectionNo: '04', title: titles.lineupOrStarters, content: pitcherOrAceText },
-    { sectionNo: '05', title: titles.attack, content: attackDetailText },
-    { sectionNo: '06', title: titles.defense, content: bullpenDetailText },
-    { sectionNo: '07', title: titles.injuries, content: lineupInjuryText },
-    { sectionNo: '08', title: titles.environment, content: homeAwayEnvironmentText },
-    { sectionNo: '09', title: titles.checkpoints, content: checkpoints.join('\n') },
-    { sectionNo: '10', title: titles.outlook, content: `${leadOutlook}\n\n${midGameOutlook}\n\n${lateGameOutlook}\n\n${closingOutlook}` },
+    { sectionNo: '01', title: '경기 기본 정보', content: basicInfoText },
+    { sectionNo: '02', title: statsSectionTitle, subhead: statsSubhead, content: statParagraphs.join('\n\n') },
+    { sectionNo: '03', title: playersSectionTitle, subhead: `${playersSubhead} / ${injurySubhead}`, content: playerParagraphs.join('\n\n') },
     { sectionNo: '11', title: titles.quant, content: quantModelSection }
   ];
 
-  const title = `[${matchDate} 프로토 No.${gameNo}] ${league} ${fullHome} vs ${fullAway} 경기 분석 프리뷰 & 승부예측`;
-  const seoKeywords = [
-    fullHome,
-    fullAway,
-    league,
-    `프로토${gameNo}번`,
-    `${matchDate.replace(/[^0-9]/g, '')}`,
-    '스포츠토토',
-    '와이즈토토',
-    '경기분석',
-    '승부예측',
-    '핸디캡',
-    '언더오버',
-    sport === 'baseball' ? '선발투수' : '선발라인업',
-    '상대전적'
+  const checkpoints: string[] = [
+    `일시/장소: ${basicInfo.datetimeKst} · ${basicInfo.venue}`,
+    `전적 흐름: 홈 ${homeRecordText} vs 원정 ${awayRecordText}`,
+    hasRecentData ? `최근 5경기: ${fullHome} 평균 ${homeRecentStats.avgScored}${unitName} vs ${fullAway} 평균 ${awayRecentStats.avgScored}${unitName}` : `배당 확률: ${fullHome} ${homeTrueProb}% vs ${fullAway} ${awayTrueProb}%`,
+    `결장 변수: ${fullAway} OUT ${awayOutInj.length}명 · ${fullHome} OUT ${homeOutInj.length}명`
   ];
-  const seoMetaDescription = `${formattedDate} ${league} ${fullHome} vs ${fullAway} 경기 분석 프리뷰. ${hasRecentData ? `최근 5경기 득실 마진(${homeRecentStats.diffStr} vs ${awayRecentStats.diffStr}), ` : ''}라인업 및 퀀트 참확률 기반 전문 기자 분석 리포트.`;
+
+  const seoKeywords = [
+    fullHome, fullAway, league, `프로토${gameNo}번`,
+    `${matchDate.replace(/[^0-9]/g, '')}`,
+    '스포츠토토', '와이즈토토', '경기분석', '승부예측', '라인업', '상대전적'
+  ];
+  const seoMetaDescription = `${headline} — ${leadParagraph.slice(0, 140)}`;
   const jsonLdSnippet = JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
-    headline: title,
+    headline,
     datePublished: new Date().toISOString(),
     description: seoMetaDescription,
     author: { '@type': 'Organization', name: 'ODDSALGO Sports Desk' }
   });
 
   return {
-    title,
+    title: headline,
+    headline,
+    leadParagraph,
+    basicInfo,
     formattedDate,
     matchDate,
     matchupName: `${fullHome} vs ${fullAway}`,
@@ -1024,50 +1113,45 @@ ${quantModelSection}
     seoMetaDescription,
     jsonLdSnippet,
     sections,
-    quickOverview: quickOverviewText,
-    recentFormText: recentFormDetailText,
-    h2hText: h2hDetailText,
-    pitcherOrAceText,
-    attackText: attackDetailText,
-    bullpenOrDefenseText: bullpenDetailText,
-    lineupInjuryText,
-    homeAwayEnvironmentText,
-    journalistOutlook: `${leadOutlook} ${midGameOutlook} ${lateGameOutlook} ${closingOutlook}`,
+    quickOverview: leadParagraph,
+    recentFormText: statParagraphs.join('\n\n'),
+    h2hText: hasH2hData ? `${fullHome} ${h2hHomeWins}승 ${h2hDraws}무 ${h2hAwayWins}패` : '상대전적 데이터 미제공',
+    pitcherOrAceText: playerParagraphs[0] || '',
+    attackText: statParagraphs[0] || '',
+    bullpenOrDefenseText: statParagraphs[1] || '',
+    lineupInjuryText: playerParagraphs[playerParagraphs.length - 1] || '',
+    homeAwayEnvironmentText: basicInfoText,
+    journalistOutlook: leadParagraph,
     quantModelSection,
     provenance: {
-      source: '오피셜 배당 및 실시간 스포츠 전력 통계 데이터베이스',
+      source: espnIntel?.matched ? `${espnIntel.sourceName} · 공식 배당` : '공식 배당 및 실시간 경기 통계',
       fetchedAt: currentTimestamp,
       dataStatus: 'REAL',
       confidence: '99.4%'
     },
     factCheckPassed: validation.isValid,
     validationReport: validation,
-    // Backward compatibility mappings
     homeAnalysis: {
-      title: `${fullHome} 전력 및 득실 분석`,
-      starterText: pitcherOrAceText,
-      attackText: attackDetailText,
-      bullpenText: bullpenDetailText,
-      quote: hasRecentData 
-        ? `❝ 최근 5경기 득실 마진 ${homeRecentStats.diffStr}과 공수 밸런스가 초반 변수다. ❞`
-        : `❝ 공수 밸런스와 경기 초반 점유율이 승부의 변수다. ❞`
+      title: `${fullHome} 전력 분석`,
+      starterText: playerParagraphs[0] || '',
+      attackText: statParagraphs[0] || '',
+      bullpenText: statParagraphs[1] || '',
+      quote: `❝ ${statsSubhead} ❞`
     },
     awayAnalysis: {
-      title: `${fullAway} 전력 및 원정 분석`,
-      starterText: pitcherOrAceText,
-      attackText: attackDetailText,
-      bullpenText: bullpenDetailText,
-      quote: hasRecentData
-        ? `❝ 최근 5경기 득실 마진 ${awayRecentStats.diffStr}과 원정 실점 제어가 후반 분수령이다. ❞`
-        : `❝ 원정 실점 제어와 경기 막판 집중력이 후반 분수령이다. ❞`
+      title: `${fullAway} 원정 분석`,
+      starterText: playerParagraphs[1] || playerParagraphs[0] || '',
+      attackText: statParagraphs[statParagraphs.length - 1] || '',
+      bullpenText: '',
+      quote: `❝ ${injurySubhead} ❞`
     },
     checkpoints,
     matchupPoints: {
-      leadText: leadOutlook,
-      starterCompareText: midGameOutlook,
-      quote: `❝ 양 팀의 전술적 완성도와 공격 결정력 격차가 승패를 결정짓는다. ❞`,
-      lateGameText: lateGameOutlook,
-      closingText: closingOutlook
+      leadText: leadParagraph,
+      starterCompareText: playersSubhead,
+      quote: `❝ ${headline} ❞`,
+      lateGameText: injurySubhead,
+      closingText: playerParagraphs[playerParagraphs.length - 1] || ''
     },
     predictions: {
       winner: favTeam,

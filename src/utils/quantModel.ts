@@ -174,6 +174,7 @@ export function computeQuantModel(params: QuantModelInput): QuantModelOutput | n
     const aDef = awayStats.defense ?? 0.95;
     const aAtk = awayStats.attack ?? 0.90;
     const hDef = homeStats.defense ?? 0.85;
+    const rho = -0.13;
 
     // Split base between home and away (with slight home advantage baseline)
     const lambdaHome = (base / 2) * (hAtk * aDef);
@@ -188,13 +189,13 @@ export function computeQuantModel(params: QuantModelInput): QuantModelOutput | n
     let sumDraw = 0;
     let sumAway = 0;
 
-    for (let x = 0; x <= 5; x++) {
-      for (let y = 0; y <= 5; y++) {
+    for (let x = 0; x <= 6; x++) {
+      for (let y = 0; y <= 6; y++) {
         let tau = 1.0;
-        if (x === 0 && y === 0) tau = Math.max(0.01, 1 - (lambdaHome * lambdaAway * 0.13));
-        else if (x === 0 && y === 1) tau = 1 + (lambdaAway * 0.13);
-        else if (x === 1 && y === 0) tau = 1 + (lambdaHome * 0.13);
-        else if (x === 1 && y === 1) tau = 1 - 0.13;
+        if (x === 0 && y === 0) tau = Math.max(0.01, 1 - (lambdaHome * lambdaAway * rho));
+        else if (x === 0 && y === 1) tau = Math.max(0.01, 1 + (lambdaHome * rho));
+        else if (x === 1 && y === 0) tau = Math.max(0.01, 1 + (lambdaAway * rho));
+        else if (x === 1 && y === 1) tau = Math.max(0.01, 1 - rho);
 
         const p = poisson(x, lambdaHome) * poisson(y, lambdaAway) * tau;
         sumProb += p;
@@ -211,13 +212,6 @@ export function computeQuantModel(params: QuantModelInput): QuantModelOutput | n
     }
   }
 
-  // -------------------------------------------------------------
-  // [2-2] 야구 Bayesian Poisson & W1L 5이닝
-  // eraFactor=(awayERA-homeERA)*0.35
-  // lambdaHome=marketBase/2+eraFactor, lambdaAway=marketBase/2-eraFactor
-  // totalExpected=lH+lA, relativeDev=(totalExpected-marketBase)/marketBase
-  // 야구 W1L 5이닝: lambdaHome_5=homeERA/9*5*0.5+2.1
-  // -------------------------------------------------------------
   else if (isBaseball) {
     const base = marketBase > 0 ? marketBase : 8.5;
     let homeERA = typeof homeStats?.era === 'number' ? homeStats.era : undefined;
@@ -248,10 +242,15 @@ export function computeQuantModel(params: QuantModelInput): QuantModelOutput | n
     expectedAway = lambdaAway;
 
     if (type === 'W1L') {
-      modelType = 'Bayesian 5-Inning W1L';
-      // 5-inning projection: lambdaHome_5 = homeERA/9*5*0.5 + 2.1
-      const lambdaHome_5 = (homeERA / 9) * 5 * 0.5 + 2.1;
-      const lambdaAway_5 = (awayERA / 9) * 5 * 0.5 + 2.1;
+      modelType = 'Bayesian 5-Inning + Bullpen W1L';
+      // Blend starter-driven first 5 innings with full 9-inning bullpen expectation
+      const lambdaHome5 = Math.max(0.5, (awayERA / 9) * 5 * 0.55 + (lambdaHome * 0.35));
+      const lambdaAway5 = Math.max(0.5, (homeERA / 9) * 5 * 0.55 + (lambdaAway * 0.35));
+      const effLambdaHome = lambdaHome * 0.65 + (lambdaHome5 * (9 / 5)) * 0.35;
+      const effLambdaAway = lambdaAway * 0.65 + (lambdaAway5 * (9 / 5)) * 0.35;
+      expectedHome = effLambdaHome;
+      expectedAway = effLambdaAway;
+      totalExpected = effLambdaHome + effLambdaAway;
 
       // Calculate 1-run margin and tie probability across 9 innings
       let pWin2Plus = 0;
@@ -261,7 +260,7 @@ export function computeQuantModel(params: QuantModelInput): QuantModelOutput | n
 
       for (let x = 0; x <= 14; x++) {
         for (let y = 0; y <= 14; y++) {
-          const p = poisson(x, lambdaHome) * poisson(y, lambdaAway);
+          const p = poisson(x, effLambdaHome) * poisson(y, effLambdaAway);
           tot += p;
           const diff = x - y;
           if (diff >= 2) pWin2Plus += p;
@@ -273,17 +272,16 @@ export function computeQuantModel(params: QuantModelInput): QuantModelOutput | n
       if (tot > 0) {
         homeProb = Math.round((pWin2Plus / tot) * 1000) / 10;
         drawProb = Math.round((pOneRunOrTie / tot) * 1000) / 10; // '1' outcome
-        awayProb = Math.round((pLose2Plus / tot) * 1000) / 10;
+        awayProb = Math.round((100 - homeProb - drawProb) * 10) / 10;
       }
     } else {
       modelType = 'Bayesian Poisson Skellam';
-      // Standard Baseball Win/Lose (No Draw)
       let sumH = 0;
       let sumA = 0;
       let tot = 0;
       for (let x = 0; x <= 14; x++) {
         for (let y = 0; y <= 14; y++) {
-          if (x === y) continue; // Baseball has extra innings
+          if (x === y) continue;
           const p = poisson(x, lambdaHome) * poisson(y, lambdaAway);
           tot += p;
           if (x > y) sumH += p;
@@ -296,11 +294,6 @@ export function computeQuantModel(params: QuantModelInput): QuantModelOutput | n
     }
   }
 
-  // -------------------------------------------------------------
-  // [2-3] 농구/배구 ELO + Pace
-  // winProb=1/(1+10^(-(homeElo+75-awayElo)/400))
-  // paceAdj=totalMarket*((homePace+awayPace)/2/100)
-  // -------------------------------------------------------------
   else {
     modelType = 'ELO + Pace Rating';
     const homeElo = homeStats.elo ?? 1540;
@@ -309,14 +302,12 @@ export function computeQuantModel(params: QuantModelInput): QuantModelOutput | n
     const awayPace = awayStats.pace ?? (sport === 'basketball' ? 98.0 : 92.0);
     const totalMarket = marketBase > 0 ? marketBase : (sport === 'basketball' ? 165.5 : 180.5);
 
-    // ELO Win probability with +75 home court advantage points
     const eloExp = -(homeElo + 75 - awayElo) / 400;
     const rawWinProb = 1 / (1 + Math.pow(10, eloExp));
     homeProb = Math.round(rawWinProb * 1000) / 10;
-    drawProb = 0; // Basketball/volleyball have no ties
+    drawProb = 0;
     awayProb = Math.round((100 - homeProb) * 10) / 10;
 
-    // Pace Adjustment
     const paceAdj = totalMarket * (((homePace + awayPace) / 2) / 100);
     totalExpected = Math.round(paceAdj * 10) / 10;
     expectedHome = Math.round(totalExpected * rawWinProb * 10) / 10;
@@ -325,16 +316,16 @@ export function computeQuantModel(params: QuantModelInput): QuantModelOutput | n
   }
 
   // -------------------------------------------------------------
-  // [2-4] 공통 No-Vig + EV
-  // prob=1/odds, margin=Σprob-1, noVig=prob/(1+margin), EV=noVig*foreignOdds-1
+  // [2-4] 공통 No-Vig + Edge / EV (절대 가짜 1.05x 배당 합성 금지)
   // -------------------------------------------------------------
-  const domW = domesticOdds?.win || 1.85;
-  const domD = domesticOdds?.draw || null;
-  const domL = domesticOdds?.lose || 3.20;
+  const domW = domesticOdds?.win && domesticOdds.win > 1.0 ? domesticOdds.win : 1.85;
+  const domD = domesticOdds?.draw && domesticOdds.draw > 1.0 ? domesticOdds.draw : null;
+  const domL = domesticOdds?.lose && domesticOdds.lose > 1.0 ? domesticOdds.lose : 3.20;
 
-  const forW = foreignOdds?.win || domW * 1.05;
-  const forD = foreignOdds?.draw || (domD ? domD * 1.05 : null);
-  const forL = foreignOdds?.lose || domL * 1.05;
+  const hasRealForeign = Boolean(foreignOdds?.win && foreignOdds.win > 1.0 && foreignOdds?.lose && foreignOdds.lose > 1.0);
+  const forW = hasRealForeign ? foreignOdds!.win! : domW;
+  const forD = hasRealForeign && foreignOdds?.draw && foreignOdds.draw > 1.0 ? foreignOdds.draw : domD;
+  const forL = hasRealForeign ? foreignOdds!.lose! : domL;
 
   const invW = 1 / Math.max(1.01, domW);
   const invD = domD && domD > 0 ? 1 / Math.max(1.01, domD) : 0;
@@ -345,10 +336,26 @@ export function computeQuantModel(params: QuantModelInput): QuantModelOutput | n
   const noVigD = invD > 0 ? invD / (1 + margin) : 0;
   const noVigL = invL / (1 + margin);
 
-  // EV = noVig * foreignOdds - 1 (in percentage: * 100)
-  const evW = Math.round(((noVigW * forW) - 1) * 1000) / 10;
-  const evD = forD && noVigD > 0 ? Math.round(((noVigD * forD) - 1) * 1000) / 10 : null;
-  const evL = Math.round(((noVigL * forL) - 1) * 1000) / 10;
+  // Use model probability vs target domestic odds (when foreign exists, blend Sharp No-Vig 65% + Model 35%)
+  let evalProbW = homeProb / 100;
+  let evalProbD = drawProb / 100;
+  let evalProbL = awayProb / 100;
+
+  if (hasRealForeign) {
+    const fInvW = 1 / Math.max(1.01, forW);
+    const fInvD = forD && forD > 1.0 ? 1 / Math.max(1.01, forD) : 0;
+    const fInvL = 1 / Math.max(1.01, forL);
+    const fSum = fInvW + fInvD + fInvL;
+    if (fSum > 0) {
+      evalProbW = (fInvW / fSum) * 0.65 + (homeProb / 100) * 0.35;
+      evalProbD = fInvD > 0 ? (fInvD / fSum) * 0.65 + (drawProb / 100) * 0.35 : 0;
+      evalProbL = (fInvL / fSum) * 0.65 + (awayProb / 100) * 0.35;
+    }
+  }
+
+  const evW = Math.round(((evalProbW * domW) - 1) * 1000) / 10;
+  const evD = domD && evalProbD > 0 ? Math.round(((evalProbD * domD) - 1) * 1000) / 10 : null;
+  const evL = Math.round(((evalProbL * domL) - 1) * 1000) / 10;
 
   // Best Pick determination
   let bestOutcome: 'win' | 'draw' | 'lose' = 'win';
@@ -368,6 +375,7 @@ export function computeQuantModel(params: QuantModelInput): QuantModelOutput | n
 
   const endTime = typeof performance !== 'undefined' ? performance.now() : Date.now();
   const executionTimeMs = Math.round((endTime - startTime) * 100) / 100;
+  const evSigned = bestEv >= 0 ? `+${bestEv}%` : `${bestEv}%`;
 
   const result: QuantModelOutput = {
     sport,
@@ -397,7 +405,7 @@ export function computeQuantModel(params: QuantModelInput): QuantModelOutput | n
       outcome: bestOutcome,
       prob: bestProb,
       ev: bestEv,
-      reason: `${modelType} 기반 공정 확률 ${bestProb}% 대비 해외 No-Vig 기대수익률(EV) +${bestEv}% 우위 포착`
+      reason: `${modelType} 기반 공정 확률 ${bestProb}% vs 배당 기대가치(EV) ${evSigned}${hasRealForeign ? ' (실시간 해외 배당 반영)' : ' (국내 No-Vig 기준)'}`
     },
     modelMetadata: {
       modelType,

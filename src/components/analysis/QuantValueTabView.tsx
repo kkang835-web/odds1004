@@ -12,9 +12,9 @@ interface QuantValueTabViewProps {
   awayTeam: string;
   sport: string;
   league: string;
-  domWin: number;
+  domWin: number | null;
   domDraw: number | null;
-  domLose: number;
+  domLose: number | null;
   homeTrueProb: number;
   drawTrueProb: number;
   awayTrueProb: number;
@@ -27,6 +27,8 @@ interface QuantValueTabViewProps {
   uoCand: any;
   handicapLine: any;
   uoLine: any;
+  comprehensiveProto?: any;
+  h2hData?: any;
 }
 
 export function QuantValueTabView({
@@ -52,7 +54,8 @@ export function QuantValueTabView({
   hdpCand,
   uoCand,
   handicapLine,
-  uoLine
+  uoLine,
+  comprehensiveProto
 }: QuantValueTabViewProps) {
   const isNoDrawSport = sport === 'baseball' || sport === 'basketball' || sport === 'volleyball';
 
@@ -488,6 +491,223 @@ export function QuantValueTabView({
           </div>
         </div>
       </div>
+
+      {/* ========================================================================= */}
+      {/* 🔬 종합 프로토 퀀트 분석 (배당 경제학 · 6대 컨텍스트 · 득실점 분포)         */}
+      {/* ========================================================================= */}
+      {comprehensiveProto ? (
+        <div className="space-y-4">
+          {/* 1. 배당 경제학 (국내 vs 해외 샤프 환급률·절삭률·마진·에지) */}
+          <div className="bg-[#0b131f] border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3 shadow-xl">
+            <div className="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-slate-800/80">
+              <div className="text-sm font-black text-white flex items-center gap-2">
+                <span className="text-cyan-400">⚖️</span>
+                <span>배당 경제학 (환급률 · 절삭률 · 마진 · 에지)</span>
+              </div>
+              <span className="text-[11px] font-mono text-cyan-300 bg-cyan-950/60 border border-cyan-800/50 px-2 py-0.5 rounded">
+                {comprehensiveProto.oddsEconomics?.hasRealForeignOdds ? '해외 샤프 실데이터 연동' : '국내 공시 기준 (해외 배당 미제공)'}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+              <div className="bg-[#070d17] border border-slate-800 rounded-xl p-3.5 space-y-1.5">
+                <div className="text-[11px] text-slate-400 font-semibold">국내 배당 (베트맨 프로토)</div>
+                <div className="flex items-baseline justify-between">
+                  <span className="text-slate-300">환급률</span>
+                  <span className="font-mono font-black text-cyan-300 text-base">{comprehensiveProto.oddsEconomics?.domesticPayoutRatePct}%</span>
+                </div>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-slate-400">절삭률 / 북메이커 마진</span>
+                  <span className="font-mono text-rose-300 font-bold">
+                    {comprehensiveProto.oddsEconomics?.domesticCutRatePct}% / +{comprehensiveProto.oddsEconomics?.domesticMarginPct}%
+                  </span>
+                </div>
+              </div>
+
+              <div className="bg-[#070d17] border border-slate-800 rounded-xl p-3.5 space-y-1.5">
+                <div className="text-[11px] text-slate-400 font-semibold">해외 샤프 북메이커 평균</div>
+                <div className="flex items-baseline justify-between">
+                  <span className="text-slate-300">환급률</span>
+                  <span className="font-mono font-black text-emerald-300 text-base">
+                    {comprehensiveProto.oddsEconomics?.hasRealForeignOdds
+                      ? `${comprehensiveProto.oddsEconomics.foreignPayoutRatePct}%`
+                      : '미제공'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-slate-400">절삭률 / 마진</span>
+                  <span className="font-mono text-slate-300 font-bold">
+                    {comprehensiveProto.oddsEconomics?.hasRealForeignOdds
+                      ? `${comprehensiveProto.oddsEconomics.foreignCutRatePct}% / +${comprehensiveProto.oddsEconomics.foreignMarginPct}%`
+                      : '-'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="bg-[#070d17] border border-slate-800 rounded-xl p-3.5 space-y-1.5">
+                <div className="text-[11px] text-slate-400 font-semibold">가격 에지 (모델 기대수익 vs 국내 배당)</div>
+                <div className="grid grid-cols-3 gap-1 pt-0.5 text-center font-mono">
+                  <div className="bg-slate-900/80 rounded p-1.5 border border-slate-800">
+                    <div className="text-[10px] text-slate-400">홈 승</div>
+                    <div className={`font-black ${(comprehensiveProto.oddsEconomics?.priceEdgePct?.win ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                      {(comprehensiveProto.oddsEconomics?.priceEdgePct?.win ?? 0) >= 0
+                        ? `+${comprehensiveProto.oddsEconomics?.priceEdgePct?.win}%`
+                        : `${comprehensiveProto.oddsEconomics?.priceEdgePct?.win}%`}
+                    </div>
+                  </div>
+                  <div className="bg-slate-900/80 rounded p-1.5 border border-slate-800">
+                    <div className="text-[10px] text-slate-400">무승부</div>
+                    <div className={`font-black ${(comprehensiveProto.oddsEconomics?.priceEdgePct?.draw ?? -1) >= 0 ? 'text-emerald-400' : 'text-slate-300'}`}>
+                      {comprehensiveProto.oddsEconomics?.priceEdgePct?.draw !== null && comprehensiveProto.oddsEconomics?.priceEdgePct?.draw !== undefined
+                        ? `${comprehensiveProto.oddsEconomics.priceEdgePct.draw >= 0 ? '+' : ''}${comprehensiveProto.oddsEconomics.priceEdgePct.draw}%`
+                        : '-'}
+                    </div>
+                  </div>
+                  <div className="bg-slate-900/80 rounded p-1.5 border border-slate-800">
+                    <div className="text-[10px] text-slate-400">원정 승</div>
+                    <div className={`font-black ${(comprehensiveProto.oddsEconomics?.priceEdgePct?.lose ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                      {(comprehensiveProto.oddsEconomics?.priceEdgePct?.lose ?? 0) >= 0
+                        ? `+${comprehensiveProto.oddsEconomics?.priceEdgePct?.lose}%`
+                        : `${comprehensiveProto.oddsEconomics?.priceEdgePct?.lose}%`}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 2. 6대 컨텍스트 · 일정 피로도 · 동기부여 매트릭스 */}
+          <div className="bg-[#0b131f] border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3 shadow-xl">
+            <div className="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-slate-800/80">
+              <div className="text-sm font-black text-white flex items-center gap-2">
+                <span className="text-amber-400">🧭</span>
+                <span>6대 컨텍스트 · 일정 · 동기부여 종합 매트릭스</span>
+              </div>
+              <div className="text-[11px] font-mono text-slate-300">
+                총 보정: 홈 <strong className={comprehensiveProto.totalHomeAdjustmentPct >= 0 ? 'text-emerald-400' : 'text-rose-400'}>{comprehensiveProto.totalHomeAdjustmentPct >= 0 ? '+' : ''}{comprehensiveProto.totalHomeAdjustmentPct}%p</strong> / 원정 <strong className={comprehensiveProto.totalAwayAdjustmentPct >= 0 ? 'text-emerald-400' : 'text-rose-400'}>{comprehensiveProto.totalAwayAdjustmentPct >= 0 ? '+' : ''}{comprehensiveProto.totalAwayAdjustmentPct}%p</strong>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+              {(comprehensiveProto.contextFactors || []).map((cf: any) => (
+                <div key={cf.key} className="bg-[#070d17] border border-slate-800/90 rounded-xl p-3 space-y-1.5 text-xs">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-black text-slate-100">{cf.label}</span>
+                    <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border ${
+                      cf.status === 'REAL_DATA'
+                        ? 'bg-emerald-950/70 text-emerald-300 border-emerald-700/60'
+                        : 'bg-slate-900 text-slate-400 border-slate-700'
+                    }`}>
+                      {cf.status === 'REAL_DATA' ? '실데이터' : '중립'}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-[11px]">
+                    <div className="bg-slate-900/70 rounded px-2 py-1 border border-slate-800/80">
+                      <span className="text-slate-400 mr-1">홈:</span>
+                      <span className="text-amber-200 font-semibold">{cf.homeSignal}</span>
+                    </div>
+                    <div className="bg-slate-900/70 rounded px-2 py-1 border border-slate-800/80">
+                      <span className="text-slate-400 mr-1">원정:</span>
+                      <span className="text-sky-200 font-semibold">{cf.awaySignal}</span>
+                    </div>
+                  </div>
+                  <div className="text-[11px] text-slate-400">{cf.summary}</div>
+                </div>
+              ))}
+            </div>
+
+            {comprehensiveProto.motivationSummary && (
+              <div className="bg-slate-900/70 border border-slate-800 rounded-xl px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <span className="text-slate-300">
+                  🏆 동기부여 구도: <strong className="text-amber-300">{comprehensiveProto.motivationSummary.homeZone}</strong> vs <strong className="text-sky-300">{comprehensiveProto.motivationSummary.awayZone}</strong>
+                </span>
+                <span className="font-bold text-emerald-300 font-mono">{comprehensiveProto.motivationSummary.netMotivationEdge}</span>
+              </div>
+            )}
+          </div>
+
+          {/* 3. 정교한 핸디캡 & 언더/오버 기대 스코어 분포 */}
+          <div className="bg-[#0b131f] border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3 shadow-xl">
+            <div className="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-slate-800/80">
+              <div className="text-sm font-black text-white flex items-center gap-2">
+                <span className="text-purple-400">📐</span>
+                <span>핸디캡 &amp; 언더/오버 기대 스코어 분포 정밀 분석</span>
+              </div>
+              <span className="text-xs font-mono font-bold text-amber-300">
+                기대 스코어 {homeTeam} {comprehensiveProto.underOverRefined?.expectedHomeScore} : {comprehensiveProto.underOverRefined?.expectedAwayScore} {awayTeam} (합계 {comprehensiveProto.underOverRefined?.expectedTotalScore})
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div className="bg-[#070d17] border border-purple-900/50 rounded-xl p-3.5 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-black text-purple-300">핸디캡 ({comprehensiveProto.handicapRefined?.line > 0 ? `+${comprehensiveProto.handicapRefined?.line}` : comprehensiveProto.handicapRefined?.line}) 정밀 산출</span>
+                  <span className="font-mono text-[11px] text-slate-300">예상 마진 {comprehensiveProto.handicapRefined?.expectedMargin >= 0 ? `+${comprehensiveProto.handicapRefined?.expectedMargin}` : comprehensiveProto.handicapRefined?.expectedMargin}</span>
+                </div>
+                <div className="grid grid-cols-3 gap-1.5 text-center font-mono">
+                  <div className="bg-slate-900/80 rounded p-2 border border-slate-800">
+                    <div className="text-[10px] text-slate-400">홈 커버</div>
+                    <div className="font-black text-purple-300">{comprehensiveProto.handicapRefined?.homeCoverProb}%</div>
+                    <div className="text-[10px] text-slate-500">공정 {comprehensiveProto.handicapRefined?.homeFairOdds}</div>
+                  </div>
+                  <div className="bg-slate-900/80 rounded p-2 border border-slate-800">
+                    <div className="text-[10px] text-slate-400">적특(Push)</div>
+                    <div className="font-black text-slate-300">{comprehensiveProto.handicapRefined?.pushProb}%</div>
+                    <div className="text-[10px] text-slate-500">환불구간</div>
+                  </div>
+                  <div className="bg-slate-900/80 rounded p-2 border border-slate-800">
+                    <div className="text-[10px] text-slate-400">원정 커버</div>
+                    <div className="font-black text-cyan-300">{comprehensiveProto.handicapRefined?.awayCoverProb}%</div>
+                    <div className="text-[10px] text-slate-500">공정 {comprehensiveProto.handicapRefined?.awayFairOdds}</div>
+                  </div>
+                </div>
+                <div className="text-[11px] text-purple-200 font-semibold">{comprehensiveProto.handicapRefined?.rationale}</div>
+              </div>
+
+              <div className="bg-[#070d17] border border-emerald-900/50 rounded-xl p-3.5 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-black text-emerald-300">언더/오버 (기준 {comprehensiveProto.underOverRefined?.line}) 정밀 산출</span>
+                  <span className="font-mono text-[11px] text-emerald-300">{comprehensiveProto.underOverRefined?.recommendedLabel}</span>
+                </div>
+                <div className="grid grid-cols-3 gap-1.5 text-center font-mono">
+                  <div className="bg-slate-900/80 rounded p-2 border border-slate-800">
+                    <div className="text-[10px] text-slate-400">언더 (U)</div>
+                    <div className="font-black text-emerald-300">{comprehensiveProto.underOverRefined?.underProb}%</div>
+                    <div className="text-[10px] text-slate-500">공정 {comprehensiveProto.underOverRefined?.underFairOdds}</div>
+                  </div>
+                  <div className="bg-slate-900/80 rounded p-2 border border-slate-800">
+                    <div className="text-[10px] text-slate-400">적특(Push)</div>
+                    <div className="font-black text-slate-300">{comprehensiveProto.underOverRefined?.pushProb}%</div>
+                    <div className="text-[10px] text-slate-500">동점구간</div>
+                  </div>
+                  <div className="bg-slate-900/80 rounded p-2 border border-slate-800">
+                    <div className="text-[10px] text-slate-400">오버 (O)</div>
+                    <div className="font-black text-amber-300">{comprehensiveProto.underOverRefined?.overProb}%</div>
+                    <div className="text-[10px] text-slate-500">공정 {comprehensiveProto.underOverRefined?.overFairOdds}</div>
+                  </div>
+                </div>
+                {Array.isArray(comprehensiveProto.underOverRefined?.topExactScores) && comprehensiveProto.underOverRefined.topExactScores.length > 0 && (
+                  <div className="flex items-center justify-between flex-wrap gap-1.5 text-[11px] pt-0.5">
+                    <span className="text-slate-400">Top-3 예상 스코어:</span>
+                    <div className="flex items-center gap-1.5 font-mono">
+                      {comprehensiveProto.underOverRefined.topExactScores.map((s: any, idx: number) => (
+                        <span key={idx} className="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-amber-300 font-bold">
+                          {s.score} ({s.probPct}%)
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-[#070d17] border border-slate-800/80 rounded-2xl p-4 text-xs text-slate-400 flex items-center justify-between">
+          <span>🔄 해외 배당 경제학 · 주중 일정 · 리그 동기부여 · 기대 스코어 종합 리포트를 연동 중입니다...</span>
+          <span className="font-mono text-slate-500">H2H/ESPN 동기화</span>
+        </div>
+      )}
     </div>
   );
 }

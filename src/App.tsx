@@ -29,9 +29,13 @@ export default function App() {
   });
   const [isVerifiedPreviewMode, setIsVerifiedPreviewMode] = useState<boolean>(false);
   const hasAutoSyncedProtoRoundRef = useRef<boolean>(false);
+  const [activeRoundSynced, setActiveRoundSynced] = useState<boolean>(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return Boolean(urlParams.get('round'));
+  });
   const [showWisetotoImport, setShowWisetotoImport] = useState<boolean>(false);
   const [legalModal, setLegalModal] = useState<ModalType>(null);
-  const [, setActiveRounds] = useState<{ pt1: number; sc: number; bs: number; bk: number; year?: number; today?: string }>({
+  const [activeRounds, setActiveRounds] = useState<{ pt1: number; sc: number; bs: number; bk: number; year?: number; today?: string }>({
     pt1: initialCalendar.protoRound,
     sc: initialCalendar.totoSoccerRound,
     bs: initialCalendar.totoBaseballRound,
@@ -75,32 +79,28 @@ export default function App() {
   const [selectedMatchForQuant, setSelectedMatchForQuant] = useState<MatchItem | null>(null);
   const [modalInitialTab, setModalInitialTab] = useState<'overview' | 'h2h' | 'quant' | 'backtest' | 'ai'>('overview');
 
-  // Auto-recognize Proto & Toto active rounds and dates on program startup
+  // Auto-recognize Proto & Toto active rounds on startup BEFORE initial match fetch
   useEffect(() => {
-    async function initActiveRounds() {
+    let cancelled = false;
+    async function initActiveRoundsOnBoot() {
       try {
         const cal = resolveRoundByDate();
         const [activeRes, totoLimitsRes] = await Promise.all([
           fetch('/api/active-rounds'),
           fetch('/api/toto/limits')
         ]);
+        if (cancelled) return;
         if (activeRes.ok) {
           const data = await activeRes.json();
           if (data && typeof data === 'object') {
             setActiveRounds(data);
             const liveYear = data.year || cal.year;
-            if (currentTab === 'proto') {
-              const urlParams = new URLSearchParams(window.location.search);
-              const hasExplicitUrlRound = Boolean(urlParams.get('round'));
-              if (!hasAutoSyncedProtoRoundRef.current && !hasExplicitUrlRound) {
-                hasAutoSyncedProtoRoundRef.current = true;
-                setSelectedYear(liveYear);
-                setSelectedRound(data.pt1 || cal.protoRound);
-              }
-            } else if (currentTab === 'toto') {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasExplicitUrlRound = Boolean(urlParams.get('round'));
+            if (!hasAutoSyncedProtoRoundRef.current && !hasExplicitUrlRound) {
+              hasAutoSyncedProtoRoundRef.current = true;
               setSelectedYear(liveYear);
-              const defaultTotoRound = totoType === 'sc' ? cal.totoSoccerRound : (totoType === 'bs' ? cal.totoBaseballRound : cal.totoBasketballRound);
-              setSelectedRound(data[totoType] || defaultTotoRound);
+              setSelectedRound(data.pt1 || cal.protoRound);
             }
             if (data.pt1) {
               setProtoRoundLimits(prev => ({ ...prev, [liveYear]: Math.max(prev[liveYear] || 0, data.pt1) }));
@@ -109,26 +109,38 @@ export default function App() {
         }
         if (totoLimitsRes.ok) {
           const limits = await totoLimitsRes.json();
-          if (limits && typeof limits === 'object') setTotoRoundLimits(limits);
+          if (!cancelled && limits && typeof limits === 'object') setTotoRoundLimits(limits);
         }
       } catch (err) {
         console.warn('Active rounds fetch skipped:', err);
+      } finally {
+        if (!cancelled) setActiveRoundSynced(true);
       }
     }
-    initActiveRounds();
-  }, [currentTab, totoType]);
+    initActiveRoundsOnBoot();
+    return () => { cancelled = true; };
+  }, []);
 
-  // Safe tab switching
+  // Safe tab switching with instant live active round synchronization
   const handleTabSelect = (tab: TabType) => {
     setCurrentTab(tab);
     if (tab === 'proto') {
       setGameType('pt1');
+      if (activeRounds.year) setSelectedYear(activeRounds.year);
+      if (activeRounds.pt1) setSelectedRound(activeRounds.pt1);
+    } else if (tab === 'toto') {
+      if (activeRounds.year) setSelectedYear(activeRounds.year);
+      const targetTotoRound = activeRounds[totoType];
+      if (targetTotoRound) setSelectedRound(targetTotoRound);
     }
   };
 
   const handleSelectTotoType = (type: TotoType) => {
     setTotoType(type);
     setCurrentTab('toto');
+    if (activeRounds.year) setSelectedYear(activeRounds.year);
+    const targetTotoRound = activeRounds[type];
+    if (targetTotoRound) setSelectedRound(targetTotoRound);
   };
 
   const fetchMatches = useCallback(async (force = false) => {
@@ -201,8 +213,9 @@ export default function App() {
   }, [gameType, selectedYear, selectedRound]);
 
   useEffect(() => {
+    if (!activeRoundSynced || currentTab !== 'proto') return;
     fetchMatches(false);
-  }, [fetchMatches]);
+  }, [activeRoundSynced, currentTab, fetchMatches]);
 
   // Automated 60-second periodic background polling & visibilitychange revalidation
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { TotoType, TotoRoundInfo, MatchItem, TotoPortfolioResult, TotoMatch } from '../types';
 import { resolveRoundByDate, getTodayDateString } from '../utils/calendarRoundResolver';
 import { 
@@ -647,6 +647,9 @@ export function TotoTable({
   const [selectedPresetCost, setSelectedPresetCost] = useState<number>(0);
   const [presetIterationCounts, setPresetIterationCounts] = useState<Record<number, number>>({});
   const [autoSelectionToast, setAutoSelectionToast] = useState<string | null>(null);
+  const [fineOptimization, setFineOptimization] = useState<any | null>(null);
+  const [isOptimizing, setIsOptimizing] = useState<boolean>(false);
+  const optReqSeqRef = useRef<number>(0);
 
   const [savedUserPicks, setSavedUserPicks] = useState<Record<number, ('win' | 'draw' | 'lose')[]> | null>(null);
 
@@ -706,8 +709,72 @@ export function TotoTable({
     }
   };
 
+  const runFineOptimize = async ({
+    type,
+    year,
+    round,
+    budget,
+    locked,
+    iterationIndex,
+    applyPicks
+  }: {
+    type: TotoType;
+    year: number;
+    round: number;
+    budget: number;
+    locked: Record<number, ('win' | 'draw' | 'lose')[]>;
+    iterationIndex: number;
+    applyPicks: boolean;
+  }) => {
+    const reqId = ++optReqSeqRef.current;
+    setIsOptimizing(true);
+    try {
+      const res = await fetch('/api/toto/fine-optimize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          totoType: type,
+          year,
+          round,
+          budget,
+          lockedPicks: locked,
+          iterationIndex
+        })
+      });
+      if (!res.ok) return;
+      const optData = await res.json();
+      if (optReqSeqRef.current !== reqId) return;
+      setFineOptimization(optData);
+
+      if (applyPicks && optData?.picks) {
+        const normalizedPicks: Record<number, ('win' | 'draw' | 'lose')[]> = {};
+        for (const [k, v] of Object.entries(optData.picks)) {
+          if (Array.isArray(v)) {
+            normalizedPicks[Number(k)] = v as ('win' | 'draw' | 'lose')[];
+          }
+        }
+        setUserPicks(normalizedPicks);
+        setSavedUserPicks(normalizedPicks);
+        const mcHits = optData?.monteCarlo?.avgExpectedHitsOutOf14;
+        const lockedCnt = Object.keys(locked || {}).length;
+        const semiPrefix = lockedCnt > 0 && lockedCnt < 14 ? `반자동(고정 ${lockedCnt}경기 유지) · ` : '';
+        setAutoSelectionToast(
+          `🎯 ${semiPrefix}${optData.budgetTierName} #${iterationIndex + 1} 완료 · 몬테카를로 기대 적중 ${mcHits ?? '-'}/14`
+        );
+        setTimeout(() => setAutoSelectionToast(null), 4000);
+      }
+    } catch (err) {
+      console.warn('Fine optimize request failed:', err);
+    } finally {
+      if (optReqSeqRef.current === reqId) {
+        setIsOptimizing(false);
+      }
+    }
+  };
+
   const fetchRoundData = async (type: TotoType, year: number, round: number) => {
     setIsLoading(true);
+    setFineOptimization(null);
     try {
       const res = await fetch(`/api/toto/round?type=${type}&year=${year}&round=${round}`);
       if (res.ok) {
@@ -726,6 +793,17 @@ export function TotoTable({
         setSavedUserPicks(null);
         setSelectedPresetCost(0);
         setPresetIterationCounts({});
+
+        // Populate historical pattern + Monte Carlo + per-match diagnoses for this round
+        runFineOptimize({
+          type,
+          year,
+          round,
+          budget: 8000,
+          locked: {},
+          iterationIndex: 0,
+          applyPicks: false
+        });
       }
     } catch (e) {
       console.error(e);
@@ -899,7 +977,7 @@ export function TotoTable({
     setTimeout(() => setAutoSelectionToast(null), 2500);
   };
 
-  const handleApplyPreset = (doubles: number, triples: number, cost: number) => {
+  const handleApplyPreset = (_doubles: number, _triples: number, cost: number) => {
     if (!roundData?.matches) return;
     const currentIter = presetIterationCounts[cost] || 0;
     const nextIter = currentIter + 1;
@@ -922,6 +1000,16 @@ export function TotoTable({
     setSavedUserPicks(semiResult.picks);
     setAutoSelectionToast(semiResult.toastMessage);
     setTimeout(() => setAutoSelectionToast(null), 3500);
+
+    runFineOptimize({
+      type: selectedTotoType,
+      year: selectedYear,
+      round: selectedRound,
+      budget: cost,
+      locked: effectivePicks,
+      iterationIndex: nextIter - 1,
+      applyPicks: true
+    });
   };
 
   const handleAutoSelect = () => {
@@ -948,6 +1036,16 @@ export function TotoTable({
     setSavedUserPicks(semiResult.picks);
     setAutoSelectionToast(semiResult.toastMessage);
     setTimeout(() => setAutoSelectionToast(null), 3500);
+
+    runFineOptimize({
+      type: selectedTotoType,
+      year: selectedYear,
+      round: selectedRound,
+      budget: targetCost,
+      locked: effectivePicks,
+      iterationIndex: nextIter - 1,
+      applyPicks: true
+    });
   };
 
   const handleCopyCurrentSlip = () => {
@@ -1435,6 +1533,110 @@ export function TotoTable({
           </div>
         </div>
 
+        {/* 1등 정밀 조합 & 역대 동일배당구간 패턴 분석 패널 */}
+        {fineOptimization && (
+          <div className="bg-slate-950/75 border border-indigo-500/35 rounded-xl p-4 space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2.5">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs sm:text-sm font-black text-indigo-300 flex items-center gap-1.5">
+                  <Brain className="w-4 h-4 text-amber-400" />
+                  <span>1등 정밀 조합 &amp; 역대 동일배당구간 패턴 분석</span>
+                </span>
+                <span className="text-[11px] font-black px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                  {fineOptimization.budgetTierName}
+                </span>
+                {isOptimizing && (
+                  <span className="text-[10px] font-mono text-cyan-300 animate-pulse">정밀 재연산 중...</span>
+                )}
+              </div>
+              <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${
+                fineOptimization.expectedStructure?.inGoldenEnvelope
+                  ? 'bg-emerald-950/80 text-emerald-300 border-emerald-700/60'
+                  : 'bg-amber-950/80 text-amber-300 border-amber-700/60'
+              }`}>
+                {fineOptimization.expectedStructure?.envelopeLabel}
+              </span>
+            </div>
+
+            <p className="text-xs text-slate-300 leading-relaxed">
+              💡 <strong className="text-amber-300">{fineOptimization.budgetStrategyGuide}</strong> — {fineOptimization.breaking6to8Summary}
+            </p>
+
+            {/* Monte Carlo 5,000 Simulation & Structure Comparison */}
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs font-mono">
+              <div className="bg-slate-900/90 border border-slate-800 rounded-lg p-2.5">
+                <div className="text-[10px] text-slate-400">몬테카를로 기대적중 (5,000회)</div>
+                <div className="text-base font-black text-emerald-300 mt-0.5">
+                  {fineOptimization.monteCarlo?.avgExpectedHitsOutOf14 ?? '-'} / 14
+                </div>
+                <div className="text-[10px] text-slate-500">
+                  단순 정배 평균 {fineOptimization.datasetStats?.naiveFavAvgHits ?? '-'}/14
+                </div>
+              </div>
+              <div className="bg-slate-900/90 border border-slate-800 rounded-lg p-2.5">
+                <div className="text-[10px] text-slate-400">당첨권(11+) 도달확률</div>
+                <div className="text-base font-black text-amber-300 mt-0.5">
+                  {fineOptimization.monteCarlo?.p11PlusAnyPrizePct ?? 0}%
+                </div>
+                <div className="text-[10px] text-slate-500">
+                  12+ {fineOptimization.monteCarlo?.p12PlusThirdTierPct ?? 0}%
+                </div>
+              </div>
+              <div className="bg-slate-900/90 border border-slate-800 rounded-lg p-2.5">
+                <div className="text-[10px] text-slate-400">고액(13+) / 1등(14) 확률</div>
+                <div className="text-base font-black text-cyan-300 mt-0.5">
+                  {fineOptimization.monteCarlo?.p13PlusSecondTierPct ?? 0}%
+                </div>
+                <div className="text-[10px] text-slate-500">
+                  1등 {fineOptimization.monteCarlo?.p14FirstPrizePct ?? 0}%
+                </div>
+              </div>
+              <div className="bg-slate-900/90 border border-slate-800 rounded-lg p-2.5">
+                <div className="text-[10px] text-slate-400">현재 조합 vs 역대 1등 평균</div>
+                <div className="text-sm font-black text-white mt-0.5">
+                  정 {fineOptimization.expectedStructure?.selectedFavCount} · 무 {fineOptimization.expectedStructure?.selectedDrawCount} · 역 {fineOptimization.expectedStructure?.selectedUpsetCount}
+                </div>
+                <div className="text-[10px] text-slate-500">
+                  역대평균 {fineOptimization.expectedStructure?.historicalAvgFav} · {fineOptimization.expectedStructure?.historicalAvgDraw} · {fineOptimization.expectedStructure?.historicalAvgUpset}
+                </div>
+              </div>
+              <div className="bg-slate-900/90 border border-slate-800 rounded-lg p-2.5 col-span-2 sm:col-span-1">
+                <div className="text-[10px] text-slate-400">독식 예상 1등 인원/배당</div>
+                <div className="text-sm font-black text-rose-300 mt-0.5">
+                  {fineOptimization.monteCarlo?.expectedWinners ?? '-'}명
+                </div>
+                <div className="text-[10px] text-emerald-400 truncate">
+                  {fineOptimization.monteCarlo?.estimatedPayoutKRW
+                    ? `${Math.round(fineOptimization.monteCarlo.estimatedPayoutKRW / 10000).toLocaleString()}만원`
+                    : '-'}
+                </div>
+              </div>
+            </div>
+
+            {/* Top-4 Similar Historical Rounds */}
+            {Array.isArray(fineOptimization.similarHistoricalRounds) && fineOptimization.similarHistoricalRounds.length > 0 && (
+              <div className="space-y-1.5 pt-1">
+                <div className="text-[11px] font-bold text-slate-400">
+                  📚 역대 {fineOptimization.datasetStats?.settledRoundsAnalyzed}개 실측 회차 중 유사 배당·투표구간 매칭 Top-4
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                  {fineOptimization.similarHistoricalRounds.map((sr: any, idx: number) => (
+                    <div key={idx} className="bg-slate-900/80 border border-slate-800 rounded-lg px-2.5 py-2 text-[11px]">
+                      <div className="flex items-center justify-between font-mono font-black">
+                        <span className="text-amber-300">{sr.year}년 {sr.round}회차</span>
+                        <span className="text-emerald-300">유사도 {sr.similarityPct}%</span>
+                      </div>
+                      <div className="text-[10px] text-slate-400 mt-0.5 truncate" title={sr.sampleNote}>
+                        {sr.sampleNote}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Side-by-Side Review Scorecard Banner (When Review Mode or Matches finished) */}
         {isReviewMode && totalFinishedMatches > 0 && (
           <div className="bg-slate-950/80 p-4 rounded-xl border border-amber-500/30 space-y-3">
@@ -1727,20 +1929,31 @@ export function TotoTable({
                 </div>
 
                 {/* Model Pick & Strategy Banner */}
-                <div className="bg-amber-50 p-2.5 rounded-xl border border-amber-200 flex items-center justify-between gap-2">
-                  <div>
-                    <div className="text-[10px] font-bold text-amber-900 whitespace-nowrap">수리 퀀트 Model Pick</div>
-                    <div className="text-sm font-black text-amber-950 flex items-center gap-1.5">
-                      <span>🎯 추천 마킹:</span>
-                      <span className="bg-amber-400 text-slate-950 px-2.5 py-0.5 rounded-md font-mono font-extrabold text-xs whitespace-nowrap">{modelPickLabel}</span>
+                {(() => {
+                  const fineDiag = fineOptimization?.diagnoses?.find((d: any) => Number(d.matchNo) === Number(m.matchNo));
+                  const mobileRecPicks: ('win' | 'draw' | 'lose')[] = fineDiag?.recommendedPicks || recPicks;
+                  const mobilePickText = mobileRecPicks.map((p: 'win' | 'draw' | 'lose') => p === 'win' ? labelWin : (p === 'draw' ? labelDraw : labelLose)).join(' / ');
+                  const mobileBadgeLabel = fineDiag?.roleLabel || strategyMeta?.badgeLabel;
+                  const mobileBadgeColor = fineDiag?.roleColor || strategyMeta?.badgeColor || '';
+                  return (
+                    <div className="bg-amber-50 p-2.5 rounded-xl border border-amber-200 flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="text-[10px] font-bold text-amber-900 whitespace-nowrap">
+                          {fineDiag ? `동일구간 ${fineDiag.bucketSampleCount}경기 (이변 ${fineDiag.bucketEmpiricalRate?.upsetPct}%)` : '수리 퀀트 Model Pick'}
+                        </div>
+                        <div className="text-sm font-black text-amber-950 flex items-center gap-1.5">
+                          <span>🎯 추천 마킹:</span>
+                          <span className="bg-amber-400 text-slate-950 px-2.5 py-0.5 rounded-md font-mono font-extrabold text-xs whitespace-nowrap">{mobilePickText}</span>
+                        </div>
+                      </div>
+                      {mobileBadgeLabel && (
+                        <span className={`text-[10px] font-extrabold px-2 py-1 rounded-lg whitespace-nowrap border ${mobileBadgeColor}`}>
+                          {mobileBadgeLabel}
+                        </span>
+                      )}
                     </div>
-                  </div>
-                  {strategyMeta?.badgeLabel && (
-                    <span className={`text-[10px] font-extrabold px-2 py-1 rounded-lg whitespace-nowrap ${strategyMeta.badgeColor}`}>
-                      {strategyMeta.badgeLabel}
-                    </span>
-                  )}
-                </div>
+                  );
+                })()}
 
                 {/* Result & Verification if finished */}
                 {hasResult && (
@@ -2019,23 +2232,45 @@ export function TotoTable({
 
                     {/* Quant Strategy Role Tag & Precise Data Grounds */}
                     <td className="p-2 text-center">
-                      {strategyMeta ? (
-                        <div className="flex flex-col items-center gap-1">
-                          <span className={`inline-block px-2 py-0.5 rounded-md text-[10px] font-black border ${strategyMeta.badgeColor}`}>
-                            {strategyMeta.badgeLabel}
-                          </span>
-                          {strategyMeta.dataReason && (
-                            <span className="text-[9.5px] font-mono text-slate-800 bg-amber-50/90 px-1.5 py-0.5 rounded border border-amber-300 font-bold whitespace-nowrap shadow-2xs" title={`데이터 근거: ${strategyMeta.dataReason}`}>
-                              📊 {strategyMeta.dataReason}
-                            </span>
-                          )}
-                          <span className="text-[9px] text-gray-500 font-medium truncate max-w-[170px]" title={strategyMeta.description}>
-                            {strategyMeta.description}
-                          </span>
-                        </div>
-                      ) : (
-                        <span className="text-gray-400 text-[10px]">-</span>
-                      )}
+                      {(() => {
+                        const fineDiag = fineOptimization?.diagnoses?.find((d: any) => Number(d.matchNo) === Number(m.matchNo));
+                        if (fineDiag) {
+                          return (
+                            <div className="flex flex-col items-center gap-1">
+                              <span className={`inline-block px-2 py-0.5 rounded-md text-[10px] font-black border ${fineDiag.roleColor}`}>
+                                {fineDiag.roleLabel}
+                              </span>
+                              <span
+                                className="text-[9.5px] font-mono text-slate-800 bg-amber-50/90 px-1.5 py-0.5 rounded border border-amber-300 font-bold whitespace-nowrap shadow-2xs"
+                                title={fineDiag.reason}
+                              >
+                                📊 표본 {fineDiag.bucketSampleCount} · 이변 {fineDiag.bucketEmpiricalRate?.upsetPct}% · 융합 {Math.max(fineDiag.fusedProbs?.win || 0, fineDiag.fusedProbs?.draw || 0, fineDiag.fusedProbs?.lose || 0)}%
+                              </span>
+                              <span className="text-[9px] text-gray-500 font-medium truncate max-w-[180px]" title={fineDiag.reason}>
+                                {fineDiag.reason}
+                              </span>
+                            </div>
+                          );
+                        }
+                        if (strategyMeta) {
+                          return (
+                            <div className="flex flex-col items-center gap-1">
+                              <span className={`inline-block px-2 py-0.5 rounded-md text-[10px] font-black border ${strategyMeta.badgeColor}`}>
+                                {strategyMeta.badgeLabel}
+                              </span>
+                              {strategyMeta.dataReason && (
+                                <span className="text-[9.5px] font-mono text-slate-800 bg-amber-50/90 px-1.5 py-0.5 rounded border border-amber-300 font-bold whitespace-nowrap shadow-2xs" title={`데이터 근거: ${strategyMeta.dataReason}`}>
+                                  📊 {strategyMeta.dataReason}
+                                </span>
+                              )}
+                              <span className="text-[9px] text-gray-500 font-medium truncate max-w-[170px]" title={strategyMeta.description}>
+                                {strategyMeta.description}
+                              </span>
+                            </div>
+                          );
+                        }
+                        return <span className="text-gray-400 text-[10px]">-</span>;
+                      })()}
                     </td>
 
                     {/* Domestic Odds (Clean Pure Numbers Only) */}

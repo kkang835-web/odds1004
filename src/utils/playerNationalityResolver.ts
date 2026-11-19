@@ -1410,12 +1410,18 @@ export const NATIONAL_TEAMS_MAP: Record<string, { code: string; name: string }> 
   '괌': { code: 'gu', name: 'Guam' },
   'guam': { code: 'gu', name: 'Guam' },
   'gu': { code: 'gu', name: 'Guam' },
+  '피지': { code: 'fj', name: 'Fiji' },
+  'fiji': { code: 'fj', name: 'Fiji' },
+  '타히티': { code: 'pf', name: 'Tahiti' },
+  '솔로몬제도': { code: 'sb', name: 'Solomon Islands' },
+  '솔로몬': { code: 'sb', name: 'Solomon Islands' },
 
   // South America
   '브라질': { code: 'br', name: 'Brazil' },
   'brazil': { code: 'br', name: 'Brazil' },
   'br': { code: 'br', name: 'Brazil' },
   '아르헨티나': { code: 'ar', name: 'Argentina' },
+  '아르헨티': { code: 'ar', name: 'Argentina' },
   'argentina': { code: 'ar', name: 'Argentina' },
   'ar': { code: 'ar', name: 'Argentina' },
   '우루과이': { code: 'uy', name: 'Uruguay' },
@@ -1437,6 +1443,7 @@ export const NATIONAL_TEAMS_MAP: Record<string, { code: string; name: string }> 
   'peru': { code: 'pe', name: 'Peru' },
   'pe': { code: 'pe', name: 'Peru' },
   '베네수엘라': { code: 've', name: 'Venezuela' },
+  '베네수엘': { code: 've', name: 'Venezuela' },
   'venezuela': { code: 've', name: 'Venezuela' },
   've': { code: 've', name: 'Venezuela' },
   '볼리비아': { code: 'bo', name: 'Bolivia' },
@@ -1468,12 +1475,14 @@ export const NATIONAL_TEAMS_MAP: Record<string, { code: string; name: string }> 
   'belgium': { code: 'be', name: 'Belgium' },
   'be': { code: 'be', name: 'Belgium' },
   '크로아티아': { code: 'hr', name: 'Croatia' },
+  '크로아티': { code: 'hr', name: 'Croatia' },
   'croatia': { code: 'hr', name: 'Croatia' },
   'hr': { code: 'hr', name: 'Croatia' },
   '스위스': { code: 'ch', name: 'Switzerland' },
   'switzerland': { code: 'ch', name: 'Switzerland' },
   'ch': { code: 'ch', name: 'Switzerland' },
   '오스트리아': { code: 'at', name: 'Austria' },
+  '오스트리': { code: 'at', name: 'Austria' },
   'austria': { code: 'at', name: 'Austria' },
   'at': { code: 'at', name: 'Austria' },
   '덴마크': { code: 'dk', name: 'Denmark' },
@@ -1489,6 +1498,7 @@ export const NATIONAL_TEAMS_MAP: Record<string, { code: string; name: string }> 
   'poland': { code: 'pl', name: 'Poland' },
   'pl': { code: 'pl', name: 'Poland' },
   '튀르키예': { code: 'tr', name: 'Turkey' },
+  '튀르키': { code: 'tr', name: 'Turkey' },
   '터키': { code: 'tr', name: 'Turkey' },
   'turkey': { code: 'tr', name: 'Turkey' },
   'tr': { code: 'tr', name: 'Turkey' },
@@ -1499,9 +1509,11 @@ export const NATIONAL_TEAMS_MAP: Record<string, { code: string; name: string }> 
   'czech': { code: 'cz', name: 'Czech Republic' },
   'cz': { code: 'cz', name: 'Czech Republic' },
   '슬로바키아': { code: 'sk', name: 'Slovakia' },
+  '슬로바키': { code: 'sk', name: 'Slovakia' },
   'slovakia': { code: 'sk', name: 'Slovakia' },
   'sk': { code: 'sk', name: 'Slovakia' },
   '슬로베니아': { code: 'si', name: 'Slovenia' },
+  '슬로베니': { code: 'si', name: 'Slovenia' },
   'slovenia': { code: 'si', name: 'Slovenia' },
   'si': { code: 'si', name: 'Slovenia' },
   '헝가리': { code: 'hu', name: 'Hungary' },
@@ -1511,11 +1523,14 @@ export const NATIONAL_TEAMS_MAP: Record<string, { code: string; name: string }> 
   'romania': { code: 'ro', name: 'Romania' },
   'ro': { code: 'ro', name: 'Romania' },
   '스코틀랜드': { code: 'gb-sct', name: 'Scotland' },
+  '스코틀랜': { code: 'gb-sct', name: 'Scotland' },
   'scotland': { code: 'gb-sct', name: 'Scotland' },
   '웨일스': { code: 'gb-wls', name: 'Wales' },
   'wales': { code: 'gb-wls', name: 'Wales' },
   '북아일랜드': { code: 'gb-nir', name: 'Northern Ireland' },
+  '북아일랜': { code: 'gb-nir', name: 'Northern Ireland' },
   '아일랜드': { code: 'ie', name: 'Ireland' },
+  '아일랜': { code: 'ie', name: 'Ireland' },
   'ireland': { code: 'ie', name: 'Ireland' },
   'ie': { code: 'ie', name: 'Ireland' },
   '그리스': { code: 'gr', name: 'Greece' },
@@ -1525,36 +1540,45 @@ export const NATIONAL_TEAMS_MAP: Record<string, { code: string; name: string }> 
   'georgia': { code: 'ge', name: 'Georgia' },
   'ge': { code: 'ge', name: 'Georgia' },
   '우크라이나': { code: 'ua', name: 'Ukraine' },
+  '우크라이': { code: 'ua', name: 'Ukraine' },
   'ukraine': { code: 'ua', name: 'Ukraine' },
   'ua': { code: 'ua', name: 'Ukraine' },
   '핀란드': { code: 'fi', name: 'Finland' },
   'finland': { code: 'fi', name: 'Finland' },
   'fi': { code: 'fi', name: 'Finland' },
   '아이슬란드': { code: 'is', name: 'Iceland' },
+  '아이슬란': { code: 'is', name: 'Iceland' },
   '알바니아': { code: 'al', name: 'Albania' },
   '북마케도니아': { code: 'mk', name: 'North Macedonia' },
+  '북마케도': { code: 'mk', name: 'North Macedonia' },
   '마케도니아': { code: 'mk', name: 'North Macedonia' },
+  '마케도니': { code: 'mk', name: 'North Macedonia' },
   '몬테네그로': { code: 'me', name: 'Montenegro' },
+  '몬테네그': { code: 'me', name: 'Montenegro' },
   '보스니아': { code: 'ba', name: 'Bosnia and Herzegovina' },
   '코소보': { code: 'xk', name: 'Kosovo' },
   '불가리아': { code: 'bg', name: 'Bulgaria' },
   '벨라루스': { code: 'by', name: 'Belarus' },
   '룩셈부르크': { code: 'lu', name: 'Luxembourg' },
+  '룩셈부르': { code: 'lu', name: 'Luxembourg' },
   '키프로스': { code: 'cy', name: 'Cyprus' },
   '에스토니아': { code: 'ee', name: 'Estonia' },
   '라트비아': { code: 'lv', name: 'Latvia' },
   '리투아니아': { code: 'lt', name: 'Lithuania' },
   '몰도바': { code: 'md', name: 'Moldova' },
   '아르메니아': { code: 'am', name: 'Armenia' },
+  '아르메니': { code: 'am', name: 'Armenia' },
   '아제르바이잔': { code: 'az', name: 'Azerbaijan' },
+  '아제르바': { code: 'az', name: 'Azerbaijan' },
   '페로제도': { code: 'fo', name: 'Faroe Islands' },
   '몰타': { code: 'mt', name: 'Malta' },
   '안도라': { code: 'ad', name: 'Andorra' },
   '산마리노': { code: 'sm', name: 'San Marino' },
   '지브롤터': { code: 'gi', name: 'Gibraltar' },
   '리히텐슈타인': { code: 'li', name: 'Liechtenstein' },
+  '리히텐슈': { code: 'li', name: 'Liechtenstein' },
 
-  // North & Central America
+  // North & Central America & Caribbean
   '미국': { code: 'us', name: 'USA' },
   'usa': { code: 'us', name: 'USA' },
   'us': { code: 'us', name: 'USA' },
@@ -1565,13 +1589,81 @@ export const NATIONAL_TEAMS_MAP: Record<string, { code: string; name: string }> 
   'canada': { code: 'ca', name: 'Canada' },
   'ca': { code: 'ca', name: 'Canada' },
   '코스타리카': { code: 'cr', name: 'Costa Rica' },
+  '코스타리': { code: 'cr', name: 'Costa Rica' },
   'costa rica': { code: 'cr', name: 'Costa Rica' },
   'cr': { code: 'cr', name: 'Costa Rica' },
   '파나마': { code: 'pa', name: 'Panama' },
+  'panama': { code: 'pa', name: 'Panama' },
+  'pa': { code: 'pa', name: 'Panama' },
   '자메이카': { code: 'jm', name: 'Jamaica' },
+  'jamaica': { code: 'jm', name: 'Jamaica' },
+  'jm': { code: 'jm', name: 'Jamaica' },
   '온두라스': { code: 'hn', name: 'Honduras' },
+  'honduras': { code: 'hn', name: 'Honduras' },
+  'hn': { code: 'hn', name: 'Honduras' },
   '엘살바도르': { code: 'sv', name: 'El Salvador' },
+  '엘살바도': { code: 'sv', name: 'El Salvador' },
+  'el salvador': { code: 'sv', name: 'El Salvador' },
+  'sv': { code: 'sv', name: 'El Salvador' },
   '과테말라': { code: 'gt', name: 'Guatemala' },
+  'guatemala': { code: 'gt', name: 'Guatemala' },
+  'gt': { code: 'gt', name: 'Guatemala' },
+  '아이티': { code: 'ht', name: 'Haiti' },
+  'haiti': { code: 'ht', name: 'Haiti' },
+  'ht': { code: 'ht', name: 'Haiti' },
+  '도미니공': { code: 'do', name: 'Dominican Republic' },
+  '도미니카공': { code: 'do', name: 'Dominican Republic' },
+  '도미니카공화국': { code: 'do', name: 'Dominican Republic' },
+  '도미니카': { code: 'do', name: 'Dominican Republic' },
+  'dominican republic': { code: 'do', name: 'Dominican Republic' },
+  'do': { code: 'do', name: 'Dominican Republic' },
+  '쿠바': { code: 'cu', name: 'Cuba' },
+  'cuba': { code: 'cu', name: 'Cuba' },
+  'cu': { code: 'cu', name: 'Cuba' },
+  '트리니다': { code: 'tt', name: 'Trinidad and Tobago' },
+  '트리니다드': { code: 'tt', name: 'Trinidad and Tobago' },
+  '트리니다드토바고': { code: 'tt', name: 'Trinidad and Tobago' },
+  'trinidad and tobago': { code: 'tt', name: 'Trinidad and Tobago' },
+  'trinidad': { code: 'tt', name: 'Trinidad and Tobago' },
+  'tt': { code: 'tt', name: 'Trinidad and Tobago' },
+  '쿠라소': { code: 'cw', name: 'Curacao' },
+  '퀴라소': { code: 'cw', name: 'Curacao' },
+  'curacao': { code: 'cw', name: 'Curacao' },
+  'cw': { code: 'cw', name: 'Curacao' },
+  '수리남': { code: 'sr', name: 'Suriname' },
+  'suriname': { code: 'sr', name: 'Suriname' },
+  'sr': { code: 'sr', name: 'Suriname' },
+  '니카라과': { code: 'ni', name: 'Nicaragua' },
+  'nicaragua': { code: 'ni', name: 'Nicaragua' },
+  'ni': { code: 'ni', name: 'Nicaragua' },
+  '벨리즈': { code: 'bz', name: 'Belize' },
+  'belize': { code: 'bz', name: 'Belize' },
+  'bz': { code: 'bz', name: 'Belize' },
+  '버뮤다': { code: 'bm', name: 'Bermuda' },
+  'bermuda': { code: 'bm', name: 'Bermuda' },
+  'bm': { code: 'bm', name: 'Bermuda' },
+  '가이아나': { code: 'gy', name: 'Guyana' },
+  'guyana': { code: 'gy', name: 'Guyana' },
+  'gy': { code: 'gy', name: 'Guyana' },
+  '바베이도스': { code: 'bb', name: 'Barbados' },
+  '바베이도': { code: 'bb', name: 'Barbados' },
+  'barbados': { code: 'bb', name: 'Barbados' },
+  'bb': { code: 'bb', name: 'Barbados' },
+  '그레나다': { code: 'gd', name: 'Grenada' },
+  'grenada': { code: 'gd', name: 'Grenada' },
+  'gd': { code: 'gd', name: 'Grenada' },
+  '푸에르토리코': { code: 'pr', name: 'Puerto Rico' },
+  '푸에르토': { code: 'pr', name: 'Puerto Rico' },
+  'puerto rico': { code: 'pr', name: 'Puerto Rico' },
+  'pr': { code: 'pr', name: 'Puerto Rico' },
+  '아루바': { code: 'aw', name: 'Aruba' },
+  'aruba': { code: 'aw', name: 'Aruba' },
+  'aw': { code: 'aw', name: 'Aruba' },
+  '앤티가바부다': { code: 'ag', name: 'Antigua and Barbuda' },
+  '앤티가': { code: 'ag', name: 'Antigua and Barbuda' },
+  '세인트루시아': { code: 'lc', name: 'Saint Lucia' },
+  '세인트빈센트': { code: 'vc', name: 'Saint Vincent' },
+  '세인트키츠': { code: 'kn', name: 'Saint Kitts and Nevis' },
 
   // Africa
   '모로코': { code: 'ma', name: 'Morocco' },
@@ -1584,6 +1676,7 @@ export const NATIONAL_TEAMS_MAP: Record<string, { code: string; name: string }> 
   'egypt': { code: 'eg', name: 'Egypt' },
   'eg': { code: 'eg', name: 'Egypt' },
   '나이지리아': { code: 'ng', name: 'Nigeria' },
+  '나이지리': { code: 'ng', name: 'Nigeria' },
   'nigeria': { code: 'ng', name: 'Nigeria' },
   'ng': { code: 'ng', name: 'Nigeria' },
   '알제리': { code: 'dz', name: 'Algeria' },
@@ -1593,14 +1686,40 @@ export const NATIONAL_TEAMS_MAP: Record<string, { code: string; name: string }> 
   'ghana': { code: 'gh', name: 'Ghana' },
   'gh': { code: 'gh', name: 'Ghana' },
   '코트디부아르': { code: 'ci', name: 'Ivory Coast' },
+  '코트디부': { code: 'ci', name: 'Ivory Coast' },
   '카메룬': { code: 'cm', name: 'Cameroon' },
+  'cameroon': { code: 'cm', name: 'Cameroon' },
+  'cm': { code: 'cm', name: 'Cameroon' },
   '남아공': { code: 'za', name: 'South Africa' },
   '남아프리카공화국': { code: 'za', name: 'South Africa' },
+  '남아프리카': { code: 'za', name: 'South Africa' },
   '튀니지': { code: 'tn', name: 'Tunisia' },
   '말리': { code: 'ml', name: 'Mali' },
   '콩고': { code: 'cd', name: 'DR Congo' },
+  '콩고민주': { code: 'cd', name: 'DR Congo' },
   '부르키나파소': { code: 'bf', name: 'Burkina Faso' },
-  '기니': { code: 'gn', name: 'Guinea' }
+  '부르키나': { code: 'bf', name: 'Burkina Faso' },
+  '기니': { code: 'gn', name: 'Guinea' },
+  '케냐': { code: 'ke', name: 'Kenya' },
+  'kenya': { code: 'ke', name: 'Kenya' },
+  '탄자니아': { code: 'tz', name: 'Tanzania' },
+  '우간다': { code: 'ug', name: 'Uganda' },
+  '잠비아': { code: 'zm', name: 'Zambia' },
+  '짐바브웨': { code: 'zw', name: 'Zimbabwe' },
+  '앙골라': { code: 'ao', name: 'Angola' },
+  '모잠비크': { code: 'mz', name: 'Mozambique' },
+  '마다가스카르': { code: 'mg', name: 'Madagascar' },
+  '마다가스': { code: 'mg', name: 'Madagascar' },
+  '카보베르데': { code: 'cv', name: 'Cape Verde' },
+  '카보베르': { code: 'cv', name: 'Cape Verde' },
+  '가봉': { code: 'ga', name: 'Gabon' },
+  '토고': { code: 'tg', name: 'Togo' },
+  '베냉': { code: 'bj', name: 'Benin' },
+  '감비아': { code: 'gm', name: 'Gambia' },
+  '나미비아': { code: 'na', name: 'Namibia' },
+  '모리타니': { code: 'mr', name: 'Mauritania' },
+  '모리타니아': { code: 'mr', name: 'Mauritania' },
+  '적도기니': { code: 'gq', name: 'Equatorial Guinea' }
 };
 
 /**
@@ -1645,18 +1764,29 @@ export function getNationalTeamInfo(teamName?: string): { countryCode: string; c
     }
   }
 
-  // 6. Substring check for exact team name matching (excluding club names)
-  const isClub = clean.includes('fc') || clean.includes('시티') || clean.includes('유나이티드') || 
-                 clean.includes('클럽') || clean.includes('sc') || clean.includes('cf') || 
-                 clean.includes('타운') || clean.includes('로버스') || clean.includes('스틸러스') || 
-                 clean.includes('현대') || clean.includes('상무') || clean.includes('유니온');
-  
+  // 6. Substring check ONLY for Korean country names or >= 4 char English country names (never 2-letter ISO codes!)
+  const isClub = clean.includes('fc') || clean.includes('시티') || clean.includes('유나이티드') ||
+                 clean.includes('클럽') || clean.includes('sc') || clean.includes('cf') ||
+                 clean.includes('타운') || clean.includes('로버스') || clean.includes('스틸러스') ||
+                 clean.includes('현대') || clean.includes('상무') || clean.includes('유니온') ||
+                 clean.includes('레이커') || clean.includes('클리퍼') || clean.includes('워리어') ||
+                 clean.includes('셀틱스') || clean.includes('닉스') || clean.includes('랩터') ||
+                 clean.includes('썬더') || clean.includes('로케') || clean.includes('76s') ||
+                 clean.includes('다저스') || clean.includes('양키스') || clean.includes('메츠') ||
+                 clean.includes('갤럭시') || clean.includes('원더') || clean.includes('유나') ||
+                 clean.includes('홀리') || clean.includes('바렌') || clean.includes('상가') ||
+                 clean.includes('삼성') || clean.includes('kcc') || clean.includes('db') ||
+                 clean.includes('sk') || clean.includes('kt') || clean.includes('lg') ||
+                 clean.includes('정관') || clean.includes('소노') || clean.includes('브롱');
+
   if (!isClub) {
     // Sort keys by length descending to match longest specific country token first (e.g. "카자흐스탄" before "카자흐")
     const sortedKeys = Object.keys(NATIONAL_TEAMS_MAP).sort((a, b) => b.length - a.length);
     for (const key of sortedKeys) {
       const kClean = key.toLowerCase().replace(/\s+/g, '');
-      if (kClean.length >= 2 && clean.includes(kClean)) {
+      const hasHangul = /[가-힣]/.test(kClean);
+      const isSafeToken = hasHangul ? kClean.length >= 2 : kClean.length >= 4;
+      if (isSafeToken && clean.includes(kClean)) {
         const val = NATIONAL_TEAMS_MAP[key];
         return { countryCode: val.code, countryName: val.name };
       }
@@ -1735,49 +1865,8 @@ export function resolvePlayerCountry(
     }
   }
 
-  // 4. Team Context Fallback (Prevents foreign clubs from receiving KR flags)
-  if (teamContext) {
-    const normTeam = teamContext.toLowerCase().replace(/\s+/g, '');
-    if (normTeam.includes('울산') || normTeam.includes('전북') || normTeam.includes('서울') || normTeam.includes('포항') || normTeam.includes('김천') || normTeam.includes('광주') || normTeam.includes('강원') || normTeam.includes('인천') || normTeam.includes('대구') || normTeam.includes('수원') || normTeam.includes('대한민국') || normTeam.includes('한국')) {
-      return { countryCode: 'kr', countryName: 'South Korea' };
-    }
-    if (normTeam.includes('마드리드') || normTeam.includes('바르셀로나') || normTeam.includes('바르샤') || normTeam.includes('라리가') || normTeam.includes('비야레알') || normTeam.includes('베티스') || normTeam.includes('세비야') || normTeam.includes('발렌시아') || normTeam.includes('소시에다')) {
-      return { countryCode: 'es', countryName: 'Spain' };
-    }
-    if (normTeam.includes('맨체스터') || normTeam.includes('맨시티') || normTeam.includes('맨유') || normTeam.includes('아스널') || normTeam.includes('리버풀') || normTeam.includes('첼시') || normTeam.includes('토트넘') || normTeam.includes('뉴캐슬') || normTeam.includes('빌라') || normTeam.includes('epl')) {
-      return { countryCode: 'gb-eng', countryName: 'England' };
-    }
-    if (normTeam.includes('뮌헨') || normTeam.includes('바이에른') || normTeam.includes('도르트문트') || normTeam.includes('레버쿠젠') || normTeam.includes('라이프치히') || normTeam.includes('분데스')) {
-      return { countryCode: 'de', countryName: 'Germany' };
-    }
-    if (normTeam.includes('밀란') || normTeam.includes('인테르') || normTeam.includes('유벤투스') || normTeam.includes('나폴리') || normTeam.includes('로마') || normTeam.includes('세리에')) {
-      return { countryCode: 'it', countryName: 'Italy' };
-    }
-    if (normTeam.includes('파리') || normTeam.includes('psg') || normTeam.includes('마르세유') || normTeam.includes('모나코') || normTeam.includes('리그1')) {
-      return { countryCode: 'fr', countryName: 'France' };
-    }
-    if (normTeam.includes('마이애미') || normTeam.includes('mls') || normTeam.includes('갤럭시') || normTeam.includes('lafc') || normTeam.includes('사운더스') || normTeam.includes('샌디에이고') || normTeam.includes('필라델피아') || normTeam.includes('크루') || normTeam.includes('레드불스')) {
-      return { countryCode: 'us', countryName: 'USA' };
-    }
-    if (normTeam.includes('가와사키') || normTeam.includes('요코하마') || normTeam.includes('우라와') || normTeam.includes('고베') || normTeam.includes('나고야') || normTeam.includes('산프레체') || normTeam.includes('감바') || normTeam.includes('세레소') || normTeam.includes('가시마') || normTeam.includes('fc도쿄') || normTeam.includes('j리그') || normTeam.includes('j1')) {
-      return { countryCode: 'jp', countryName: 'Japan' };
-    }
-    if (normTeam.includes('시드니') || normTeam.includes('멜버른') || normTeam.includes('브리즈번') || normTeam.includes('애들레이드') || normTeam.includes('센트럴코스트') || normTeam.includes('a리그')) {
-      return { countryCode: 'au', countryName: 'Australia' };
-    }
-    if (normTeam.includes('알힐랄') || normTeam.includes('알나스르') || normTeam.includes('알이티하드') || normTeam.includes('알아흘리')) {
-      return { countryCode: 'sa', countryName: 'Saudi Arabia' };
-    }
-    if (normTeam.includes('아약스') || normTeam.includes('페예노르트') || normTeam.includes('psv') || normTeam.includes('에레디비시')) {
-      return { countryCode: 'nl', countryName: 'Netherlands' };
-    }
-    if (normTeam.includes('벤피카') || normTeam.includes('스포르팅') || normTeam.includes('포르투') || normTeam.includes('포르투갈')) {
-      return { countryCode: 'pt', countryName: 'Portugal' };
-    }
-  }
-
-  // Default fallback (null-safe)
-  return { countryCode: 'gb-eng', countryName: 'England' };
+  // Unknown player nationality on pro club teams: strictly return empty so name-only rendering applies
+  return { countryCode: '', countryName: '' };
 }
 
 /**

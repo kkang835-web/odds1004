@@ -1,4 +1,12 @@
 import "dotenv/config";
+
+process.on("uncaughtException", (err) => {
+  console.error("[SERVER UNCAUGHT EXCEPTION]", err);
+});
+process.on("unhandledRejection", (reason) => {
+  console.error("[SERVER UNHANDLED REJECTION]", reason);
+});
+
 import express from "express";
 import path from "path";
 import fs from "fs";
@@ -48,7 +56,12 @@ import {
 } from "./server/totoCombinationOptimizer.js";
 import { fetchLiveWeatherQuantProfile } from "./server/weatherService.js";
 import { parseFlashscoreData, parseSofaScoreData, fetchMatches } from "./server/rapidApiParser";
-import { translateTeamNameToEnglish } from "./server/teamTranslator";
+import { translateTeamNameToEnglish, resolveTeamCountryCode } from "./server/teamTranslator";
+import { fetchEspnMatchIntel, enrichMatchesWithEspnBulk } from "./server/espnScraper.js";
+import { recordAndAttachOddsSnapshots, buildOddsChangesFeed } from "./server/oddsTracker.js";
+import { scrapeKilltotoProtoRound, fetchKilltotoMatchIntel, probeSecondarySitesHtmlHealth, getMultiSiteScraperStates } from "./server/multiSiteScraper.js";
+import { buildComprehensiveProtoReport } from "./server/protoComprehensiveQuant.js";
+import { optimizeTotoByBudget, evaluateHistoricalModelWalkForward, getSportEmpiricalIndex } from "./server/totoHistoricalPatternEngine.js";
 import { MarketRecommendation } from "./src/types.js";
 import { extractRealH2HAndRecentForm } from "./server/realMatchHistoryExtractor.js";
 import { matchCountryAndLeague, normalizeLeagueStandings, isCupTournament, generateCupTournamentStats, classifyCompetition, isValidRankingForMatch } from "./src/utils/leagueNormalizer.js";
@@ -252,7 +265,7 @@ interface TotoPortfolioResult {
 }
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
 app.use(express.json());
 
@@ -3067,6 +3080,150 @@ app.post("/api/toto/batch-combos", async (req, res) => {
   }
 });
 
+// Fine Budget-Aware Toto Optimizer & Historical Pattern Matching Endpoint
+app.post("/api/toto/fine-optimize", async (req, res) => {
+  try {
+    const totoType = (req.body?.totoType === 'bs' || req.body?.totoType === 'bk' ? req.body.totoType : 'sc') as 'sc' | 'bs' | 'bk';
+    const parsedYear = Number(req.body?.year) || 2026;
+    let parsedRound = Number(req.body?.round) || 0;
+    if (!parsedRound) {
+      const active = await getLiveActiveRounds();
+      parsedRound = active[totoType] || 1;
+    }
+    const budget = Math.max(1000, Number(req.body?.budget) || 8000);
+    const lockedPicks = (req.body?.lockedPicks && typeof req.body.lockedPicks === 'object') ? req.body.lockedPicks : {};
+    const iterationIndex = Math.max(0, Number(req.body?.iterationIndex) || 0);
+
+    const roundInfo = await generateTotoRoundData(totoType, parsedYear, parsedRound);
+
+    // Enrich Toto matches with live Proto domestic/foreign odds from matchDatabaseCache if available
+    const normTok = (s: string) => String(s || '').replace(/\s+/g, '').replace(/[^a-zA-Z0-9가-힣]/g, '').toLowerCase().slice(0, 5);
+    const cachedProtoMatches: any[] = [];
+    for (const cachedObj of Object.values(matchDatabaseCache)) {
+      const arr = Array.isArray(cachedObj) ? cachedObj : cachedObj?.matches;
+      if (Array.isArray(arr)) {
+        for (const pm of arr) {
+          if (pm && (pm.categoryType === '일반' || !pm.categoryType)) {
+            cachedProtoMatches.push(pm);
+          }
+        }
+      }
+    }
+
+    const enrichedMatches = (roundInfo.matches || []).map((m: any) => {
+      let domOdds = m.domesticOdds;
+      let forOdds = m.foreignOdds;
+      if ((!domOdds?.win || !forOdds?.win) && cachedProtoMatches.length > 0) {
+        const hTok = normTok(m.homeTeam);
+        const aTok = normTok(m.awayTeam);
+        const found = cachedProtoMatches.find(pm => {
+          const ph = normTok(pm.homeTeam);
+          const pa = normTok(pm.awayTeam);
+          return ph && pa && (ph.includes(hTok) || hTok.includes(ph)) && (pa.includes(aTok) || aTok.includes(pa));
+        });
+        if (found) {
+          if (!domOdds?.win && found.domestic?.win > 1) domOdds = found.domestic;
+          if (!forOdds?.win && found.foreign?.win > 1) forOdds = found.foreign;
+        }
+      }
+      return {
+        matchNo: m.matchNo,
+        homeTeam: m.homeTeam,
+        awayTeam: m.awayTeam,
+        league: m.league,
+        voteRate: m.voteRate,
+        domesticOdds: domOdds,
+        foreignOdds: forOdds,
+        h2hDrawRate: null
+      };
+    });
+
+    const totalSalesKRW = roundInfo.totalPrice || (roundInfo.totalVotes ? roundInfo.totalVotes * 1000 : 3_500_000_000);
+    const jackpotPoolKRW = roundInfo.expectedJackpot || Math.round(totalSalesKRW * 0.5);
+
+    const optResult = optimizeTotoByBudget({
+      totoType,
+      year: parsedYear,
+      round: parsedRound,
+      matches: enrichedMatches,
+      budget,
+      lockedPicks,
+      iterationIndex,
+      totalSalesKRW,
+      jackpotPoolKRW
+    });
+
+    res.json({
+      ...optResult,
+      title: roundInfo.title,
+      closeDate: roundInfo.closeDate,
+      totalVotes: roundInfo.totalVotes,
+      totalPrice: roundInfo.totalPrice,
+      expectedJackpot: roundInfo.expectedJackpot,
+      carryOverAmount: roundInfo.carryOverAmount
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err?.message || "토토 정밀 조합 최적화 중 오류가 발생했습니다." });
+  }
+});
+
+// Empirical Historical 1st-Prize Pattern & Walk-Forward Verification Endpoint
+app.get("/api/toto/historical-patterns", (req, res) => {
+  try {
+    const sport = (req.query.sport === 'bs' || req.query.sport === 'bk' ? req.query.sport : 'sc') as 'sc' | 'bs' | 'bk';
+    const idx = getSportEmpiricalIndex(sport);
+    const buckets: Array<{
+      bucketId: string;
+      label: string;
+      count: number;
+      winPct: number;
+      drawPct: number;
+      losePct: number;
+      favHitPct: number;
+      upsetPct: number;
+    }> = [];
+
+    for (const [bucketId, b] of idx.buckets.entries()) {
+      const c = Math.max(1, b.count);
+      buckets.push({
+        bucketId,
+        label: b.label,
+        count: b.count,
+        winPct: Number(((b.win / c) * 100).toFixed(1)),
+        drawPct: Number(((b.draw / c) * 100).toFixed(1)),
+        losePct: Number(((b.lose / c) * 100).toFixed(1)),
+        favHitPct: Number(((b.favHit / c) * 100).toFixed(1)),
+        upsetPct: Number(((b.upset / c) * 100).toFixed(1))
+      });
+    }
+    buckets.sort((a, b) => b.count - a.count);
+
+    const walkForward = evaluateHistoricalModelWalkForward(sport);
+    res.json({
+      sport,
+      summary: {
+        roundsCount: idx.rounds.length,
+        avgFavCount: idx.avgFavCount,
+        avgDrawCount: idx.avgDrawCount,
+        avgUpsetCount: idx.avgUpsetCount,
+        naiveFavAvgHits: idx.naiveFavAvgHits,
+        goldenEnvelope: {
+          favQ20: idx.favQ20,
+          favQ80: idx.favQ80,
+          drawQ20: idx.drawQ20,
+          drawQ80: idx.drawQ80,
+          upsetQ20: idx.upsetQ20,
+          upsetQ80: idx.upsetQ80
+        }
+      },
+      buckets,
+      walkForward
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err?.message || "역대 토토 패턴 분석 조회 중 오류가 발생했습니다." });
+  }
+});
+
 // =======================================================================
 // 14-Game Toto Combination Score & 96-Portfolio Optimization Endpoints
 // Formula: Score = w1*P(14) + w2*P(13+) + w3*P(12+) + w4*P(11+) + w5*Rarity
@@ -4876,10 +5033,16 @@ interface LiveActiveRounds {
   today?: string;
 }
 
+function getKstDate(dateObj: Date = new Date()): Date {
+  return new Date(dateObj.getTime() + 9 * 60 * 60 * 1000);
+}
+
 function calculateCalendarTodayRounds(dateObj: Date = new Date()): LiveActiveRounds {
-  const year = dateObj.getFullYear();
-  const startOfYear = new Date(year, 0, 1);
-  const dayOfYear = Math.floor((dateObj.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  const kst = getKstDate(dateObj);
+  const year = kst.getUTCFullYear();
+  const startOfYear = Date.UTC(year, 0, 1);
+  const currentUtcMidnight = Date.UTC(year, kst.getUTCMonth(), kst.getUTCDate());
+  const dayOfYear = Math.floor((currentUtcMidnight - startOfYear) / (1000 * 60 * 60 * 24)) + 1;
   const isLeap = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
   const totalDays = isLeap ? 366 : 365;
 
@@ -4903,8 +5066,8 @@ function calculateCalendarTodayRounds(dateObj: Date = new Date()): LiveActiveRou
   const bkMax = totoRoundLimits.bk[year] || 50;
   const bk = Math.min(bkMax, Math.max(1, Math.round((dayOfYear / totalDays) * bkMax)));
   
-  const m = String(dateObj.getMonth() + 1).padStart(2, '0');
-  const d = String(dateObj.getDate()).padStart(2, '0');
+  const m = String(kst.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(kst.getUTCDate()).padStart(2, '0');
   const todayStr = `${year}-${m}-${d}`;
 
   return { pt1, sc, bs, bk, year, today: todayStr };
@@ -4956,7 +5119,7 @@ async function getLiveActiveRounds(): Promise<LiveActiveRounds> {
 
   const defaults = calculateCalendarTodayRounds(new Date());
   try {
-    const [indexRes, scCheck, bsCheck, bkCheck] = await Promise.allSettled([
+    const [indexRes, scCheck, bsCheck, bkCheck, ktLiveRes, betmanRoundsRes] = await Promise.allSettled([
       fetch("https://www.wisetoto.com/index.htm?tab_type=proto", {
         headers: {
           "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -4964,11 +5127,17 @@ async function getLiveActiveRounds(): Promise<LiveActiveRounds> {
       }),
       fetchLatestTotoRoundFromWisetoto('sc1'),
       fetchLatestTotoRoundFromWisetoto('bs1'),
-      fetchLatestTotoRoundFromWisetoto('bk1')
+      fetchLatestTotoRoundFromWisetoto('bk1'),
+      scrapeKilltotoProtoRound(undefined, undefined, false),
+      fetchBetmanAvailableProtoRounds(false).catch(() => [])
     ]);
 
     const active: LiveActiveRounds = { ...defaults };
     let detectedYear = defaults.year || 2026;
+    let pt1IngRound: number | null = null;
+    let pt1FinishRounds = new Set<number>();
+    let pt1SelectSelected: number | null = null;
+    const pt1SelectOptions: number[] = [];
 
     if (scCheck.status === 'fulfilled' && scCheck.value?.round) {
       active.sc = scCheck.value.round;
@@ -4988,21 +5157,25 @@ async function getLiveActiveRounds(): Promise<LiveActiveRounds> {
 
       const lis = html.match(/<li>[\s\S]*?<\/li>/g) || [];
       for (const li of lis) {
+        const catMatch = li.match(/game_category=([a-z0-9]+)/i);
+        const roundMatch = li.match(/game_round=(\d+)/i) || li.match(/(\d+)회차/i);
+        const yearMatch = li.match(/game_year=(\d{4})/i);
+        if (yearMatch) {
+          detectedYear = parseInt(yearMatch[1], 10);
+        }
+        if (!catMatch || !roundMatch) continue;
+        const cat = catMatch[1].toLowerCase();
+        const r = parseInt(roundMatch[1], 10);
+
         if (li.includes("발매중") || li.includes("state ing")) {
-          const catMatch = li.match(/game_category=([a-z0-9]+)/i);
-          const roundMatch = li.match(/game_round=(\d+)/i) || li.match(/(\d+)회차/i);
-          const yearMatch = li.match(/game_year=(\d{4})/i);
-          if (yearMatch) {
-            detectedYear = parseInt(yearMatch[1], 10);
-          }
-          if (catMatch && roundMatch) {
-            const cat = catMatch[1].toLowerCase();
-            const r = parseInt(roundMatch[1], 10);
-            if (cat === "pt1") active.pt1 = r;
-            else if (cat === "sc1") active.sc = r;
-            else if (cat === "bs1") active.bs = r;
-            else if (cat === "bk1") active.bk = r;
-          }
+          if (cat === "pt1") {
+            active.pt1 = r;
+            pt1IngRound = r;
+          } else if (cat === "sc1") active.sc = r;
+          else if (cat === "bs1") active.bs = r;
+          else if (cat === "bk1") active.bk = r;
+        } else if (cat === "pt1" && (li.includes("마감") || li.includes("state finish"))) {
+          pt1FinishRounds.add(r);
         }
       }
 
@@ -5020,20 +5193,68 @@ async function getLiveActiveRounds(): Promise<LiveActiveRounds> {
 
       const selectMatches = [...html.matchAll(/<select[^>]*>([\s\S]*?)<\/select>/gi)];
       for (const sel of selectMatches) {
-        const selectedOption = sel[1].match(/<option[^>]*value=['"]?(\d+)['"]?[^>]*selected/i);
-        if (selectedOption) {
-          const val = parseInt(selectedOption[1], 10);
-          if (sel[0].includes("game_category=pt1") && sel[0].includes("select01") && val >= 2024) {
-            detectedYear = val;
-          } else if ((sel[0].includes("game_category=pt1") && sel[0].includes("select02")) || sel[0].includes("name=\"game_round\"")) {
-            active.pt1 = val;
+        if (sel[0].includes("game_category=pt1") && sel[0].includes("select01")) {
+          const selectedYearOpt = sel[1].match(/<option[^>]*value=['"]?(\d+)['"]?[^>]*selected/i);
+          if (selectedYearOpt) {
+            const val = parseInt(selectedYearOpt[1], 10);
+            if (val >= 2024) detectedYear = val;
+          }
+        }
+        if ((sel[0].includes("game_category=pt1") && sel[0].includes("select02")) || sel[0].includes("name=\"game_round\"")) {
+          const allOpts = [...sel[1].matchAll(/<option[^>]*value=['"]?(\d+)['"]?[^>]*>/gi)];
+          for (const opt of allOpts) {
+            const v = parseInt(opt[1], 10);
+            if (v > 0 && !pt1SelectOptions.includes(v)) pt1SelectOptions.push(v);
+          }
+          const selectedOption = sel[1].match(/<option[^>]*value=['"]?(\d+)['"]?[^>]*selected/i);
+          if (selectedOption) {
+            pt1SelectSelected = parseInt(selectedOption[1], 10);
+            if (!pt1IngRound) active.pt1 = pt1SelectSelected;
           }
         }
       }
     }
 
+    // Check Betman official open rounds if available
+    if (betmanRoundsRes.status === 'fulfilled' && Array.isArray(betmanRoundsRes.value) && betmanRoundsRes.value.length > 0) {
+      const openBetman = betmanRoundsRes.value.find((r: any) => r.saleStatus === 'ING' || r.live || r.isOpen) || betmanRoundsRes.value[0];
+      if (openBetman?.gmOsidTs && openBetman.gmOsidTs > 0) {
+        active.pt1 = openBetman.gmOsidTs;
+        if (openBetman.gmOsidTsYear >= 2024) detectedYear = openBetman.gmOsidTsYear;
+        pt1IngRound = openBetman.gmOsidTs;
+      }
+    }
+
+    // If WiseToto had pt1 marked 마감 (finish) or Killtoto live round ended, promote to newest open/upcoming select02 option (e.g. 138)
+    const ktLive = ktLiveRes.status === 'fulfilled' ? ktLiveRes.value : null;
+    const ktLiveEnded = ktLive?.saleEndAt ? (new Date(ktLive.saleEndAt).getTime() <= now && !ktLive.live) : false;
+
+    if (!pt1IngRound) {
+      const currentPt1 = pt1SelectSelected || active.pt1;
+      const isCurrentClosed = pt1FinishRounds.has(currentPt1) || (ktLive && ktLive.round === currentPt1 && ktLiveEnded);
+      const newerOptions = pt1SelectOptions.filter(v => v > currentPt1).sort((a, b) => b - a);
+      const candidatePool = newerOptions.length > 0
+        ? newerOptions
+        : (isCurrentClosed ? [currentPt1 + 1] : []);
+
+      for (const cand of candidatePool.slice(0, 2)) {
+        const ktCand = await scrapeKilltotoProtoRound(detectedYear, cand, false).catch(() => null);
+        if (ktCand && Array.isArray(ktCand.matches) && ktCand.matches.length > 0) {
+          const candEnded = ktCand.saleEndAt ? (new Date(ktCand.saleEndAt).getTime() <= now && !ktCand.live) : false;
+          if (!candEnded || ktCand.round > currentPt1) {
+            active.pt1 = cand;
+            break;
+          }
+        }
+      }
+      // Fallback: if select02 already publishes a higher option even when Killtoto is slow, prefer highest non-finished option when current is 마감
+      if (active.pt1 === currentPt1 && isCurrentClosed && newerOptions.length > 0) {
+        active.pt1 = newerOptions[0];
+      }
+    }
+
     active.year = detectedYear;
-    active.today = defaults.today || new Date().toISOString().split('T')[0];
+    active.today = defaults.today || getKstDate(new Date()).toISOString().split('T')[0];
 
     // Dynamically update round limits so selectors support active rounds
     if (active.year && active.year >= 2024) {
@@ -5633,9 +5854,139 @@ function parseWisetotoForeignRateTable(html: string, kind: 'n' | 'h' | 'u'): Wis
   return out;
 }
 
+async function fetchWisetotoForeignRateForSeqKind(
+  seq: string,
+  kind: 'n' | 'h' | 'u',
+  forceRefresh: boolean = false
+): Promise<WisetotoParsedBookmakerRow[]> {
+  if (!seq) return [];
+  const key = `${seq}_${kind}`;
+  const now = Date.now();
+  const cached = wisetotoForeignRateCache.get(key);
+  if (!forceRefresh && cached && now - cached.fetchedAt < WISETOTO_FOREIGN_RATE_TTL_MS) {
+    return cached.rows;
+  }
+
+  const url = `https://www.wisetoto.com/util/gameinfo/get_foreign_rate.htm?schedule_info_seq=${seq}&rate_kind=${kind}`;
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
+    const res = await fetch(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+        "Referer": "https://www.wisetoto.com/index.htm?tab_type=proto",
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      signal: controller.signal
+    });
+    clearTimeout(timer);
+    if (res.ok) {
+      const arrayBuffer = await res.arrayBuffer();
+      const buf = Buffer.from(arrayBuffer);
+      let text = buf.toString("utf-8");
+      if (text.includes("\uFFFD")) {
+        text = iconv.decode(buf, "euc-kr");
+      }
+      const parsedRows = parseWisetotoForeignRateTable(text, kind);
+      wisetotoForeignRateCache.set(key, { fetchedAt: Date.now(), rows: parsedRows });
+      return parsedRows;
+    }
+  } catch {
+    // Retain existing cache if any, or return cached/empty on network timeout
+  }
+  return cached ? cached.rows : [];
+}
+
+function pickConsensusLineRows(
+  rows: WisetotoParsedBookmakerRow[],
+  preferredLine?: number | null
+): { line: number | null; lineRows: WisetotoParsedBookmakerRow[] } {
+  if (!rows || rows.length === 0) return { line: null, lineRows: [] };
+  const withLine = rows.filter(r => r.line !== null && r.line !== undefined);
+  if (withLine.length === 0) return { line: null, lineRows: rows };
+
+  if (preferredLine !== null && preferredLine !== undefined) {
+    const exact = withLine.filter(r => Math.abs((r.line as number) - preferredLine) < 0.05);
+    if (exact.length > 0) return { line: preferredLine, lineRows: exact };
+  }
+
+  const buckets = new Map<string, { line: number; items: WisetotoParsedBookmakerRow[] }>();
+  for (const r of withLine) {
+    const lineVal = r.line as number;
+    const k = lineVal.toFixed(1);
+    const existing = buckets.get(k);
+    if (existing) existing.items.push(r);
+    else buckets.set(k, { line: lineVal, items: [r] });
+  }
+
+  const sorted = Array.from(buckets.values()).sort((a, b) => {
+    if (b.items.length !== a.items.length) return b.items.length - a.items.length;
+    if (preferredLine !== null && preferredLine !== undefined) {
+      return Math.abs(a.line - preferredLine) - Math.abs(b.line - preferredLine);
+    }
+    return 0;
+  });
+
+  return { line: sorted[0].line, lineRows: sorted[0].items };
+}
+
+function buildWisetotoForeignMarketSummary(
+  rows: WisetotoParsedBookmakerRow[],
+  sport: string,
+  kind: 'n' | 'h' | 'u',
+  preferredLine?: number | null,
+  hasDomesticDraw?: boolean
+) {
+  if (!rows || rows.length === 0) return undefined;
+
+  const { line: consensusLine, lineRows } =
+    kind === 'n' ? { line: null, lineRows: rows } : pickConsensusLineRows(rows, preferredLine);
+
+  const avgBase = lineRows.length > 0 ? lineRows : rows;
+  const avgW = Number((avgBase.reduce((s, b) => s + b.win, 0) / avgBase.length).toFixed(2));
+  const avgL = Number((avgBase.reduce((s, b) => s + b.lose, 0) / avgBase.length).toFixed(2));
+
+  const isTwoWayMarket =
+    kind === 'u' ||
+    sport === 'basketball' ||
+    sport === 'baseball' ||
+    sport === 'volleyball' ||
+    (kind === 'n' && hasDomesticDraw === false);
+
+  let avgD: number | null = null;
+  if (!isTwoWayMarket) {
+    const validDraws = avgBase.filter(b => b.draw !== null && b.draw > 1.0);
+    if (validDraws.length > 0) {
+      avgD = Number((validDraws.reduce((s, b) => s + (b.draw || 0), 0) / validDraws.length).toFixed(2));
+    }
+  }
+
+  const invSum = avgD !== null ? (1 / avgW + 1 / avgD + 1 / avgL) : (1 / avgW + 1 / avgL);
+  const refundRate = invSum > 0 ? `${((1 / invSum) * 100).toFixed(2)}%` : "94.50%";
+  const upCount = avgBase.filter(b => b.winMove === 'up').length;
+  const downCount = avgBase.filter(b => b.winMove === 'down').length;
+  const trend: 'up' | 'down' | 'flat' = upCount > downCount ? 'up' : downCount > upCount ? 'down' : 'flat';
+
+  const marketLabel = kind === 'h' ? '핸디캡' : kind === 'u' ? '언더오버' : '일반';
+
+  return {
+    line: consensusLine,
+    avg: {
+      win: avgW,
+      draw: avgD,
+      lose: avgL,
+      refundRate,
+      trend
+    },
+    bookmakers: rows,
+    sourceName: `와이즈토토 해외배당 · ${marketLabel}${consensusLine !== null ? ` (${consensusLine})` : ''} (${rows.length}개사)`
+  };
+}
+
 /**
  * Enrich matches with real WiseToto overseas bookmaker odds (get_foreign_rate.htm)
- * Matches by WiseToto's exact scheduleInfoSeq and market kind ('n' = 일반, 'h' = 핸디캡, 'u' = 언더오버).
+ * Fetches all 3 market kinds ('n' = 일반, 'h' = 핸디캡, 'u' = 언더오버) per scheduleInfoSeq
+ * so both MatchTable rows and DetailedAnalysisModal multi-market tabs stay complete.
  */
 async function enrichMatchesWithWisetotoForeignOdds(
   matches: any[],
@@ -5646,37 +5997,39 @@ async function enrichMatchesWithWisetotoForeignOdds(
   const now = Date.now();
   const tasks: { seq: string; kind: 'n' | 'h' | 'u' }[] = [];
   const taskKeys = new Set<string>();
+  const seqMetaMap = new Map<string, { sport: string; hLine: number | null; uLine: number | null; hasDomDraw: boolean }>();
 
   for (const m of matches) {
     const seq = String(m.scheduleInfoSeq || "").trim();
     if (!seq) continue;
-    if (m.marketPeriod === 'FIRST_HALF') continue;
-    const label = String(m.categoryLabel || "");
-    if (
-      label.includes("SUM") ||
-      label.includes("홀") ||
-      label.includes("짝") ||
-      label.includes("승⑤패") ||
-      label.includes("승5패") ||
-      label.includes("승①패") ||
-      label.includes("승1패") ||
-      m.categoryType === '승1패'
-    ) {
-      continue;
+
+    if (!seqMetaMap.has(seq)) {
+      seqMetaMap.set(seq, {
+        sport: String(m.sport || 'soccer'),
+        hLine: null,
+        uLine: null,
+        hasDomDraw: Boolean(m.domestic?.draw && m.domestic.draw > 1.0)
+      });
+    }
+    const meta = seqMetaMap.get(seq)!;
+    if (m.categoryType === '핸디캡' && meta.hLine === null && typeof (m.handicapLine ?? m.handicapOrLine) === 'number') {
+      meta.hLine = m.handicapLine ?? m.handicapOrLine;
+    }
+    if (m.categoryType === '언더오버' && meta.uLine === null) {
+      const candidateU = m.uoLine ?? m.handicapOrLine;
+      if (typeof candidateU === 'number' && candidateU > 0) meta.uLine = candidateU;
     }
 
-    const kind: 'n' | 'h' | 'u' =
-      m.categoryType === '핸디캡' ? 'h' : m.categoryType === '언더오버' ? 'u' : 'n';
-    const key = `${seq}_${kind}`;
-    if (taskKeys.has(key)) continue;
-
-    const cached = wisetotoForeignRateCache.get(key);
-    if (!forceRefresh && cached && now - cached.fetchedAt < WISETOTO_FOREIGN_RATE_TTL_MS) {
-      continue;
+    for (const kind of ['n', 'h', 'u'] as const) {
+      const key = `${seq}_${kind}`;
+      if (taskKeys.has(key)) continue;
+      const cached = wisetotoForeignRateCache.get(key);
+      if (!forceRefresh && cached && now - cached.fetchedAt < WISETOTO_FOREIGN_RATE_TTL_MS) {
+        continue;
+      }
+      taskKeys.add(key);
+      tasks.push({ seq, kind });
     }
-
-    taskKeys.add(key);
-    tasks.push({ seq, kind });
   }
 
   if (tasks.length > 0) {
@@ -5685,35 +6038,26 @@ async function enrichMatchesWithWisetotoForeignOdds(
       const batch = tasks.slice(i, i + CONCURRENCY);
       await Promise.all(
         batch.map(async ({ seq, kind }) => {
-          const key = `${seq}_${kind}`;
-          const url = `https://www.wisetoto.com/util/gameinfo/get_foreign_rate.htm?schedule_info_seq=${seq}&rate_kind=${kind}`;
-          try {
-            const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), 5000);
-            const res = await fetch(url, {
-              headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-                "Referer": "https://www.wisetoto.com/index.htm?tab_type=proto",
-                "X-Requested-With": "XMLHttpRequest"
-              },
-              signal: controller.signal
-            });
-            clearTimeout(timer);
-            if (res.ok) {
-              const arrayBuffer = await res.arrayBuffer();
-              const buf = Buffer.from(arrayBuffer);
-              let text = buf.toString("utf-8");
-              if (text.includes("\uFFFD")) {
-                text = iconv.decode(buf, "euc-kr");
-              }
-              const parsedRows = parseWisetotoForeignRateTable(text, kind);
-              wisetotoForeignRateCache.set(key, { fetchedAt: Date.now(), rows: parsedRows });
-            }
-          } catch {
-            // Retain existing cache if any, or skip on network timeout
-          }
+          await fetchWisetotoForeignRateForSeqKind(seq, kind, forceRefresh);
         })
       );
+    }
+  }
+
+  const seqMarketsMap = new Map<string, any>();
+  for (const [seq, meta] of seqMetaMap.entries()) {
+    const nRows = wisetotoForeignRateCache.get(`${seq}_n`)?.rows || [];
+    const hRows = wisetotoForeignRateCache.get(`${seq}_h`)?.rows || [];
+    const uRows = wisetotoForeignRateCache.get(`${seq}_u`)?.rows || [];
+    const normal = buildWisetotoForeignMarketSummary(nRows, meta.sport, 'n', null, meta.hasDomDraw);
+    const handicap = buildWisetotoForeignMarketSummary(hRows, meta.sport, 'h', meta.hLine, meta.hasDomDraw);
+    const underOver = buildWisetotoForeignMarketSummary(uRows, meta.sport, 'u', meta.uLine, false);
+    if (normal || handicap || underOver) {
+      seqMarketsMap.set(seq, {
+        ...(normal ? { normal } : {}),
+        ...(handicap ? { handicap } : {}),
+        ...(underOver ? { underOver } : {})
+      });
     }
   }
 
@@ -5722,6 +6066,10 @@ async function enrichMatchesWithWisetotoForeignOdds(
 
   for (const m of matches) {
     const seq = String(m.scheduleInfoSeq || "").trim();
+    if (seq && seqMarketsMap.has(seq)) {
+      m.foreignMarkets = seqMarketsMap.get(seq);
+    }
+
     const label = String(m.categoryLabel || "");
     const isUnsupportedMarket =
       !seq ||
@@ -5751,31 +6099,47 @@ async function enrichMatchesWithWisetotoForeignOdds(
       m.categoryType === '핸디캡' ? 'h' : m.categoryType === '언더오버' ? 'u' : 'n';
     const cached = wisetotoForeignRateCache.get(`${seq}_${kind}`);
     let bms = cached ? [...cached.rows] : [];
+    let matchedForeignLine: number | null = null;
 
     if (kind === 'h' && bms.length > 0) {
       const targetLine = m.handicapLine ?? m.handicapOrLine;
-      if (targetLine !== null && targetLine !== undefined) {
+      const isUnsetHandicap =
+        targetLine === null || targetLine === undefined || (targetLine === 0 && !m.domestic?.win);
+      if (isUnsetHandicap) {
+        const picked = pickConsensusLineRows(bms, null);
+        bms = picked.lineRows;
+        matchedForeignLine = picked.line;
+      } else {
         const exact = bms.filter(b => b.line !== null && Math.abs(b.line - targetLine) < 0.05);
         if (exact.length > 0) {
           bms = exact;
+          matchedForeignLine = targetLine;
         } else if (m.sport === 'basketball' || m.sport === 'volleyball' || m.sport === 'baseball') {
           const tol = m.sport === 'baseball' ? 1.0 : 2.5;
           bms = bms.filter(
             b => b.line !== null && b.line * targetLine > 0 && Math.abs(b.line - targetLine) <= tol
           );
+          matchedForeignLine = bms[0]?.line ?? null;
         } else {
           bms = [];
         }
       }
     } else if (kind === 'u' && bms.length > 0) {
       const targetLine = m.uoLine ?? m.handicapOrLine;
-      if (targetLine !== null && targetLine !== undefined) {
+      // U 0.0 (or missing line) means BetMan line is unset; fall back to WiseToto overseas consensus U/O line
+      if (targetLine === null || targetLine === undefined || targetLine <= 0) {
+        const picked = pickConsensusLineRows(bms, null);
+        bms = picked.lineRows;
+        matchedForeignLine = picked.line;
+      } else {
         const exact = bms.filter(b => b.line !== null && Math.abs(b.line - targetLine) < 0.05);
         if (exact.length > 0) {
           bms = exact;
+          matchedForeignLine = targetLine;
         } else if (m.sport === 'basketball' || m.sport === 'volleyball' || m.sport === 'baseball') {
           const tol = m.sport === 'baseball' ? 1.0 : 3.5;
           bms = bms.filter(b => b.line !== null && Math.abs(b.line - targetLine) <= tol);
+          matchedForeignLine = bms[0]?.line ?? null;
         } else {
           bms = [];
         }
@@ -5790,7 +6154,7 @@ async function enrichMatchesWithWisetotoForeignOdds(
         m.sport === 'basketball' ||
         m.sport === 'baseball' ||
         m.sport === 'volleyball' ||
-        (m.domestic && (m.domestic.draw === null || m.domestic.draw === undefined));
+        (m.domestic && (m.domestic.draw === null || m.domestic.draw === undefined) && !bms.some(b => b.draw && b.draw > 1.0));
 
       let avgD: number | null = null;
       if (!isTwoWayMarket) {
@@ -5814,12 +6178,14 @@ async function enrichMatchesWithWisetotoForeignOdds(
         refundRate,
         trend
       };
+      m.foreignLine = matchedForeignLine;
       m.foreignBookmakers = bms;
       m.oddsSource = {
         domestic: m.oddsSource?.domestic || 'real',
         foreign: 'real'
       };
-      m.foreignSourceName = `와이즈토토(WiseToto) 해외 평균 배당 (${bms.length}개사 평균)`;
+      const lineSuffix = matchedForeignLine !== null ? ` · 기준 ${matchedForeignLine}` : '';
+      m.foreignSourceName = `와이즈토토(WiseToto) 해외 평균 배당 (${bms.length}개사 평균${lineSuffix})`;
       m.foreignBookmaker = `와이즈토토 해외배당 (${bms.length}개사 평균)`;
       m.foreignLastUpdate = fetchedIso;
       m.foreignStatus = 'LIVE';
@@ -5830,7 +6196,7 @@ async function enrichMatchesWithWisetotoForeignOdds(
         domestic: m.oddsSource?.domestic || 'real',
         foreign: 'unavailable'
       };
-      m.foreignSourceName = "와이즈토토 해외배당 (원본 미제공)";
+      m.foreignSourceName = "와이즈토토 해외배당 (해당 기준선 미제공)";
       m.foreignBookmaker = "해외 평균 배당";
       m.foreignStatus = "UNAVAILABLE";
     }
@@ -5859,11 +6225,99 @@ app.get("/api/matches", async (req, res) => {
     delete matchDatabaseCache[`live_wisetoto_${gameType}_${parsedYear}_${parsedRound}`];
   }
 
-  // 1. Try Real Live Wisetoto Scraping
-  let scraped = await scrapeWisetotoMatches(String(gameType), parsedYear, parsedRound, isForce);
+  // 1. Try Real Live Wisetoto Scraping + Killtoto SSR HTML in parallel (Zero private site APIs)
+  let [scraped, killtotoRound] = await Promise.all([
+    scrapeWisetotoMatches(String(gameType), parsedYear, parsedRound, isForce),
+    gameType === "pt1" ? scrapeKilltotoProtoRound(parsedYear, parsedRound, isForce).catch(() => null) : Promise.resolve(null)
+  ]);
+
+  // If WiseToto yields no live schedule, promote Killtoto SSR HTML into real matches
+  if ((!scraped || !scraped.matches || scraped.matches.length === 0) && killtotoRound && killtotoRound.matches.length > 0) {
+    const ktMatches = killtotoRound.matches.map((km) => {
+      const lc = km.leagueCode.toUpperCase();
+      const sp = lc.startsWith('BK') ? 'basketball' : lc.startsWith('BS') ? 'baseball' : lc.startsWith('VL') ? 'volleyball' : 'soccer';
+      const bt = km.betTypeName;
+      const catLabel = bt.includes('핸디') ? `H ${km.handicap > 0 ? '+' : ''}${km.handicap}` : bt.includes('언더') ? `U ${km.handicap}` : bt.includes('SUM') ? 'SUM' : bt.includes('승1패') ? '승1패' : bt.includes('승5패') ? '승5패' : '일반';
+      const catType = bt.includes('핸디') ? '핸디캡' : bt.includes('언더') ? '언더오버' : bt.includes('SUM') ? 'SUM' : '일반';
+      const kstDate = km.gameDate ? new Date(new Date(km.gameDate).getTime() + 9 * 3600 * 1000) : null;
+      const dateStr = kstDate ? `${String(kstDate.getUTCMonth() + 1).padStart(2, '0')}.${String(kstDate.getUTCDate()).padStart(2, '0')} ${String(kstDate.getUTCHours()).padStart(2, '0')}:${String(kstDate.getUTCMinutes()).padStart(2, '0')}` : '';
+      const hasScore = typeof km.homeScore === 'number' && typeof km.awayScore === 'number';
+      return {
+        gameNo: km.matchSeq,
+        year: parsedYear,
+        round: parsedRound,
+        date: dateStr,
+        sport: sp,
+        league: km.leagueName,
+        categoryLabel: catLabel,
+        categoryType: catType,
+        homeTeam: km.homeName,
+        awayTeam: km.awayName,
+        venue: km.stadium,
+        status: km.outcome && km.outcome !== '' ? '종료' : '경기전',
+        score: hasScore ? { home: km.homeScore, away: km.awayScore } : null,
+        domestic: (km.allot?.win || km.allot?.lose) ? {
+          win: km.allot.win ?? null,
+          draw: km.allot.draw ?? null,
+          lose: km.allot.lose ?? null,
+          refundRate: '87.90%'
+        } : null,
+        domesticSourceName: '킬토토(Killtoto) SSR HTML 공시 배당',
+        oddsSource: { domestic: 'real', foreign: 'unavailable' },
+        dataSource: 'real',
+        isSimulated: false,
+        handicapOrLine: km.handicap || undefined,
+        handicapLine: catType === '핸디캡' ? km.handicap : undefined,
+        uoLine: catType === '언더오버' ? km.handicap : undefined,
+        killtotoAnalysisPath: km.analysisPath || undefined
+      };
+    });
+    scraped = {
+      matches: ktMatches as any,
+      periodDisplay: killtotoRound.roundLabel || `${parsedYear}년 ${parsedRound}회차`,
+      domesticRefundRate: '87.90%',
+      foreignRefundRate: '95.51%',
+      status: killtotoRound.live ? '진행중' : '발매중',
+      fetchedAt: killtotoRound.fetchedAt,
+      isStale: false
+    } as any;
+  }
 
   if (scraped && scraped.matches && scraped.matches.length > 0) {
     const maxR = protoRoundLimits[parsedYear] || 105;
+
+    // Merge Killtoto SSR HTML supplementary data (stadium, missing odds, oddsHist ticks, analysisPath)
+    if (killtotoRound && killtotoRound.matches.length > 0) {
+      const ktMap = new Map<number, any>();
+      for (const km of killtotoRound.matches) ktMap.set(km.matchSeq, km);
+      for (const m of scraped.matches) {
+        const km = ktMap.get(Number(m.gameNo));
+        if (!km) continue;
+        if (km.stadium && !m.venue) m.venue = km.stadium;
+        if (km.analysisPath) m.killtotoAnalysisPath = km.analysisPath;
+        if ((!m.domestic || (!m.domestic.win && !m.domestic.lose)) && (km.allot?.win || km.allot?.lose)) {
+          m.domestic = {
+            win: km.allot.win ?? null,
+            draw: km.allot.draw ?? null,
+            lose: km.allot.lose ?? null,
+            refundRate: m.domestic?.refundRate || '87.90%'
+          };
+          m.oddsSource = { domestic: 'real', foreign: m.oddsSource?.foreign || 'unavailable' };
+          m.domesticSourceName = '킬토토(Killtoto) SSR HTML 공시 배당';
+        }
+        if ((!m.oddsHistory || m.oddsHistory.length < 2) && Array.isArray(km.oddsHist) && km.oddsHist.length >= 2) {
+          m.oddsHistory = km.oddsHist.map((tick: [number, number, number, number], idx: number) => ({
+            time: idx === 0 ? '초기' : (idx === km.oddsHist.length - 1 ? '최신' : `변동${idx}`),
+            item1: tick[0] || null,
+            itemDraw: tick[1] > 0 ? tick[1] : null,
+            item2: tick[2] || null,
+            win: tick[0] || null,
+            draw: tick[1] > 0 ? tick[1] : null,
+            lose: tick[2] || null
+          }));
+        }
+      }
+    }
 
     // Verified BetMan Real Official Domestic Odds & Real Odds History Enrichment
     let betmanEnrichedCount = 0;
@@ -5964,6 +6418,12 @@ app.get("/api/matches", async (req, res) => {
     // Enrich directly with WiseToto's official overseas bookmaker odds (get_foreign_rate.htm)
     const wisetotoForeignCount = await enrichMatchesWithWisetotoForeignOdds(returnMatches, isForce);
 
+    // Enrich with ESPN public team logos & DraftKings opening/fallback odds (zero Betsgo API)
+    await enrichMatchesWithEspnBulk(returnMatches).catch(() => 0);
+
+    // Record real observed domestic & overseas odds snapshots & attach observed oddsHistory
+    recordAndAttachOddsSnapshots(returnMatches, parsedYear, parsedRound);
+
     return res.json({
       gameType,
       year: parsedYear,
@@ -5981,7 +6441,9 @@ app.get("/api/matches", async (req, res) => {
       isVerifiedForeignPreview: false,
       verifiedPreviewRound: null,
       foreignSourceOrigin: wisetotoForeignCount > 0 ? 'wisetoto_foreign_rate' : null,
-      sourceName: '와이즈토토(WiseToto) 공식 실시간 국내·해외 배당',
+      sourceName: killtotoRound
+        ? '와이즈토토(WiseToto) · 킬토토(Killtoto SSR) · 베트맨(BetMan) · ESPN 통합 실시간 연동'
+        : '와이즈토토(WiseToto) 공식 실시간 국내·해외 배당 · ESPN 실시간 연동',
       matches: returnMatches,
       isStale: scraped.isStale || false
     });
@@ -6032,6 +6494,42 @@ app.get("/api/matches", async (req, res) => {
     sourceName: 'SportsQuant 수리 퀀트 시뮬레이션 모델 (Deterministic Fallback)',
     matches: returnMatches
   });
+});
+
+// Real Observed Odds Changes & Steam-Move Tracker Endpoint (WiseToto + BetMan + ESPN)
+app.get("/api/odds-changes", async (req, res) => {
+  try {
+    const active = await getLiveActiveRounds();
+    const parsedYear = req.query.year ? Number(req.query.year) : (active.year || 2026);
+    const parsedRound = req.query.round ? Number(req.query.round) : (active.pt1 || 130);
+    const gameType = String(req.query.gameType || "pt1");
+
+    const scraped = await scrapeWisetotoMatches(gameType, parsedYear, parsedRound, false);
+    const matches = scraped?.matches ? scraped.matches.map((m: any) => ({ ...m })) : [];
+
+    if (matches.length > 0) {
+      await enrichMatchesWithWisetotoForeignOdds(matches, false).catch(() => 0);
+      await enrichMatchesWithEspnBulk(matches).catch(() => 0);
+      recordAndAttachOddsSnapshots(matches, parsedYear, parsedRound);
+    }
+
+    const changes = buildOddsChangesFeed(matches, parsedYear, parsedRound);
+    res.json({
+      success: true,
+      year: parsedYear,
+      round: parsedRound,
+      totalTrackedMatches: matches.length,
+      changesCount: changes.length,
+      fetchedAt: new Date().toISOString(),
+      changes
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      error: err?.message || "배당 변동 피드 수집 실패",
+      changes: []
+    });
+  }
 });
 
 // The Odds API: Status, Quota, and Inspection Endpoints (Zero API Key Leakage)
@@ -6110,9 +6608,21 @@ app.get("/api/test/betinfo-foreign-odds", (req, res) => {
 app.get("/api/sports-toto/status", (req, res) => {
   res.json({
     isApiKeyConfigured: false,
-    currentActiveSource: "와이즈토토(WiseToto) 실시간 파이프라인 및 아카이브",
+    currentActiveSource: "와이즈토토(WiseToto) · 킬토토(Killtoto SSR HTML) · ESPN 실시간 파이프라인",
     serviceName: "SportsQuant Pro 실시간 스포츠 데이터 엔진",
     status: "정상 가동 중",
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Multi-site Anti-Block HTML Scraper Health & Circuit-Breaker Status (Zero private site APIs)
+app.get("/api/scraper/sources-status", async (req, res) => {
+  const probe = String(req.query.probe || "") === "true";
+  const states = probe ? await probeSecondarySitesHtmlHealth() : getMultiSiteScraperStates();
+  res.json({
+    success: true,
+    policy: "HTML/DOM Scraping Only (Zero private site JSON API calls, per-host jitter queue, circuit breaker enabled)",
+    sources: states,
     timestamp: new Date().toISOString()
   });
 });
@@ -6371,11 +6881,16 @@ app.get("/api/matches/h2h", async (req, res) => {
     seq: targetSeq
   });
 
-  // Parallel fetch TheSportsDB details and Wisetoto H2H
-  const [homeSportsDb, awaySportsDb, liveH2h] = await Promise.all([
+  // Parallel fetch TheSportsDB details, WiseToto H2H, Direct ESPN Live Intel, Killtoto SSR HTML Intel, and all 3 WiseToto foreign markets
+  const [homeSportsDb, awaySportsDb, liveH2h, espnIntel, killtotoIntel, foreignNRows, foreignHRows, foreignURows] = await Promise.all([
     getTheSportsDbTeam(homeTeam),
     getTheSportsDbTeam(awayTeam),
-    targetSeq ? scrapeWisetotoH2H(targetSeq, targetGameNo, parsedYear, parsedRound, String(sport), homeTeam, awayTeam, String(league)).catch(() => null) : Promise.resolve(null)
+    targetSeq ? scrapeWisetotoH2H(targetSeq, targetGameNo, parsedYear, parsedRound, String(sport), homeTeam, awayTeam, String(league)).catch(() => null) : Promise.resolve(null),
+    fetchEspnMatchIntel(homeTeam, awayTeam, String(sport), String(league)).catch(() => null),
+    fetchKilltotoMatchIntel(homeTeam, awayTeam, parsedYear, parsedRound, targetGameNo).catch(() => ({ protoMatch: null, analysis: null })),
+    targetSeq ? fetchWisetotoForeignRateForSeqKind(targetSeq, 'n') : Promise.resolve([]),
+    targetSeq ? fetchWisetotoForeignRateForSeqKind(targetSeq, 'h') : Promise.resolve([]),
+    targetSeq ? fetchWisetotoForeignRateForSeqKind(targetSeq, 'u') : Promise.resolve([])
   ]);
 
   // Fallback to deterministic stats if live scraping yields no data
@@ -6420,6 +6935,34 @@ app.get("/api/matches/h2h", async (req, res) => {
       }
     }
 
+    // Supplement league standings from Killtoto SSR HTML if WiseToto standings were unavailable
+    if ((!mergedStandings || !mergedStandings.standings?.length) && killtotoIntel.analysis?.standings?.length) {
+      const normKt = (s: string) => s.replace(/\s+/g, '').toLowerCase();
+      const hFind = killtotoIntel.analysis.standings.find(r => normKt(r.team).includes(normKt(homeTeam)) || normKt(homeTeam).includes(normKt(r.team)));
+      const aFind = killtotoIntel.analysis.standings.find(r => normKt(r.team).includes(normKt(awayTeam)) || normKt(awayTeam).includes(normKt(r.team)));
+      mergedStandings = {
+        homeRank: hFind?.rank || '-',
+        awayRank: aFind?.rank || '-',
+        homePoints: hFind?.win || 0,
+        awayPoints: aFind?.win || 0,
+        rankingStatus: 'VERIFIED',
+        leagueName: String(league),
+        normalizedLeagueName: `${league} 공식 순위표 (Killtoto HTML)`,
+        standings: killtotoIntel.analysis.standings.map(r => ({
+          rank: r.rank,
+          teamName: r.team,
+          played: r.played,
+          win: r.win,
+          draw: r.draw,
+          lose: r.lose,
+          goalsFor: r.avgFor,
+          goalsAgainst: r.avgAgainst,
+          points: r.win,
+          form: r.last5
+        }))
+      };
+    }
+
     if (!mergedStandings) {
       mergedStandings = normalizeLeagueStandings(null, matchCtx) || {
         homeRank: '-',
@@ -6437,9 +6980,62 @@ app.get("/api/matches/h2h", async (req, res) => {
     }
   }
 
-  const mergedHomeRecentForm = liveH2h?.homeRecentForm || stats?.homeRecentForm || parsedSofaScore?.homeRecentForm || parsedFlashscore?.homeRecentForm || rapidFetchResult.normalizedData.homeRecentForm;
-  const mergedAwayRecentForm = liveH2h?.awayRecentForm || stats?.awayRecentForm || parsedSofaScore?.awayRecentForm || parsedFlashscore?.awayRecentForm || rapidFetchResult.normalizedData.awayRecentForm;
-  const mergedH2H = liveH2h?.h2h || stats?.h2h || parsedSofaScore?.h2h || parsedFlashscore?.h2h || rapidFetchResult.normalizedData.h2h;
+  const espnRecentWrapper = (arr?: any[]) => Array.isArray(arr) && arr.length > 0
+    ? {
+        recentMatches: arr.map(g => ({
+          date: g.date,
+          opponent: g.opponent,
+          isHome: g.isHome,
+          score: `${g.scoreFor}:${g.scoreAgainst}`,
+          scoreFor: g.scoreFor,
+          scoreAgainst: g.scoreAgainst,
+          result: g.result === 'W' ? '승' : g.result === 'D' ? '무' : '패'
+        })),
+        summary: `${arr.filter(g => g.result === 'W').length}승 ${arr.filter(g => g.result === 'D').length}무 ${arr.filter(g => g.result === 'L').length}패`
+      }
+    : null;
+
+  const ktRecentWrapper = (arr?: any[]) => Array.isArray(arr) && arr.length > 0
+    ? {
+        recentMatches: arr.slice(0, 5),
+        summary: `${arr.slice(0, 5).filter(g => g.result === '승').length}승 ${arr.slice(0, 5).filter(g => g.result === '무').length}무 ${arr.slice(0, 5).filter(g => g.result === '패').length}패`
+      }
+    : null;
+
+  const hasValidRecent = (obj: any) => Array.isArray(obj?.recentMatches) && obj.recentMatches.length > 0;
+
+  const mergedHomeRecentForm =
+    (hasValidRecent(liveH2h?.homeRecentForm) ? liveH2h.homeRecentForm : null) ||
+    espnRecentWrapper(espnIntel?.lastFive?.home) ||
+    ktRecentWrapper(killtotoIntel.analysis?.homeRecent) ||
+    (hasValidRecent(stats?.homeRecentForm) ? stats.homeRecentForm : null) ||
+    parsedSofaScore?.homeRecentForm ||
+    parsedFlashscore?.homeRecentForm ||
+    rapidFetchResult.normalizedData.homeRecentForm;
+
+  const mergedAwayRecentForm =
+    (hasValidRecent(liveH2h?.awayRecentForm) ? liveH2h.awayRecentForm : null) ||
+    espnRecentWrapper(espnIntel?.lastFive?.away) ||
+    ktRecentWrapper(killtotoIntel.analysis?.awayRecent) ||
+    (hasValidRecent(stats?.awayRecentForm) ? stats.awayRecentForm : null) ||
+    parsedSofaScore?.awayRecentForm ||
+    parsedFlashscore?.awayRecentForm ||
+    rapidFetchResult.normalizedData.awayRecentForm;
+
+  const ktH2hWrapper = killtotoIntel.analysis?.h2hMatches?.length
+    ? {
+        matches: killtotoIntel.analysis.h2hMatches.slice(0, 5),
+        summary: `최근 ${Math.min(5, killtotoIntel.analysis.h2hMatches.length)}경기 맞대결 (Killtoto SSR HTML)`
+      }
+    : null;
+
+  const mergedH2H =
+    (liveH2h?.h2h?.matches?.length ? liveH2h.h2h : null) ||
+    ktH2hWrapper ||
+    (stats?.h2h?.matches?.length ? stats.h2h : null) ||
+    parsedSofaScore?.h2h ||
+    parsedFlashscore?.h2h ||
+    rapidFetchResult.normalizedData.h2h;
   const rawSport = String(sport || 'soccer').toLowerCase();
   const normalizedSport = 
     rawSport.includes('base') || rawSport === 'bs' ? 'baseball' :
@@ -6448,11 +7044,194 @@ app.get("/api/matches/h2h", async (req, res) => {
 
   const rapidLineupData = parsedSofaScore?.lineupInjuryData || parsedFlashscore?.lineupInjuryData || rapidFetchResult.normalizedData?.lineupInjuryData;
 
-  let validLineupData = (liveH2h?.lineupInjuryData && (liveH2h.lineupInjuryData.homeData || liveH2h.lineupInjuryData.homeStarters)) 
+  let validLineupData: any = (liveH2h?.lineupInjuryData && (liveH2h.lineupInjuryData.homeData || liveH2h.lineupInjuryData.homeStarters)) 
     ? liveH2h.lineupInjuryData 
     : null;
 
-  if (normalizedSport === 'soccer' && validLineupData) {
+  // Merge direct ESPN live scraped rosters, confirmed starters, formations, and separated OUT/GTD injuries
+  if (espnIntel && (espnIntel.homeStarters.length > 0 || espnIntel.awayStarters.length > 0 || espnIntel.homeInjuries.length > 0 || espnIntel.awayInjuries.length > 0)) {
+    const wtHomeStarters = liveH2h?.wisetotoLineup?.home?.starters || [];
+    const wtAwayStarters = liveH2h?.wisetotoLineup?.away?.starters || [];
+
+    const useEspnHomeStarters = espnIntel.isOfficialConfirmed || wtHomeStarters.length < (normalizedSport === 'basketball' ? 5 : 11);
+    const useEspnAwayStarters = espnIntel.isOfficialConfirmed || wtAwayStarters.length < (normalizedSport === 'basketball' ? 5 : 11);
+
+    const homeCountryForLineup = resolveTeamCountryCode(homeTeam, String(league), normalizedSport);
+    const awayCountryForLineup = resolveTeamCountryCode(awayTeam, String(league), normalizedSport);
+
+    const hangulToPhonetic = (ko: string): string => {
+      const CHO = ['g','kk','n','d','tt','r','m','b','pp','s','ss','','j','jj','ch','k','t','p','h'];
+      const JUNG = ['a','ae','ya','yae','eo','e','yeo','ye','o','wa','wae','oe','yo','u','wo','we','wi','yu','eu','ui','i'];
+      const JONG = ['','k','k','ks','n','nj','nh','t','l','lk','lm','lb','ls','lt','lp','lh','m','p','ps','s','ss','ng','j','ch','k','t','p','h'];
+      let out = '';
+      for (const ch of ko) {
+        const code = ch.charCodeAt(0);
+        if (code >= 0xac00 && code <= 0xd7a3) {
+          const offset = code - 0xac00;
+          const ci = Math.floor(offset / 588);
+          const ji = Math.floor((offset % 588) / 28);
+          const ki = offset % 28;
+          out += CHO[ci] + JUNG[ji] + JONG[ki];
+        } else if (/[a-z0-9]/i.test(ch)) {
+          out += ch.toLowerCase();
+        } else if (/\s/.test(ch)) {
+          out += ' ';
+        }
+      }
+      return out.trim();
+    };
+
+    const normalizePhonetic = (s: string) =>
+      s.toLowerCase()
+        .replace(/ph/g, 'p')
+        .replace(/f/g, 'p')
+        .replace(/v/g, 'b')
+        .replace(/z/g, 'j')
+        .replace(/qu/g, 'kw')
+        .replace(/ck/g, 'k')
+        .replace(/c(?=[eiy])/g, 's')
+        .replace(/c/g, 'k')
+        .replace(/eu$/g, '')
+        .replace(/eu/g, 'u')
+        .replace(/eo/g, 'o')
+        .replace(/([a-z])\1+/g, '$1')
+        .replace(/[^a-z0-9\s]/g, '');
+
+    const findMatchingEspnPlayer = (wtP: any, espnPool: any[]) => {
+      if (!Array.isArray(espnPool) || espnPool.length === 0) return undefined;
+      if (wtP.shirtNumber) {
+        const byNum = espnPool.find((e: any) => e.shirtNumber && Number(wtP.shirtNumber) === Number(e.shirtNumber));
+        if (byNum) return byNum;
+      }
+      const wtName = String(wtP.name || '').trim();
+      if (!wtName) return undefined;
+      const wtPhonetic = normalizePhonetic(hangulToPhonetic(wtName));
+      const wtTokens = wtPhonetic.split(/\s+/).filter(Boolean);
+      const wtLast = wtTokens[wtTokens.length - 1] || '';
+      if (!wtLast || wtLast.length < 2) return undefined;
+
+      let bestMatch: any = undefined;
+      let bestScore = 0;
+      for (const e of espnPool) {
+        const enNorm = normalizePhonetic(String(e.name || ''));
+        const enTokens = enNorm.split(/\s+/).filter(Boolean);
+        const enLast = enTokens[enTokens.length - 1] || '';
+        if (!enLast) continue;
+
+        let score = 0;
+        if (enLast === wtLast) score += 10;
+        else if (enLast.length >= 3 && wtLast.length >= 3 && (enLast.includes(wtLast) || wtLast.includes(enLast))) score += 7;
+        else if (enLast.slice(0, 3) === wtLast.slice(0, 3) && Math.abs(enLast.length - wtLast.length) <= 2) score += 5;
+
+        // First name / initial bonus
+        if (wtTokens.length > 1 && enTokens.length > 1) {
+          const wtFirst = wtTokens[0];
+          const enFirst = enTokens[0];
+          if (wtFirst === enFirst) score += 5;
+          else if (wtFirst[0] && enFirst[0] && wtFirst[0] === enFirst[0]) score += 2;
+        }
+        if (score > bestScore && score >= 5) {
+          bestScore = score;
+          bestMatch = e;
+        }
+      }
+      return bestMatch;
+    };
+
+    const mapEspnStarter = (p: any, teamCountry: any) => ({
+      position: p.position || '선수',
+      name: p.name,
+      shortName: p.shortName || p.name,
+      shirtNumber: p.shirtNumber,
+      isAce: Boolean(p.isAce),
+      countryCode: teamCountry?.isNationalTeam ? teamCountry.code : p.countryCode,
+      countryName: teamCountry?.isNationalTeam ? teamCountry.name : p.countryName,
+      flagUrl: teamCountry?.isNationalTeam ? teamCountry.flagUrl : p.flagUrl,
+      statNote: p.statNote
+    });
+
+    const mapWtStarter = (p: any, idx: number, espnPool: any[], teamCountry: any) => {
+      const matchedEspn = findMatchingEspnPlayer(p, espnPool);
+      return {
+        position: p.position && p.position !== '선수' ? p.position : (matchedEspn?.position || '선발'),
+        name: p.name,
+        shirtNumber: p.shirtNumber || matchedEspn?.shirtNumber,
+        isAce: Boolean(p.isAce || idx < 3),
+        countryCode: teamCountry?.isNationalTeam ? teamCountry.code : (p.countryCode || matchedEspn?.countryCode),
+        countryName: teamCountry?.isNationalTeam ? teamCountry.name : (p.countryName || matchedEspn?.countryName),
+        flagUrl: teamCountry?.isNationalTeam ? teamCountry.flagUrl : (p.flagUrl || matchedEspn?.flagUrl),
+        statNote: p.statNote || `${p.name} (WiseToto 실시간)`
+      };
+    };
+
+    const homeEspnPool = (espnIntel.homeFullRoster && espnIntel.homeFullRoster.length > 0) ? espnIntel.homeFullRoster : espnIntel.homeStarters;
+    const awayEspnPool = (espnIntel.awayFullRoster && espnIntel.awayFullRoster.length > 0) ? espnIntel.awayFullRoster : espnIntel.awayStarters;
+
+    const finalHomeStarters = useEspnHomeStarters && espnIntel.homeStarters.length > 0
+      ? espnIntel.homeStarters.map((p: any) => mapEspnStarter(p, homeCountryForLineup))
+      : (wtHomeStarters.length > 0 ? wtHomeStarters.map((p: any, i: number) => mapWtStarter(p, i, homeEspnPool, homeCountryForLineup)) : (validLineupData?.homeData?.pitcherOrStarters || []));
+
+    const finalAwayStarters = useEspnAwayStarters && espnIntel.awayStarters.length > 0
+      ? espnIntel.awayStarters.map((p: any) => mapEspnStarter(p, awayCountryForLineup))
+      : (wtAwayStarters.length > 0 ? wtAwayStarters.map((p: any, i: number) => mapWtStarter(p, i, awayEspnPool, awayCountryForLineup)) : (validLineupData?.awayData?.pitcherOrStarters || []));
+
+    const homeNetAdj = Number(espnIntel.homeInjuries.reduce((s, inj) => s + (inj.impactProbPct || 0), 0).toFixed(1));
+    const awayNetAdj = Number(espnIntel.awayInjuries.reduce((s, inj) => s + (inj.impactProbPct || 0), 0).toFixed(1));
+
+    const homeForm = espnIntel.homeFormation || validLineupData?.homeData?.formationOrStructure || (normalizedSport === 'basketball' ? '베스트 5 & 주요 로테이션' : '4-3-3 전술 포메이션');
+    const awayForm = espnIntel.awayFormation || validLineupData?.awayData?.formationOrStructure || (normalizedSport === 'basketball' ? '베스트 5 & 주요 로테이션' : '4-2-3-1 전술 포메이션');
+
+    validLineupData = {
+      ...(validLineupData || {}),
+      matchId: `LIVE_ESPN_WT_${homeTeam}_${awayTeam}`,
+      sport: normalizedSport,
+      homeTeam,
+      awayTeam,
+      isSupportedLeague: true,
+      isLiveScraped: true,
+      sourceName: wtHomeStarters.length > 0 ? `${espnIntel.sourceName} + WiseToto` : espnIntel.sourceName,
+      isOfficialConfirmed: espnIntel.isOfficialConfirmed,
+      confirmedTimeText: espnIntel.confirmedTimeText,
+      homeLogo: espnIntel.homeLogo || (homeCountryForLineup?.isNationalTeam ? `https://flagcdn.com/w80/${homeCountryForLineup.code}.png` : undefined),
+      awayLogo: espnIntel.awayLogo || (awayCountryForLineup?.isNationalTeam ? `https://flagcdn.com/w80/${awayCountryForLineup.code}.png` : undefined),
+      homeFlag: homeCountryForLineup?.flagUrl,
+      awayFlag: awayCountryForLineup?.flagUrl,
+      homeData: {
+        ...(validLineupData?.homeData || {}),
+        teamName: homeTeam,
+        formationOrStructure: homeForm,
+        pitcherOrStarters: finalHomeStarters,
+        keyBenchReserves: espnIntel.homeBench.length > 0 ? espnIntel.homeBench : (validLineupData?.homeData?.keyBenchReserves || ['벤치 대기조']),
+        injuries: espnIntel.homeInjuries.length > 0 ? espnIntel.homeInjuries : (validLineupData?.homeData?.injuries || []),
+        netProbAdjustmentPct: homeNetAdj,
+        netUnderOverAdjustmentPct: 0,
+        quantImpactSummary: espnIntel.homeInjuries.length > 0
+          ? `결장 ${espnIntel.homeInjuries.length}명 전력 보정 (${homeNetAdj}%p)`
+          : `${homeTeam} 정상 로스터 가동`
+      },
+      awayData: {
+        ...(validLineupData?.awayData || {}),
+        teamName: awayTeam,
+        formationOrStructure: awayForm,
+        pitcherOrStarters: finalAwayStarters,
+        keyBenchReserves: espnIntel.awayBench.length > 0 ? espnIntel.awayBench : (validLineupData?.awayData?.keyBenchReserves || ['벤치 대기조']),
+        injuries: espnIntel.awayInjuries.length > 0 ? espnIntel.awayInjuries : (validLineupData?.awayData?.injuries || []),
+        netProbAdjustmentPct: awayNetAdj,
+        netUnderOverAdjustmentPct: 0,
+        quantImpactSummary: espnIntel.awayInjuries.length > 0
+          ? `결장 ${espnIntel.awayInjuries.length}명 전력 보정 (${awayNetAdj}%p)`
+          : `${awayTeam} 정상 로스터 가동`
+      },
+      quantCalibrationReport: {
+        homeNetImpact: `${homeNetAdj >= 0 ? '+' : ''}${homeNetAdj.toFixed(1)}%p`,
+        awayNetImpact: `${awayNetAdj >= 0 ? '+' : ''}${awayNetAdj.toFixed(1)}%p`,
+        marketBiasNote: `${espnIntel.sourceName} 기반 실시간 로스터·결장자 반영 완료`,
+        confidenceGrade: espnIntel.isOfficialConfirmed ? 'HIGH' : 'MEDIUM'
+      }
+    };
+  }
+
+  if (normalizedSport === 'soccer' && validLineupData && !validLineupData.isLiveScraped) {
     const hasEnoughStarters = (validLineupData.homeData?.pitcherOrStarters?.length >= 11 || validLineupData.homeStarters?.length >= 11);
     const hasBaseballStrings = validLineupData.homeData?.formationOrStructure?.includes('타순') || 
                                validLineupData.homeData?.formationOrStructure?.includes('마운드') ||
@@ -6497,6 +7276,26 @@ app.get("/api/matches/h2h", async (req, res) => {
     awayTeam
   );
 
+  const h2hHomeCountry = resolveTeamCountryCode(homeTeam, String(league), normalizedSport);
+  const h2hAwayCountry = resolveTeamCountryCode(awayTeam, String(league), normalizedSport);
+
+  if (h2hHomeCountry?.isNationalTeam && mergedLineupInjury?.homeData?.pitcherOrStarters) {
+    mergedLineupInjury.homeData.pitcherOrStarters = mergedLineupInjury.homeData.pitcherOrStarters.map((p: any) => ({
+      ...p,
+      countryCode: h2hHomeCountry.code,
+      countryName: h2hHomeCountry.name,
+      flagUrl: h2hHomeCountry.flagUrl
+    }));
+  }
+  if (h2hAwayCountry?.isNationalTeam && mergedLineupInjury?.awayData?.pitcherOrStarters) {
+    mergedLineupInjury.awayData.pitcherOrStarters = mergedLineupInjury.awayData.pitcherOrStarters.map((p: any) => ({
+      ...p,
+      countryCode: h2hAwayCountry.code,
+      countryName: h2hAwayCountry.name,
+      flagUrl: h2hAwayCountry.flagUrl
+    }));
+  }
+
   const rawMergedPayload = {
     homeTeam,
     awayTeam,
@@ -6504,6 +7303,35 @@ app.get("/api/matches/h2h", async (req, res) => {
     sport: normalizedSport,
     scheduleInfoSeq: targetSeq,
     sofascoreEventId,
+    homeLogo: espnIntel?.homeLogo || (h2hHomeCountry?.isNationalTeam ? `https://flagcdn.com/w80/${h2hHomeCountry.code}.png` : undefined) || homeSportsDb?.strBadge || undefined,
+    awayLogo: espnIntel?.awayLogo || (h2hAwayCountry?.isNationalTeam ? `https://flagcdn.com/w80/${h2hAwayCountry.code}.png` : undefined) || awaySportsDb?.strBadge || undefined,
+    homeFlag: h2hHomeCountry?.flagUrl,
+    awayFlag: h2hAwayCountry?.flagUrl,
+    isNationalMatch: Boolean(h2hHomeCountry?.isNationalTeam || h2hAwayCountry?.isNationalTeam),
+    espnIntel: espnIntel ? {
+      matched: espnIntel.matched,
+      eventId: espnIntel.eventId,
+      leagueSlug: espnIntel.leagueSlug,
+      venue: espnIntel.venue,
+      isOfficialConfirmed: espnIntel.isOfficialConfirmed,
+      odds: espnIntel.odds || null,
+      homeRecord: espnIntel.homeRecord || null,
+      awayRecord: espnIntel.awayRecord || null,
+      predictor: espnIntel.predictor || null,
+      homeTeamStats: espnIntel.homeTeamStats || null,
+      awayTeamStats: espnIntel.awayTeamStats || null,
+      homeLeaders: espnIntel.homeLeaders || [],
+      awayLeaders: espnIntel.awayLeaders || [],
+      lastFive: espnIntel.lastFive || null,
+      sourceName: espnIntel.sourceName
+    } : null,
+    killtotoIntel: killtotoIntel.protoMatch ? {
+      stadium: killtotoIntel.protoMatch.stadium,
+      vote: killtotoIntel.protoMatch.vote,
+      leaders: killtotoIntel.analysis?.leaders || [],
+      standingsCount: killtotoIntel.analysis?.standings?.length || 0,
+      sourceName: '킬토토(Killtoto) SSR HTML'
+    } : null,
     flashscoreData: rapidFetchResult.rawFlashscore,
     sofascoreData: rapidFetchResult.rawSofaScore,
     parsedFlashscore,
@@ -6534,10 +7362,10 @@ app.get("/api/matches/h2h", async (req, res) => {
     wisetotoHome: liveH2h?.wisetotoHome || stats?.wisetotoHome || mergedLineupInjury?.wisetotoHome || null,
     wisetotoAway: liveH2h?.wisetotoAway || stats?.wisetotoAway || mergedLineupInjury?.wisetotoAway || null,
     dataSources: {
-      h2h: liveH2h?.h2h ? 'wisetoto' : (parsedFlashscore?.h2h ? 'flashscore' : (parsedSofaScore?.h2h ? 'sofascore' : 'unavailable')),
-      standings: liveH2h?.leagueStandings ? 'wisetoto' : (parsedSofaScore?.leagueStandings ? 'sofascore' : (parsedFlashscore?.leagueStandings ? 'flashscore' : 'unavailable')),
-      recentForm: liveH2h?.homeRecentForm ? 'wisetoto' : (parsedSofaScore?.homeRecentForm ? 'sofascore' : (parsedFlashscore?.homeRecentForm ? 'flashscore' : 'unavailable')),
-      lineup: (liveH2h?.lineupInjuryData?.homeData || liveH2h?.wisetotoLineup) ? 'wisetoto' : (rapidLineupData ? 'rapidapi' : 'unavailable'),
+      h2h: liveH2h?.h2h ? 'wisetoto' : (ktH2hWrapper ? 'killtoto' : (parsedFlashscore?.h2h ? 'flashscore' : (parsedSofaScore?.h2h ? 'sofascore' : 'unavailable'))),
+      standings: liveH2h?.leagueStandings ? 'wisetoto' : (killtotoIntel.analysis?.standings?.length ? 'killtoto' : (parsedSofaScore?.leagueStandings ? 'sofascore' : (parsedFlashscore?.leagueStandings ? 'flashscore' : 'unavailable'))),
+      recentForm: liveH2h?.homeRecentForm ? 'wisetoto' : (espnIntel?.lastFive ? 'espn' : (killtotoIntel.analysis?.homeRecent?.length ? 'killtoto' : (parsedSofaScore?.homeRecentForm ? 'sofascore' : 'unavailable'))),
+      lineup: espnIntel?.matched ? (liveH2h?.wisetotoLineup ? 'espn+wisetoto' : 'espn') : ((liveH2h?.lineupInjuryData?.homeData || liveH2h?.wisetotoLineup) ? 'wisetoto' : (rapidLineupData ? 'rapidapi' : 'unavailable')),
       weather: weatherEnvironment?.source || 'unavailable'
     }
   };
@@ -6551,6 +7379,82 @@ app.get("/api/matches/h2h", async (req, res) => {
   );
 
   finalSynchronizedPayload.dataSources = rawMergedPayload.dataSources;
+  finalSynchronizedPayload.espnIntel = rawMergedPayload.espnIntel;
+  finalSynchronizedPayload.killtotoIntel = rawMergedPayload.killtotoIntel;
+  finalSynchronizedPayload.homeLogo = rawMergedPayload.homeLogo;
+  finalSynchronizedPayload.awayLogo = rawMergedPayload.awayLogo;
+  finalSynchronizedPayload.homeFlag = rawMergedPayload.homeFlag;
+  finalSynchronizedPayload.awayFlag = rawMergedPayload.awayFlag;
+  finalSynchronizedPayload.isNationalMatch = rawMergedPayload.isNationalMatch;
+
+  const h2hNormalSummary = buildWisetotoForeignMarketSummary(foreignNRows, normalizedSport, 'n');
+  const h2hHandicapSummary = buildWisetotoForeignMarketSummary(foreignHRows, normalizedSport, 'h');
+  const h2hUnderOverSummary = buildWisetotoForeignMarketSummary(foreignURows, normalizedSport, 'u');
+  if (h2hNormalSummary || h2hHandicapSummary || h2hUnderOverSummary) {
+    finalSynchronizedPayload.foreignMarkets = {
+      ...(h2hNormalSummary ? { normal: h2hNormalSummary } : {}),
+      ...(h2hHandicapSummary ? { handicap: h2hHandicapSummary } : {}),
+      ...(h2hUnderOverSummary ? { underOver: h2hUnderOverSummary } : {})
+    };
+  }
+
+  // Build Comprehensive Multi-Factor Proto Report using cached Proto markets + real scraped context
+  try {
+    const qWin = Number(req.query.win);
+    const qDraw = Number(req.query.draw);
+    const qLose = Number(req.query.lose);
+    let matchedNormal: any = null;
+    let matchedHandicap: any = null;
+    let matchedUo: any = null;
+
+    const normT = (s: string) => String(s || '').replace(/\s+/g, '').replace(/[^a-zA-Z0-9가-힣]/g, '').toLowerCase();
+    const hTarget = normT(homeTeam);
+    const aTarget = normT(awayTeam);
+
+    for (const cachedObj of Object.values(matchDatabaseCache)) {
+      const arr = Array.isArray(cachedObj) ? cachedObj : cachedObj?.matches;
+      if (!Array.isArray(arr)) continue;
+      for (const m of arr) {
+        const mh = normT(m.homeTeam);
+        const ma = normT(m.awayTeam);
+        if (!mh || !ma) continue;
+        const isPair = (mh === hTarget || mh.includes(hTarget) || hTarget.includes(mh)) &&
+                       (ma === aTarget || ma.includes(aTarget) || aTarget.includes(ma));
+        if (!isPair) continue;
+        if (m.categoryType === '일반' && !matchedNormal) matchedNormal = m;
+        else if (m.categoryType === '핸디캡' && !matchedHandicap) matchedHandicap = m;
+        else if ((m.categoryType === '언더오버' || m.categoryType === 'SUM') && !matchedUo) matchedUo = m;
+        else if (!matchedNormal) matchedNormal = m;
+      }
+    }
+
+    const domWin = (!isNaN(qWin) && qWin > 1) ? qWin : (matchedNormal?.domestic?.win || espnIntel?.odds?.current?.win || 0);
+    const domDraw = (!isNaN(qDraw) && qDraw > 1) ? qDraw : (matchedNormal?.domestic?.draw || espnIntel?.odds?.current?.draw || null);
+    const domLose = (!isNaN(qLose) && qLose > 1) ? qLose : (matchedNormal?.domestic?.lose || espnIntel?.odds?.current?.lose || 0);
+
+    if (domWin > 1 && domLose > 1) {
+      const foreignNormal = h2hNormalSummary?.avg || matchedNormal?.foreign || null;
+      const hdpLine = Number(req.query.handicapLine) || matchedHandicap?.handicapOrLine || matchedNormal?.handicapLine || (normalizedSport === 'soccer' ? -1 : normalizedSport === 'baseball' ? -1.5 : -4.5);
+      const uoLine = Number(req.query.uoLine) || matchedUo?.handicapOrLine || matchedUo?.uoLine || matchedNormal?.uoLine || (normalizedSport === 'soccer' ? 2.5 : normalizedSport === 'baseball' ? 8.5 : 165.5);
+
+      finalSynchronizedPayload.comprehensiveProto = buildComprehensiveProtoReport({
+        sport: normalizedSport,
+        homeTeam,
+        awayTeam,
+        league: String(league),
+        odds: { win: domWin, draw: domDraw, lose: domLose },
+        foreignOdds: foreignNormal && foreignNormal.win > 1 && foreignNormal.lose > 1 ? foreignNormal : null,
+        handicapLine: hdpLine,
+        handicapOdds: matchedHandicap?.domestic?.win > 1 ? { win: matchedHandicap.domestic.win, lose: matchedHandicap.domestic.lose } : null,
+        uoLine,
+        uoOdds: matchedUo?.domestic?.win > 1 ? { win: matchedUo.domestic.win, lose: matchedUo.domestic.lose } : null,
+        weatherEnvironment,
+        contextData: finalSynchronizedPayload
+      });
+    }
+  } catch (compErr) {
+    console.warn('[H2H ComprehensiveProto] Skipped:', (compErr as any)?.message);
+  }
 
   res.json(finalSynchronizedPayload);
 });
@@ -6577,7 +7481,7 @@ app.post("/api/quant/analyze", async (req, res) => {
   // Yield execution to libuv event loop to avoid blocking main thread on heavy Dixon-Coles convolutions
   await new Promise<void>(resolve => setImmediate(resolve));
 
-  const { odds, foreignOdds: rawForeignOdds, sport = "soccer", homeTeam = "홈팀", awayTeam = "원정팀", league = "리그", categoryLabel = "일반", categoryType, handicapLine, uoLine, uoOdds, handicapOdds, matchOdds } = req.body;
+  const { odds, foreignOdds: rawForeignOdds, sport = "soccer", homeTeam = "홈팀", awayTeam = "원정팀", league = "리그", categoryLabel = "일반", categoryType, handicapLine, uoLine, uoOdds, handicapOdds, matchOdds, contextData: bodyContextData, fetchContext = false } = req.body;
   const win = Number(odds?.win || 1.82);
   const draw = (odds?.draw !== null && odds?.draw !== undefined && odds?.draw !== "-") ? Number(odds.draw) : null;
   const lose = Number(odds?.lose || 1.70);
@@ -6799,6 +7703,39 @@ app.post("/api/quant/analyze", async (req, res) => {
 
   const activeQuant: any = soccerQuant || baseballQuant || basketballQuant || volleyballQuant;
 
+  // Build Comprehensive Multi-Factor Proto Report (with real foreignOdds only when actually provided — no 1.05x fabrication)
+  let resolvedContextData = bodyContextData || null;
+  if (!resolvedContextData && fetchContext) {
+    const espnIntelCtx = await fetchEspnMatchIntel(homeTeam, awayTeam, String(sport), String(league)).catch(() => null);
+    if (espnIntelCtx) {
+      resolvedContextData = { espnIntel: espnIntelCtx };
+    }
+  }
+
+  const realForeignOdds = (fOdds && fOdds.win > 1.0 && fOdds.lose > 1.0)
+    ? { win: Number(fOdds.win), draw: hasDraw && fOdds.draw > 1.0 ? Number(fOdds.draw) : null, lose: Number(fOdds.lose) }
+    : null;
+
+  const comprehensiveReport = buildComprehensiveProtoReport({
+    sport,
+    homeTeam,
+    awayTeam,
+    league,
+    odds: { win, draw, lose },
+    foreignOdds: realForeignOdds,
+    handicapLine: parsedHandi,
+    handicapOdds: handicapOdds && handicapOdds.win > 1.0 ? { win: Number(handicapOdds.win), lose: Number(handicapOdds.lose) } : null,
+    uoLine: parsedUo,
+    uoOdds: uoOdds && uoOdds.win > 1.0 ? { win: Number(uoOdds.win), lose: Number(uoOdds.lose) } : null,
+    weatherEnvironment,
+    contextData: resolvedContextData,
+    baseModelProbs: {
+      win: isNaN(pWinNum) ? 50 : pWinNum,
+      draw: isNaN(pDrawNum as number) ? null : pDrawNum,
+      lose: isNaN(pLoseNum) ? 50 : pLoseNum
+    }
+  });
+
   res.json({
     sport,
     overround: `${generalOverround}%`,
@@ -6816,6 +7753,7 @@ app.post("/api/quant/analyze", async (req, res) => {
     sharpBenchmark,
     handicapAnalysis: activeQuant?.handicapAnalysis,
     uoAnalysis: activeQuant?.uoAnalysis,
+    comprehensiveReport,
     soccer: soccerQuant,
     baseball: baseballQuant,
     basketball: basketballQuant,
@@ -8644,7 +9582,10 @@ app.all("/api", (req, res) => {
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        hmr: process.env.DISABLE_HMR === "true" ? false : undefined,
+      },
       appType: "spa",
     });
     app.use(vite.middlewares);
@@ -8656,17 +9597,41 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
+  const server = app.listen(PORT, "0.0.0.0", () => {
     console.log(`SportsQuant Pro Server running on http://0.0.0.0:${PORT}`);
     if (process.env.AUTO_START_FORWARD_SCHEDULER === "true") {
-      console.log(`[FORWARD SCHEDULER] Explicitly enabled: auto-starting Forward Shadow operational scheduler...`);
-      startForwardScheduler();
+      try {
+        console.log(`[FORWARD SCHEDULER] Explicitly enabled: auto-starting Forward Shadow operational scheduler...`);
+        startForwardScheduler();
+      } catch (err) {
+        console.error("[FORWARD SCHEDULER START ERROR]", err);
+      }
     } else {
       console.log(`[FORWARD SCHEDULER] Automatic startup disabled (AUTO_START_FORWARD_SCHEDULER is not 'true').`);
     }
-    if (process.env.AUTO_START_FOREIGN_ODDS_SCHEDULER !== "false") {
-      console.log(`[FOREIGN ODDS SCHEDULER] Auto-starting WiseToto Foreign Odds 15-Minute scheduler...`);
-      foreignOddsScheduler.start();
+    if (process.env.AUTO_START_FOREIGN_ODDS_SCHEDULER === "true") {
+      try {
+        console.log(`[FOREIGN ODDS SCHEDULER] Auto-starting WiseToto Foreign Odds 15-Minute scheduler...`);
+        foreignOddsScheduler.start();
+      } catch (err) {
+        console.error("[FOREIGN ODDS SCHEDULER START ERROR]", err);
+      }
+    }
+  });
+
+  server.on("error", (err: any) => {
+    if (err.code === "EADDRINUSE") {
+      console.warn(`[SERVER] Port ${PORT} is busy, retrying in 1s...`);
+      setTimeout(() => {
+        try {
+          server.close();
+          server.listen(PORT, "0.0.0.0");
+        } catch (retryErr) {
+          console.error("[SERVER RETRY ERROR]", retryErr);
+        }
+      }, 1000);
+    } else {
+      console.error("[SERVER ERROR]", err);
     }
   });
 }

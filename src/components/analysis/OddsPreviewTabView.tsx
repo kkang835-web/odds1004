@@ -3,6 +3,7 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianG
 
 interface OddsPreviewTabViewProps {
   rawMatch: any;
+  h2hData?: any;
   homeTeam: string;
   awayTeam: string;
   sport: string;
@@ -20,6 +21,7 @@ interface OddsPreviewTabViewProps {
 
 export function OddsPreviewTabView({
   rawMatch,
+  h2hData,
   homeTeam,
   awayTeam,
   sport,
@@ -34,12 +36,82 @@ export function OddsPreviewTabView({
   copied,
   primaryPick
 }: OddsPreviewTabViewProps) {
+  const initialBmTab: 'normal' | 'handicap' | 'underOver' =
+    rawMatch?.categoryType === '핸디캡'
+      ? 'handicap'
+      : rawMatch?.categoryType === '언더오버'
+        ? 'underOver'
+        : 'normal';
   const [oddsPatternTab, setOddsPatternTab] = useState<'1x2' | 'handicap' | 'underover'>('1x2');
   const [oddsFlowMarket, setOddsFlowMarket] = useState<'1x2' | 'handicap' | 'underover'>('1x2');
+  const [bookmakerMarketTab, setBookmakerMarketTab] = useState<'normal' | 'handicap' | 'underOver'>(initialBmTab);
 
   const isNoDrawSport = sport === 'baseball' || sport === 'basketball' || sport === 'volleyball' || sport === 'bs' || sport === 'bs1' || sport === 'bk' || sport === 'vl';
   const isSoccer = sport === 'soccer' || sport === 'sc' || sport === 'sc1' || (!isNoDrawSport && !sport);
   const hasDraw = isSoccer || (!isNoDrawSport && domDraw !== null && domDraw > 0);
+
+  // Merge multi-market overseas bookmakers from rawMatch & h2hData
+  const mergedForeignMarkets = {
+    ...(h2hData?.foreignMarkets || {}),
+    ...(rawMatch?.foreignMarkets || {})
+  };
+  if (
+    !mergedForeignMarkets.normal &&
+    rawMatch?.categoryType !== '핸디캡' &&
+    rawMatch?.categoryType !== '언더오버' &&
+    Array.isArray(rawMatch?.foreignBookmakers) &&
+    rawMatch.foreignBookmakers.length > 0
+  ) {
+    mergedForeignMarkets.normal = {
+      line: null,
+      avg: rawMatch.foreign,
+      bookmakers: rawMatch.foreignBookmakers,
+      sourceName: rawMatch.foreignSourceName
+    };
+  }
+  if (
+    !mergedForeignMarkets.handicap &&
+    rawMatch?.categoryType === '핸디캡' &&
+    Array.isArray(rawMatch?.foreignBookmakers) &&
+    rawMatch.foreignBookmakers.length > 0
+  ) {
+    mergedForeignMarkets.handicap = {
+      line: rawMatch.foreignLine ?? rawMatch.handicapLine ?? null,
+      avg: rawMatch.foreign,
+      bookmakers: rawMatch.foreignBookmakers,
+      sourceName: rawMatch.foreignSourceName
+    };
+  }
+  if (
+    !mergedForeignMarkets.underOver &&
+    rawMatch?.categoryType === '언더오버' &&
+    Array.isArray(rawMatch?.foreignBookmakers) &&
+    rawMatch.foreignBookmakers.length > 0
+  ) {
+    mergedForeignMarkets.underOver = {
+      line: rawMatch.foreignLine ?? rawMatch.uoLine ?? null,
+      avg: rawMatch.foreign,
+      bookmakers: rawMatch.foreignBookmakers,
+      sourceName: rawMatch.foreignSourceName
+    };
+  }
+
+  const hasAnyBookmakerMarkets = Boolean(
+    (mergedForeignMarkets.normal?.bookmakers?.length ?? 0) > 0 ||
+    (mergedForeignMarkets.handicap?.bookmakers?.length ?? 0) > 0 ||
+    (mergedForeignMarkets.underOver?.bookmakers?.length ?? 0) > 0
+  );
+  const activeBookmakerMarket = mergedForeignMarkets[bookmakerMarketTab];
+  const activeBookmakers: any[] = activeBookmakerMarket?.bookmakers || [];
+  const activeAvg = activeBookmakerMarket?.avg || null;
+  const activeMarketLine = activeBookmakerMarket?.line ?? null;
+  const showLineCol =
+    bookmakerMarketTab !== 'normal' ||
+    activeBookmakers.some((b: any) => b.line !== null && b.line !== undefined);
+  const showDrawCol =
+    bookmakerMarketTab !== 'underOver' &&
+    (activeBookmakers.some((b: any) => b.draw !== null && b.draw !== undefined && Number(b.draw) > 1.0) ||
+      (bookmakerMarketTab === 'normal' && hasDraw && Boolean(domDraw)));
 
   // Extract real dynamic odds from primaryPick candidates
   const winCand = primaryPick?.candidates?.find((c: any) => c.marketLabel === '일반(승)' || c.marketLabel?.includes('승'));
@@ -344,7 +416,158 @@ export function OddsPreviewTabView({
         )}
       </div>
 
-      {/* 2. Real-time Odds Flow & Steam Move Tracker (With interactive market tabs) */}
+      {/* 2. Multi-Bookmaker Overseas Odds Breakdown (Normal · Handicap · Under/Over) */}
+      {hasAnyBookmakerMarkets && (
+        <div className="bg-[#0f1d2c] border border-[#1b344d] rounded-2xl p-4 sm:p-5 space-y-3 shadow-lg">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-slate-800">
+            <div>
+              <span className="font-black text-sm text-amber-300 flex items-center gap-1.5 flex-wrap">
+                <span>🌐</span>
+                <span>
+                  해외 북메이커 실시간 배당 상세 비교 ({activeBookmakers.length}개사)
+                </span>
+                {activeMarketLine !== null && bookmakerMarketTab !== 'normal' && (
+                  <span className="text-[11px] bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded font-mono border border-cyan-700/50">
+                    주요 기준선 {bookmakerMarketTab === 'handicap' && activeMarketLine > 0 ? `+${activeMarketLine}` : activeMarketLine}
+                  </span>
+                )}
+              </span>
+              <p className="text-[11px] text-slate-400 mt-0.5">
+                와이즈토토 · ESPN 직접 수집 해외 오즈메이커별 실시간 배당 및 상·하락 흐름 (▲/▼)
+                {bookmakerMarketTab === 'normal' && rawMatch?.foreignOpening?.win && rawMatch?.foreignOpening?.lose ? (
+                  <span className="ml-2 text-cyan-300 font-mono">
+                    | 개장(Open): {rawMatch.foreignOpening.win} {rawMatch.foreignOpening.draw ? `/ ${rawMatch.foreignOpening.draw} ` : ''}/ {rawMatch.foreignOpening.lose}
+                  </span>
+                ) : null}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap self-start sm:self-auto">
+              <div className="flex items-center gap-1 bg-[#09131f] p-1 rounded-xl border border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setBookmakerMarketTab('normal')}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                    bookmakerMarketTab === 'normal' ? 'bg-amber-400 text-slate-950 shadow-sm' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  일반 ({mergedForeignMarkets.normal?.bookmakers?.length ?? 0})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setBookmakerMarketTab('handicap')}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                    bookmakerMarketTab === 'handicap' ? 'bg-emerald-500 text-slate-950 shadow-sm' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  핸디캡 ({mergedForeignMarkets.handicap?.bookmakers?.length ?? 0})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setBookmakerMarketTab('underOver')}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                    bookmakerMarketTab === 'underOver' ? 'bg-purple-500 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  언더오버 ({mergedForeignMarkets.underOver?.bookmakers?.length ?? 0})
+                </button>
+              </div>
+
+              {activeAvg?.refundRate && (
+                <span className="text-xs font-mono font-bold bg-emerald-950 text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-700/50">
+                  해외 평균 환급률 {activeAvg.refundRate}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {activeBookmakers.length > 0 ? (
+            <div className="overflow-x-auto rounded-xl border border-slate-800">
+              <table className="w-full text-xs text-center font-mono">
+                <thead>
+                  <tr className="bg-[#09131f] text-slate-400 border-b border-slate-800 text-[11px] font-sans">
+                    <th className="py-2 px-3 text-left">북메이커 (업체명)</th>
+                    {showLineCol && <th className="py-2 px-2">기준선</th>}
+                    <th className="py-2 px-2.5">
+                      {bookmakerMarketTab === 'underOver'
+                        ? '언더 (U)'
+                        : bookmakerMarketTab === 'handicap'
+                          ? '홈 핸디승'
+                          : '홈승'}
+                    </th>
+                    {showDrawCol ? (
+                      <th className="py-2 px-2.5">
+                        {bookmakerMarketTab === 'handicap' ? '핸무' : '무승부'}
+                      </th>
+                    ) : null}
+                    <th className="py-2 px-2.5">
+                      {bookmakerMarketTab === 'underOver'
+                        ? '오버 (O)'
+                        : bookmakerMarketTab === 'handicap'
+                          ? '원정 핸디승'
+                          : '원정승'}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60">
+                  {activeBookmakers.map((bm: any, idx: number) => (
+                    <tr key={idx} className="hover:bg-[#132238] transition-colors">
+                      <td className="py-2 px-3 text-left font-sans font-bold text-slate-200">{bm.bookmaker}</td>
+                      {showLineCol && (
+                        <td className="py-2 px-2 text-cyan-300">
+                          {bm.line !== null && bm.line !== undefined
+                            ? `${bookmakerMarketTab === 'handicap' && Number(bm.line) > 0 ? '+' : ''}${bm.line}`
+                            : '-'}
+                        </td>
+                      )}
+                      <td className="py-2 px-2.5 font-bold text-slate-100">
+                        <span>{Number(bm.win).toFixed(2)}</span>
+                        {bm.winMove === 'down' && <span className="ml-1 text-rose-400 text-[10px]">▼</span>}
+                        {bm.winMove === 'up' && <span className="ml-1 text-emerald-400 text-[10px]">▲</span>}
+                      </td>
+                      {showDrawCol ? (
+                        <td className="py-2 px-2.5 text-amber-300">
+                          {bm.draw ? Number(bm.draw).toFixed(2) : '-'}
+                          {bm.drawMove === 'down' && <span className="ml-1 text-rose-400 text-[10px]">▼</span>}
+                          {bm.drawMove === 'up' && <span className="ml-1 text-emerald-400 text-[10px]">▲</span>}
+                        </td>
+                      ) : null}
+                      <td className="py-2 px-2.5 font-bold text-slate-100">
+                        <span>{Number(bm.lose).toFixed(2)}</span>
+                        {bm.loseMove === 'down' && <span className="ml-1 text-rose-400 text-[10px]">▼</span>}
+                        {bm.loseMove === 'up' && <span className="ml-1 text-emerald-400 text-[10px]">▲</span>}
+                      </td>
+                    </tr>
+                  ))}
+                  {activeAvg?.win && activeAvg?.lose && (
+                    <tr className="bg-amber-950/25 border-t border-amber-700/40 font-black text-amber-300">
+                      <td className="py-2 px-3 text-left font-sans">해외 평균 (Consensus)</td>
+                      {showLineCol && (
+                        <td className="py-2 px-2 text-cyan-300">
+                          {activeMarketLine !== null
+                            ? `${bookmakerMarketTab === 'handicap' && Number(activeMarketLine) > 0 ? '+' : ''}${activeMarketLine}`
+                            : '-'}
+                        </td>
+                      )}
+                      <td className="py-2 px-2.5">{Number(activeAvg.win).toFixed(2)}</td>
+                      {showDrawCol ? (
+                        <td className="py-2 px-2.5">{activeAvg.draw ? Number(activeAvg.draw).toFixed(2) : '-'}</td>
+                      ) : null}
+                      <td className="py-2 px-2.5">{Number(activeAvg.lose).toFixed(2)}</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="bg-[#09131f] border border-slate-800 rounded-xl p-5 text-center text-xs text-slate-400">
+              현재 해당 경기의 <strong className="text-slate-200">{bookmakerMarketTab === 'handicap' ? '핸디캡' : bookmakerMarketTab === 'underOver' ? '언더오버' : '일반'}</strong> 해외 북메이커 배당이 와이즈토토에서 미제공 상태입니다.
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 3. Real-time Odds Flow & Steam Move Tracker (With interactive market tabs) */}
       <div className="bg-[#0f1d2c] border border-[#1b344d] rounded-2xl p-4 sm:p-5 space-y-4 shadow-lg">
         <div className="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-slate-800">
           <div>
@@ -488,8 +711,12 @@ export function OddsPreviewTabView({
             <div className="bg-[#0c1624] p-2 rounded-lg border border-slate-800/60 space-y-1">
               <div className="flex items-center justify-between">
                 <span className="text-slate-400">개장 배당 (Opening)</span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded font-bold bg-amber-950 text-amber-300 border border-amber-700/60">
-                  DERIVED (수학적 역추정)
+                <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold ${
+                  hasRealOddsHistory
+                    ? 'bg-emerald-950 text-emerald-300 border border-emerald-700/60'
+                    : 'bg-amber-950 text-amber-300 border border-amber-700/60'
+                }`}>
+                  {hasRealOddsHistory ? 'REAL (실측 스냅샷)' : 'DERIVED (수학적 역추정)'}
                 </span>
               </div>
               <div className="text-slate-200 font-mono font-bold">
@@ -501,20 +728,26 @@ export function OddsPreviewTabView({
 
             <div className="bg-[#0c1624] p-2 rounded-lg border border-slate-800/60 space-y-1">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400">시계열 궤적 (12:00~18:00)</span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded font-bold bg-purple-950 text-purple-300 border border-purple-700/60">
-                  INTERPOLATED (추세 보간)
+                <span className="text-slate-400">시계열 궤적</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold ${
+                  hasRealOddsHistory
+                    ? 'bg-emerald-950 text-emerald-300 border border-emerald-700/60'
+                    : 'bg-purple-950 text-purple-300 border border-purple-700/60'
+                }`}>
+                  {hasRealOddsHistory ? `REAL (${currentChartData.length}틱 실측)` : 'INTERPOLATED (추세 보간)'}
                 </span>
               </div>
               <div className="text-slate-200 font-mono font-bold">
-                {oddsFlowMarket === '1x2' && hasDraw ? '3-Way (홈·무·원정) 벡터 곡선' : '5구간 스팀무브 벡터 곡선'}
+                {oddsFlowMarket === '1x2' && hasDraw ? '3-Way (홈·무·원정) 변동 추이' : '스팀무브 시계열 곡선'}
               </div>
             </div>
           </div>
 
           <div className="text-[10px] text-slate-400 leading-relaxed bg-[#060e17] p-2 rounded border border-slate-800/40">
             <span className="text-amber-400 font-bold">⚠️ 데이터 엄격 구분:</span>{' '}
-            투표율(VoteRate) ≠ 배당률(Odds) | 모델 참확률(Model Prob) ≠ 시장 확률(Market Prob) | 보간 궤적(Interpolated) ≠ 실시간 체결 틱(Observed Ticks). 본 차트의 시계열 중간 포인트는 단일 고시 배당으로부터 스마트머니 유입 방향성을 시각화한 수리모델 보간선입니다.
+            {hasRealOddsHistory
+              ? 'BetMan·WiseToto·ESPN에서 실측 수집된 배당 변동 이력이 반영되어 있습니다.'
+              : '투표율(VoteRate) ≠ 배당률(Odds) | 모델 참확률(Model Prob) ≠ 시장 확률(Market Prob). 시계열 이력 미축적 경기는 공시 배당 기반 추세 보간선으로 시각화됩니다.'}
           </div>
         </div>
       </div>
@@ -561,64 +794,64 @@ export function OddsPreviewTabView({
           <span className="text-emerald-400 font-mono font-bold">● Schema.org NewsArticle 연동</span>
         </div>
 
-        {/* Formatted Article Box */}
-        <div className="bg-[#09131f] border border-slate-800 rounded-xl p-4 sm:p-5 text-xs text-slate-300 leading-relaxed font-sans space-y-4">
-          <div className="border-b border-slate-800/80 pb-3.5 space-y-1.5">
+        {/* Formatted Article Box (Editorial Sports Journalist Layout) */}
+        <div className="bg-[#09131f] border border-slate-800 rounded-xl p-4 sm:p-6 text-xs text-slate-300 leading-relaxed font-sans space-y-5">
+          <div className="border-b border-slate-800/80 pb-4 space-y-2.5">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <span className="font-black text-sm sm:text-base text-amber-300">
-                {previewData?.title || `[${previewData?.matchDate || '2026년 9월 22일'} 프로토 No.${gameNo}] ${league} ${homeTeam} vs ${awayTeam} 경기 분석 프리뷰 & 승부예측`}
+              <span className="text-[11px] font-bold text-amber-400 tracking-wide uppercase">
+                {league} · 프로토 No.{gameNo}
               </span>
-              <span className="text-xs font-mono font-bold bg-amber-950/80 text-amber-400 px-2.5 py-0.5 rounded border border-amber-700/50">
-                전문 기자 데스크 칼럼
+              <span className="text-[11px] font-mono font-bold bg-amber-950/80 text-amber-300 px-2.5 py-0.5 rounded border border-amber-700/50">
+                전문 기자 프리뷰 데스크
               </span>
             </div>
-            <div className="flex items-center gap-3 text-[11px] text-slate-400 flex-wrap">
-              <span>📅 <strong className="text-slate-200">{previewData?.formattedDate || `${previewData?.matchDate || '2026년 9월 22일'} (화) 18:00`}</strong></span>
-              <span>🏟️ <strong className="text-slate-200">{homeTeam} 홈구장</strong></span>
-              <span>🏆 <strong className="text-amber-400">{league}</strong></span>
-              <span>🔢 <strong className="text-sky-400">프로토 No.{gameNo}</strong></span>
-            </div>
+            <h3 className="font-black text-base sm:text-xl text-white leading-snug">
+              {previewData?.headline || previewData?.title || `${homeTeam} vs ${awayTeam} 프리뷰`}
+            </h3>
+            {previewData?.leadParagraph && (
+              <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal pt-1">
+                {previewData.leadParagraph}
+              </p>
+            )}
           </div>
 
-          {/* Professional 11 Journalist Sections Render */}
           {Array.isArray(previewData?.sections) && previewData.sections.length > 0 ? (
-            <div className="space-y-4 pt-1">
-              {previewData.sections.map((sec, idx) => {
+            <div className="space-y-4">
+              {previewData.sections.map((sec: any, idx: number) => {
                 const isQuantSection = sec.sectionNo === '11';
-                const isOverview = sec.sectionNo === '01';
-                const isCheckpoints = sec.sectionNo === '09';
-                const isOutlook = sec.sectionNo === '10';
+                const isBasicInfo = sec.sectionNo === '01';
 
                 return (
-                  <div 
-                    key={idx} 
-                    className={`p-3.5 sm:p-4 rounded-xl border text-xs leading-relaxed space-y-2 ${
-                      isQuantSection 
-                        ? 'bg-[#0d1c2d] border-amber-500/50 shadow-md' 
-                        : isOverview
+                  <div
+                    key={idx}
+                    className={`p-4 rounded-xl border text-xs sm:text-[13px] leading-relaxed space-y-2.5 ${
+                      isQuantSection
+                        ? 'bg-[#0d1c2d] border-amber-500/50 shadow-md'
+                        : isBasicInfo
                         ? 'bg-[#071320] border-blue-900/60'
-                        : isCheckpoints
-                        ? 'bg-[#0a1624] border-purple-900/60'
-                        : isOutlook
-                        ? 'bg-[#091522] border-emerald-900/60'
                         : 'bg-[#070f1a] border-slate-800'
                     }`}
                   >
                     <div className="flex items-center justify-between flex-wrap gap-2 pb-1.5 border-b border-slate-800/80">
-                      <span className={`font-black text-xs sm:text-sm flex items-center gap-1.5 ${
-                        isQuantSection ? 'text-amber-300' : isCheckpoints ? 'text-purple-300' : isOutlook ? 'text-emerald-300' : 'text-slate-200'
+                      <span className={`font-black text-xs sm:text-sm ${
+                        isQuantSection ? 'text-amber-300' : isBasicInfo ? 'text-sky-300' : 'text-slate-100'
                       }`}>
-                        <span className="font-mono text-slate-500 text-[11px]">{sec.sectionNo}.</span>
-                        <span>【{sec.title}】</span>
+                        {sec.title}
                       </span>
                       {isQuantSection && (
                         <span className="text-[10px] font-bold bg-amber-950 text-amber-300 px-2 py-0.5 rounded border border-amber-700/60 font-mono">
-                          독립 연산 퀀트 영역 (기자 분석과 완전 분리)
+                          독립 연산 퀀트 영역
                         </span>
                       )}
                     </div>
 
-                    <div className="text-slate-300 whitespace-pre-line leading-relaxed font-sans pl-1">
+                    {sec.subhead && (
+                      <h4 className="font-bold text-amber-200 text-xs sm:text-sm leading-snug">
+                        {sec.subhead}
+                      </h4>
+                    )}
+
+                    <div className="text-slate-300 whitespace-pre-line leading-relaxed font-sans">
                       {sec.content}
                     </div>
                   </div>
